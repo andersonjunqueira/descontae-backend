@@ -9,21 +9,17 @@ import javax.persistence.Table;
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
 @Entity
-@Table(name = "TB_UF")
-public class Estado extends EntidadeBase<Long> {
+@Table(name = "TB_TIPO_PESSOA")
+public class TipoPessoa extends EntidadeBase<Long> {
 
-    private static final long serialVersionUID = 6174163472421481815L;
+    private static final long serialVersionUID = 4010241792268709045L;
 
-    public static final int MAX_LENGTH_SIGLA = 2;
     public static final int MAX_LENGTH_NOME = 30;
 
     @Id
-    @Column(name="ID_UF")
+    @Column(name="ID_TIPO_PESSOA")
     @GeneratedValue
     private Long id;
-
-    @Column(name="SIGLA", length=MAX_LENGTH_SIGLA, nullable=false)
-    private String sigla;
 
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)
     private String nome;
@@ -36,14 +32,6 @@ public class Estado extends EntidadeBase<Long> {
     @Override
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getSigla() {
-        return sigla;
-    }
-
-    public void setSigla(String sigla) {
-        this.sigla = sigla;
     }
 
     public String getNome() {

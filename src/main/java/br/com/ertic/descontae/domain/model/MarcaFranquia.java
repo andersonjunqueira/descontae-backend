@@ -9,24 +9,24 @@ import javax.persistence.Table;
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
 @Entity
-@Table(name = "TB_UF")
-public class Estado extends EntidadeBase<Long> {
+@Table(name = "TB_MARCA_FRANQUIA")
+public class MarcaFranquia extends EntidadeBase<Long> {
 
-    private static final long serialVersionUID = 6174163472421481815L;
+    private static final long serialVersionUID = 4010241792268709045L;
 
-    public static final int MAX_LENGTH_SIGLA = 2;
-    public static final int MAX_LENGTH_NOME = 30;
+    public static final int MAX_LENGTH_NOME = 100;
+    public static final int MAX_LENGTH_LOGO = 200;
 
     @Id
-    @Column(name="ID_UF")
+    @Column(name="ID_MARCA_FRANQUIA")
     @GeneratedValue
     private Long id;
 
-    @Column(name="SIGLA", length=MAX_LENGTH_SIGLA, nullable=false)
-    private String sigla;
-
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)
     private String nome;
+
+    @Column(name="LOGO", length=MAX_LENGTH_LOGO, nullable=false)
+    private String caminhoLogomarca;
 
     @Override
     public Long getId() {
@@ -38,20 +38,20 @@ public class Estado extends EntidadeBase<Long> {
         this.id = id;
     }
 
-    public String getSigla() {
-        return sigla;
-    }
-
-    public void setSigla(String sigla) {
-        this.sigla = sigla;
-    }
-
     public String getNome() {
         return nome;
     }
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getCaminhoLogomarca() {
+        return caminhoLogomarca;
+    }
+
+    public void setCaminhoLogomarca(String caminhoLogomarca) {
+        this.caminhoLogomarca = caminhoLogomarca;
     }
 
 
