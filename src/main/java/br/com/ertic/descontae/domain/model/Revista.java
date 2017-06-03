@@ -4,10 +4,10 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -15,39 +15,40 @@ import javax.persistence.TemporalType;
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
 @Entity
-@Table(name = "TB_PLANO")
-public class Plano extends EntidadeBase<Long> {
+@Table(name = "TB_REVISTA")
+public class Revista extends EntidadeBase<Long> {
 
-    private static final long serialVersionUID = 2427304382876951007L;
+    private static final long serialVersionUID = -8865030565054694597L;
 
-    public static final int MAX_LENGTH_TITULO = 30;
-    public static final int MAX_LENGTH_DESCRICAO = 500;
+    public static final int MAX_LENGTH_EDICAO = 10;
+    public static final int MAX_LENGTH_DESCRICAO = 200;
+    public static final int MAX_LENGTH_PDF = 200;
 
     @Id
-    @Column(name="ID_PLANO")
+    @Column(name="ID_REVISTA")
     @GeneratedValue
     private Long id;
 
-    @Column(name="TITULO", length=MAX_LENGTH_TITULO, nullable=false)
-    private String titulo;
+    @Column(name="EDICAO", length=MAX_LENGTH_EDICAO,  nullable=false)
+    private Integer preco;
 
-    @Column(name="DESCRICAO", length=MAX_LENGTH_DESCRICAO, nullable=true)
+    @Column(name="DESCRICAO", length=MAX_LENGTH_DESCRICAO,  nullable=false)
     private String descricao;
-
-    @Column(name="VALOR", nullable=false)
-    private Double valor;
 
     @Temporal(TemporalType.DATE)
     @Column(name="INICIO_VIGENCIA", nullable=false)
     private Date inicioVigencia;
 
     @Temporal(TemporalType.DATE)
-    @Column(name="FIM_VIGENCIA", nullable=true)
+    @Column(name="FIM_VIGENCIA", nullable=false)
     private Date fimVigencia;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name="SITUACAO", nullable=false)
-    private SituacaoPlano situacao;
+    @Column(name="PDF", length=MAX_LENGTH_PDF,  nullable=true)
+    private String pdf;
+
+    @ManyToOne
+    @JoinColumn(name="ID_UNIDADE", nullable=false)
+    private Pessoa unidade;
 
     @Override
     public Long getId() {
@@ -59,12 +60,12 @@ public class Plano extends EntidadeBase<Long> {
         this.id = id;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public Integer getPreco() {
+        return preco;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setPreco(Integer preco) {
+        this.preco = preco;
     }
 
     public String getDescricao() {
@@ -73,14 +74,6 @@ public class Plano extends EntidadeBase<Long> {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public Double getValor() {
-        return valor;
-    }
-
-    public void setValor(Double valor) {
-        this.valor = valor;
     }
 
     public Date getInicioVigencia() {
@@ -99,13 +92,20 @@ public class Plano extends EntidadeBase<Long> {
         this.fimVigencia = fimVigencia;
     }
 
-    public SituacaoPlano getSituacao() {
-        return situacao;
+    public String getPdf() {
+        return pdf;
     }
 
-    public void setSituacao(SituacaoPlano situacao) {
-        this.situacao = situacao;
+    public void setPdf(String pdf) {
+        this.pdf = pdf;
     }
 
+    public Pessoa getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(Pessoa unidade) {
+        this.unidade = unidade;
+    }
 
 }

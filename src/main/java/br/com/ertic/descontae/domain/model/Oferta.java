@@ -1,49 +1,46 @@
 package br.com.ertic.descontae.domain.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
 @Entity
-@Table(name = "TB_PLANO")
-public class Plano extends EntidadeBase<Long> {
+@Table(name = "TB_OFERTA")
+public class Oferta extends EntidadeBase<Long> {
 
-    private static final long serialVersionUID = 2427304382876951007L;
+    private static final long serialVersionUID = 7747639292420086763L;
 
-    public static final int MAX_LENGTH_TITULO = 30;
     public static final int MAX_LENGTH_DESCRICAO = 500;
+    public static final int MAX_LENGTH_IMAGEM = 200;
 
     @Id
-    @Column(name="ID_PLANO")
+    @Column(name="ID_OFERTA")
     @GeneratedValue
     private Long id;
 
-    @Column(name="TITULO", length=MAX_LENGTH_TITULO, nullable=false)
-    private String titulo;
-
-    @Column(name="DESCRICAO", length=MAX_LENGTH_DESCRICAO, nullable=true)
+    @Column(name="DESCRICAO", length=MAX_LENGTH_DESCRICAO, nullable=false)
     private String descricao;
 
-    @Column(name="VALOR", nullable=false)
+    @Column(name="IMAGEM", length=MAX_LENGTH_IMAGEM, nullable=true)
+    private String imagem;
+
+    @Column(name="VALOR", nullable=true)
     private Double valor;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name="INICIO_VIGENCIA", nullable=false)
-    private Date inicioVigencia;
+    @Column(name="DESCONTO", nullable=true)
+    private Double desconto;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name="FIM_VIGENCIA", nullable=true)
-    private Date fimVigencia;
+    @ManyToOne
+    @JoinColumn(name="ID_PESSOA", nullable=false)
+    private Pessoa pessoa;
 
     @Enumerated(EnumType.STRING)
     @Column(name="SITUACAO", nullable=false)
@@ -59,20 +56,20 @@ public class Plano extends EntidadeBase<Long> {
         this.id = id;
     }
 
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
     public String getDescricao() {
         return descricao;
     }
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 
     public Double getValor() {
@@ -83,20 +80,20 @@ public class Plano extends EntidadeBase<Long> {
         this.valor = valor;
     }
 
-    public Date getInicioVigencia() {
-        return inicioVigencia;
+    public Double getDesconto() {
+        return desconto;
     }
 
-    public void setInicioVigencia(Date inicioVigencia) {
-        this.inicioVigencia = inicioVigencia;
+    public void setDesconto(Double desconto) {
+        this.desconto = desconto;
     }
 
-    public Date getFimVigencia() {
-        return fimVigencia;
+    public Pessoa getPessoa() {
+        return pessoa;
     }
 
-    public void setFimVigencia(Date fimVigencia) {
-        this.fimVigencia = fimVigencia;
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     public SituacaoPlano getSituacao() {
@@ -106,6 +103,5 @@ public class Plano extends EntidadeBase<Long> {
     public void setSituacao(SituacaoPlano situacao) {
         this.situacao = situacao;
     }
-
 
 }
