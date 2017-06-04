@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,8 +23,8 @@ public class Oferta extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_IMAGEM = 200;
 
     @Id
-    @Column(name="ID_OFERTA")
-    @GeneratedValue
+    @Column(name="ID_OFERTA", columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="DESCRICAO", length=MAX_LENGTH_DESCRICAO, nullable=false)

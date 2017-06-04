@@ -3,6 +3,7 @@ package br.com.ertic.descontae.domain.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -18,8 +19,8 @@ public class MarcaFranquia extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_LOGO = 200;
 
     @Id
-    @Column(name="ID_MARCA_FRANQUIA")
-    @GeneratedValue
+    @Column(name="ID_MARCA_FRANQUIA", columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)

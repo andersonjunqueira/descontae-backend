@@ -3,6 +3,7 @@ package br.com.ertic.descontae.domain.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,8 +18,8 @@ public class Avaliacao extends EntidadeBase<Long> {
     private static final long serialVersionUID = -3477321390404847487L;
 
     @Id
-    @Column(name="ID_AVALIACAO")
-    @GeneratedValue
+    @Column(name="ID_AVALIACAO", columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="NOTA_PRECO", nullable=true)

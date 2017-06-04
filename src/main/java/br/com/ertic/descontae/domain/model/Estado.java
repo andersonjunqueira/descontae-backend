@@ -2,7 +2,6 @@ package br.com.ertic.descontae.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -19,7 +18,6 @@ public class Estado extends EntidadeBase<Long> {
 
     @Id
     @Column(name="ID_UF")
-    @GeneratedValue
     private Long id;
 
     @Column(name="SIGLA", length=MAX_LENGTH_SIGLA, nullable=false)

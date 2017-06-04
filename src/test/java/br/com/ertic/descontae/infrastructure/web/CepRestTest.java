@@ -15,11 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.testng.annotations.Test;
 
-import br.com.ertic.util.infraestructure.dto.ZipCodeDTO;
+import br.com.ertic.util.infraestructure.dto.CepDTO;
 import br.com.ertic.util.test.BaseRestTest;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class ZipCodeRestTest extends BaseRestTest {
+public class CepRestTest extends BaseRestTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -35,7 +35,7 @@ public class ZipCodeRestTest extends BaseRestTest {
         ResponseEntity<String> entity = restTemplate.exchange("/zipcodes/71505220", HttpMethod.GET, e, String.class);
         assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        ZipCodeDTO z = JsonSerialization.readValue(entity.getBody(), ZipCodeDTO.class);
+        CepDTO z = JsonSerialization.readValue(entity.getBody(), CepDTO.class);
         assertThat(z.getUf()).isEqualTo("DF");
 
     }

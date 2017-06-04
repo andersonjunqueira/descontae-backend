@@ -3,6 +3,7 @@ package br.com.ertic.descontae.domain.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,8 +24,8 @@ public class Endereco extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_BAIRRO = 50;
 
     @Id
-    @Column(name="ID_ENDERECO")
-    @GeneratedValue
+    @Column(name="ID_ENDERECO", columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="CEP", length=MAX_LENGTH_CEP, nullable=false)

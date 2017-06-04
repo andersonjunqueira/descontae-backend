@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,8 +29,8 @@ public class Empreendimento extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_EMAIL = 100;
 
     @Id
-    @Column(name="ID_EMPREENDIMENTO")
-    @GeneratedValue
+    @Column(name="ID_EMPREENDIMENTO", columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)

@@ -3,6 +3,7 @@ package br.com.ertic.descontae.domain.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,8 +21,8 @@ public class Unidade extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_TELEFONE = 15;
 
     @Id
-    @Column(name="ID_UNIDADE")
-    @GeneratedValue
+    @Column(name="ID_UNIDADE", columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)

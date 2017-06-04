@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,8 +26,8 @@ public class Revista extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_PDF = 200;
 
     @Id
-    @Column(name="ID_REVISTA")
-    @GeneratedValue
+    @Column(name="ID_REVISTA", columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="EDICAO", length=MAX_LENGTH_EDICAO,  nullable=false)
