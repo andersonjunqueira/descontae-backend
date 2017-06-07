@@ -7,14 +7,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.ertic.descontae.domain.model.Estado;
-import br.com.ertic.descontae.infraestructure.persistence.jpa.EstadosRepository;
+import br.com.ertic.descontae.infraestructure.persistence.jpa.EstadoRepository;
 import br.com.ertic.util.infraestructure.service.RestFullService;
 
 @Service
-public class EstadosService extends RestFullService<Estado, Long> {
+public class EstadoService extends RestFullService<Estado, Long> {
 
     @Autowired
-    EstadosService(EstadosRepository repository) {
+    EstadoService(EstadoRepository repository) {
         super(repository);
     }
 

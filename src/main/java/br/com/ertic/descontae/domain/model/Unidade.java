@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
@@ -33,6 +35,14 @@ public class Unidade extends EntidadeBase<Long> {
 
     @Column(name="ID_EMPREENDIMENTO", nullable=false)
     private Long idEmpreendimento;
+
+    @Temporal(TemporalType.TIME)
+    @Column(name="INICIO_EXPEDIENTE", nullable=true)
+    private Long inicioExpediente;
+
+    @Temporal(TemporalType.TIME)
+    @Column(name="FIM_EXPEDIENTE", nullable=true)
+    private Long fimExpediente;
 
     @ManyToOne
     @JoinColumn(name="ID_ENDERECO", nullable=false)
@@ -78,6 +88,22 @@ public class Unidade extends EntidadeBase<Long> {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public Long getInicioExpediente() {
+        return inicioExpediente;
+    }
+
+    public void setInicioExpediente(Long inicioExpediente) {
+        this.inicioExpediente = inicioExpediente;
+    }
+
+    public Long getFimExpediente() {
+        return fimExpediente;
+    }
+
+    public void setFimExpediente(Long fimExpediente) {
+        this.fimExpediente = fimExpediente;
     }
 
 }

@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.ertic.descontae.domain.model.Estado;
 
-public interface EstadosRepository extends JpaRepository<Estado, Long> {
+public interface EstadoRepository extends JpaRepository<Estado, Long> {
 
 }
