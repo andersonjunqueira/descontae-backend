@@ -15,8 +15,7 @@
         <version>1.5.2.RELEASE</version>
     </parent>
 
-    <name>eventos-springboot</name>
-    <description>Demo project for Spring Boot</description>
+    <name>Descontaê / Backend</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,7 +25,7 @@
         <springboot-utils.version>0.0.1-SNAPSHOT</springboot-utils.version>
         <springboot.version>1.5.2.RELEASE</springboot.version>
         <testng.version>6.8.13</testng.version>
-        <keycloak.version>3.0.0.Final</keycloak.version>
+        <keycloak.version>3.1.0.Final</keycloak.version>
     </properties>
 
     <dependencies>
