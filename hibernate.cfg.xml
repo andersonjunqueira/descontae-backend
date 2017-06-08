@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://213.136.69.6:5432/descontae</property>
+        <property name="hibernate.connection.username">descontaeusr</property>
+        <property name="hibernate.connection.password">descontaeusr</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+        <mapping class="br.com.ertic.descontae.domain.model.Assinatura"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Avaliacao"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Categoria"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Cidade"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Consumo"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Empreendimento"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Endereco"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Estado"/>
+        <mapping class="br.com.ertic.descontae.domain.model.MarcaFranquia"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Oferta"/>
+        <mapping class="br.com.ertic.descontae.domain.model.OfertaUnidade"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Pessoa"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Plano"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Revista"/>
+        <mapping class="br.com.ertic.descontae.domain.model.TipoPessoa"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Unidade"/>
+
+    </session-factory>
+</hibernate-configuration>

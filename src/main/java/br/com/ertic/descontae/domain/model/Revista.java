@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,7 +29,7 @@ public class Revista extends EntidadeBase<Long> {
     private Long id;
 
     @Column(name="EDICAO", length=MAX_LENGTH_EDICAO,  nullable=false)
-    private Integer preco;
+    private String edicao;
 
     @Column(name="DESCRICAO", length=MAX_LENGTH_DESCRICAO,  nullable=false)
     private String descricao;
@@ -47,10 +45,6 @@ public class Revista extends EntidadeBase<Long> {
     @Column(name="PDF", length=MAX_LENGTH_PDF,  nullable=true)
     private String pdf;
 
-    @ManyToOne
-    @JoinColumn(name="ID_UNIDADE", nullable=false)
-    private Pessoa unidade;
-
     @Override
     public Long getId() {
         return id;
@@ -59,14 +53,6 @@ public class Revista extends EntidadeBase<Long> {
     @Override
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getPreco() {
-        return preco;
-    }
-
-    public void setPreco(Integer preco) {
-        this.preco = preco;
     }
 
     public String getDescricao() {
@@ -101,12 +87,12 @@ public class Revista extends EntidadeBase<Long> {
         this.pdf = pdf;
     }
 
-    public Pessoa getUnidade() {
-        return unidade;
+    public String getEdicao() {
+        return edicao;
     }
 
-    public void setUnidade(Pessoa unidade) {
-        this.unidade = unidade;
+    public void setEdicao(String edicao) {
+        this.edicao = edicao;
     }
 
 }

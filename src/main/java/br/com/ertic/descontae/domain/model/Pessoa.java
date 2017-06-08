@@ -56,7 +56,7 @@ public class Pessoa extends EntidadeBase<Long> {
     private Date dataCadastro;
 
     @Temporal(TemporalType.DATE)
-    @Column(name="DATA_ULTIMA_ALTERACAO", nullable=false)
+    @Column(name="DATA_ULTIMA_ATUALIZACAO", nullable=false)
     private Date dataAlteracao;
 
     @ManyToOne
