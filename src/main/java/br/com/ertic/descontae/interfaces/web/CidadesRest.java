@@ -30,7 +30,7 @@ public class CidadesRest extends RestFullEndpoint<Cidade, Long> {
            response.setStatus(HttpStatus.SC_NO_CONTENT);
         }
         return saida;
-     }
+    }
 
 }
 

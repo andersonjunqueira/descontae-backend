@@ -1,5 +1,8 @@
 package br.com.ertic.descontae.domain.model;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,15 +42,19 @@ public class Unidade extends EntidadeBase<Long> {
 
     @Temporal(TemporalType.TIME)
     @Column(name="INICIO_EXPEDIENTE", nullable=true)
-    private Long inicioExpediente;
+    private Date inicioExpediente;
 
     @Temporal(TemporalType.TIME)
     @Column(name="FIM_EXPEDIENTE", nullable=true)
-    private Long fimExpediente;
+    private Date fimExpediente;
 
     @ManyToOne
     @JoinColumn(name="ID_ENDERECO", nullable=false)
     private Endereco endereco;
+
+    @OneToMany
+    @JoinColumn(name="ID_UNIDADE", referencedColumnName="ID_UNIDADE")
+    private List<Avaliacao> avaliacoes;
 
     @Override
     public Long getId() {
@@ -90,20 +98,28 @@ public class Unidade extends EntidadeBase<Long> {
         this.endereco = endereco;
     }
 
-    public Long getInicioExpediente() {
+    public Date getInicioExpediente() {
         return inicioExpediente;
     }
 
-    public void setInicioExpediente(Long inicioExpediente) {
+    public void setInicioExpediente(Date inicioExpediente) {
         this.inicioExpediente = inicioExpediente;
     }
 
-    public Long getFimExpediente() {
+    public Date getFimExpediente() {
         return fimExpediente;
     }
 
-    public void setFimExpediente(Long fimExpediente) {
+    public void setFimExpediente(Date fimExpediente) {
         this.fimExpediente = fimExpediente;
+    }
+
+    public List<Avaliacao> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+        this.avaliacoes = avaliacoes;
     }
 
 }

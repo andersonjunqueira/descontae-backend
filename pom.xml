@@ -26,6 +26,7 @@
         <springboot.version>1.5.2.RELEASE</springboot.version>
         <testng.version>6.8.13</testng.version>
         <keycloak.version>3.1.0.Final</keycloak.version>
+        <google-maps-services.version>0.1.20</google-maps-services.version>
     </properties>
 
     <dependencies>
@@ -71,11 +72,16 @@
             <artifactId>keycloak-tomcat8-adapter</artifactId>
             <version>${keycloak.version}</version>
         </dependency>
-<!--         <dependency> -->
-<!--             <groupId>org.keycloak</groupId> -->
-<!--             <artifactId>keycloak-spring-boot-adapter</artifactId> -->
-<!--             <version>${keycloak.version}</version> -->
-<!--         </dependency> -->
+        <!-- <dependency> -->
+        <!-- <groupId>org.keycloak</groupId> -->
+        <!-- <artifactId>keycloak-spring-boot-adapter</artifactId> -->
+        <!-- <version>${keycloak.version}</version> -->
+        <!-- </dependency> -->
+        <dependency>
+            <groupId>com.google.maps</groupId>
+            <artifactId>google-maps-services</artifactId>
+            <version>${google-maps-services.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>

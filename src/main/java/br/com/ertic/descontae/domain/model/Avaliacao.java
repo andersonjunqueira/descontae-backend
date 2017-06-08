@@ -32,9 +32,8 @@ public class Avaliacao extends EntidadeBase<Long> {
     @JoinColumn(name="ID_PESSOA", nullable=false)
     private Pessoa pessoa;
 
-    @ManyToOne
-    @JoinColumn(name="ID_UNIDADE", nullable=false)
-    private Pessoa unidade;
+    @Column(name="ID_UNIDADE", nullable=false)
+    private Long idUnidade;
 
     @Override
     public Long getId() {
@@ -70,12 +69,12 @@ public class Avaliacao extends EntidadeBase<Long> {
         this.pessoa = pessoa;
     }
 
-    public Pessoa getUnidade() {
-        return unidade;
+    public Long getIdUnidade() {
+        return idUnidade;
     }
 
-    public void setUnidade(Pessoa unidade) {
-        this.unidade = unidade;
+    public void setIdUnidade(Long idUnidade) {
+        this.idUnidade = idUnidade;
     }
 
 }
