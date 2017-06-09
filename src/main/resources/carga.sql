@@ -143,3 +143,9 @@ values (3, 'Compre 1 casquinha e leve 2', '', 1.00, null, 3, 'A');
 
 insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
 values (4, 3, 4, 1);
+
+insert into tb_avaliacao(id_avaliacao, id_pessoa, id_unidade, nota_satisfacao)
+select p.id_pessoa * 2 + u.id_unidade * 10, p.id_pessoa, u.id_unidade, trunc(random() * 5)
+  from tb_unidade u,
+       tb_pessoa_fisica p
+       left join tb_avaliacao a on p.id_pessoa = a.id_pessoa

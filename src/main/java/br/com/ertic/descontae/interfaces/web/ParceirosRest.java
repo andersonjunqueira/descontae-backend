@@ -14,31 +14,37 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ertic.descontae.domain.model.Empreendimento;
 import br.com.ertic.descontae.domain.service.EmpreendimentoService;
+import br.com.ertic.descontae.interfaces.web.dto.HomeParceiroDTO;
+import br.com.ertic.util.geo.TimeCount;
 import br.com.ertic.util.infraestructure.web.RestFullEndpoint;
 
 @RestController
-@RequestMapping("/empreendimentos")
-public class EmpreendimentosRest extends RestFullEndpoint<Empreendimento, Long> {
+@RequestMapping("/parceiros")
+public class ParceirosRest extends RestFullEndpoint<Empreendimento, Long> {
 
     private EmpreendimentoService srv = (EmpreendimentoService)service;
 
     @Autowired
-    public EmpreendimentosRest(EmpreendimentoService service) {
+    public ParceirosRest(EmpreendimentoService service) {
         super(service);
     }
 
-    @RequestMapping(value="/local/{idCidade}", method = RequestMethod.GET)
-    public List<Empreendimento> getDocument(
+    @RequestMapping(value="/cidade/{idCidade}", method = RequestMethod.GET)
+    public List<HomeParceiroDTO> getDocument(
         @PathVariable("idCidade") Long idCidade,
-        @RequestParam("lat") Double lat,
-        @RequestParam("lon") Double lon,
+        @RequestParam(required=false) Double lat,
+        @RequestParam(required=false) Double lon,
         HttpServletResponse response) {
 
-        List<Empreendimento> saida = srv.findEmpreendimentosRedondezas(idCidade, lat, lon);
+        TimeCount tc =  TimeCount.start("Inicio do processamento do método /api/parceiros/cidade/{id}");
+
+        List<HomeParceiroDTO> saida = srv.findParceirosRedondezas(idCidade, lat, lon);
 
         if(null == saida || saida.isEmpty()){
            response.setStatus(HttpStatus.SC_NO_CONTENT);
         }
+
+        tc.end();
 
         return saida;
     }
