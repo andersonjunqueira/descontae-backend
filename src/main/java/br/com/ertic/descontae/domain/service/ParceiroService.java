@@ -9,46 +9,43 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.ertic.descontae.domain.model.Empreendimento;
-import br.com.ertic.descontae.infraestructure.persistence.jpa.EmpreendimentoRepository;
+import br.com.ertic.descontae.infraestructure.persistence.jpa.UnidadeRepository;
+import br.com.ertic.descontae.interfaces.web.dto.HomeDetalheDTO;
 import br.com.ertic.descontae.interfaces.web.dto.HomeParceiroDTO;
 import br.com.ertic.util.geo.GeoUtils;
 import br.com.ertic.util.geo.TimeCount;
-import br.com.ertic.util.infraestructure.service.RestFullService;
 
 @Service
-public class EmpreendimentoService extends RestFullService<Empreendimento, Long> {
-
-    private EmpreendimentoRepository repo = (EmpreendimentoRepository)repository;
+public class ParceiroService  {
 
     @Autowired
-    EmpreendimentoService(EmpreendimentoRepository repository) {
-        super(repository);
-    }
+    private UnidadeRepository repository;
 
-    public List<HomeParceiroDTO> findParceirosRedondezas(Long idCidade, Double lat, Double lon) {
+    public HomeDetalheDTO findOne(Long idUnidade) {
 
-        TimeCount tc1 =  TimeCount.start("Servico findParceirosRedondezas");
-        TimeCount tc2 =  TimeCount.start("Consulta parceiros / cidade");
-        List<Object[]> result = repo.findUnidadesByIdCidade(idCidade);
+        TimeCount tc2 =  TimeCount.start(this.getClass(), "Consulta detalhes parceiro");
+        Object[] result = repository.findDetalhesUnidade(idUnidade);
         tc2.end();
 
-       /*
-        0 unidade.id, " +
-        1 marca.nome,
-        2 marca.caminhoLogomarca, " +
-        3 categoria.nome,  " +
-        4 endereco.latitude,
-        5 endereco.longitude, " +
-        6 unidade.inicioExpediente,
-        7 unidade.fimExpediente, " +
-        8 (select sum(a.satisfacao) / count(*) from Avaliacao a WHERE a.idUnidade = unidade.id) " +
-        */
+        HomeDetalheDTO detalhe = null;
+        if(result != null) {
+            detalhe = new HomeDetalheDTO();
+
+        }
+
+        return detalhe;
+
+    }
+
+    public List<HomeParceiroDTO> findByCidade(Long idCidade, Double lat, Double lon) {
+
+        TimeCount tc2 =  TimeCount.start(this.getClass(), "Consulta parceiros / cidade");
+        List<Object[]> result = repository.findUnidadesByIdCidade(idCidade);
+        tc2.end();
 
         List<HomeParceiroDTO> parceiros = new ArrayList<>();
         for(Object[] r : result) {
 
-            //unidade.id, marca.nome, categoria.nome, endereco.latitude, endereco.longitude, unidade.inicioExpediente, unidade.fimExpediente, marca.caminhoLogomarca
             HomeParceiroDTO p = new HomeParceiroDTO();
             p.setIdUnidade((Long)r[0]);
             p.setMarca((String)r[1]);
@@ -74,7 +71,6 @@ public class EmpreendimentoService extends RestFullService<Empreendimento, Long>
             }
         });
 
-        tc1.end();
         return parceiros;
     }
 
