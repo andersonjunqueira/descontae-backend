@@ -1,7 +1,5 @@
 package br.com.ertic.descontae.domain.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
@@ -23,6 +19,7 @@ public class Plano extends EntidadeBase<Long> {
 
     public static final int MAX_LENGTH_TITULO = 30;
     public static final int MAX_LENGTH_DESCRICAO = 500;
+    public static final int MAX_LENGTH_IMAGEM = 200;
 
     @Id
     @Column(name="ID_PLANO", columnDefinition = "serial")
@@ -38,13 +35,8 @@ public class Plano extends EntidadeBase<Long> {
     @Column(name="VALOR", nullable=false)
     private Double valor;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name="INICIO_VIGENCIA", nullable=false)
-    private Date inicioVigencia;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name="FIM_VIGENCIA", nullable=true)
-    private Date fimVigencia;
+    @Column(name="IMAGEM", length=MAX_LENGTH_IMAGEM, nullable=false)
+    private String imagem;
 
     @Enumerated(EnumType.STRING)
     @Column(name="SITUACAO", nullable=false)
@@ -84,28 +76,20 @@ public class Plano extends EntidadeBase<Long> {
         this.valor = valor;
     }
 
-    public Date getInicioVigencia() {
-        return inicioVigencia;
-    }
-
-    public void setInicioVigencia(Date inicioVigencia) {
-        this.inicioVigencia = inicioVigencia;
-    }
-
-    public Date getFimVigencia() {
-        return fimVigencia;
-    }
-
-    public void setFimVigencia(Date fimVigencia) {
-        this.fimVigencia = fimVigencia;
-    }
-
     public SituacaoPlano getSituacao() {
         return situacao;
     }
 
     public void setSituacao(SituacaoPlano situacao) {
         this.situacao = situacao;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 
 

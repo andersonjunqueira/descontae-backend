@@ -4,14 +4,16 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.cdi.Eager;
 
 import br.com.ertic.descontae.domain.model.Unidade;
 
+@Eager
 public interface UnidadeRepository extends JpaRepository<Unidade, Long> {
 
     @Query(value=
         "SELECT unidade.id, " +
-        "       marca.nome, marca.caminhoLogomarca, " +
+        "       marca.nome, marca.logomarca, " +
         "       categoria.nome,  " +
         "       endereco.latitude, endereco.longitude, " +
         "       unidade.inicioExpediente, unidade.fimExpediente, " +
@@ -33,25 +35,27 @@ public interface UnidadeRepository extends JpaRepository<Unidade, Long> {
     @Query(value=
         "SELECT unidade.id, " +
         "       marca.nome, " +
+        "       marca.logomarca, " +
+        "       marca.imagemFundoApp, " +
         "       categoria.nome, " +
-        "       endereco.latitude, endereco.longitude, " +
         "       oferta.descricao, " +
+        "       oferta.regras, " +
+        "       oferta.valor, " +
+        "       oferta.desconto, " +
+        "       endereco.latitude, endereco.longitude, " +
         "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro || ', ' || endereco.cidade.nome || ' - ' || endereco.cidade.estado.sigla, endereco.cep, " +
-        "       marca.caminhoLogomarca, " +
         "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro " +
-        "  FROM Empreendimento empreendimento   " +
-        "       JOIN empreendimento.unidades unidade " +
-        "       JOIN empreendimento.marca marca   " +
-        "       JOIN empreendimento.categoria categoria " +
-        "       JOIN unidade.endereco endereco  " +
-        "       JOIN endereco.cidade cidade   " +
-        "       JOIN cidade.estado estado,   " +
-        "       OfertaUnidade ofertaunidade   " +
+        "       FROM OfertaUnidade ofertaunidade " +
         "       JOIN ofertaunidade.revista revista " +
-        "       JOIN ofertaunidade.oferta oferta  " +
-        " WHERE unidade.id = ?1  " +
-        "   AND ofertaunidade.unidade = unidade " +
-        "   AND current_date() BETWEEN revista.inicioVigencia AND revista.fimVigencia ")
-    Object[] findDetalhesUnidade(Long idUnidade);
+        "       JOIN ofertaunidade.oferta oferta " +
+        "       JOIN ofertaunidade.unidade unidade " +
+        "       JOIN unidade.endereco endereco, " +
+        "       Empreendimento empreendimento " +
+        "       JOIN empreendimento.marca marca " +
+        "       JOIN empreendimento.categoria categoria " +
+        " WHERE unidade.id = ?1 " +
+        "   AND empreendimento.id = unidade.idEmpreendimento " +
+        "   AND current_date() BETWEEN revista.inicioVigencia AND revista.fimVigencia")
+        List<Object[]> findDetalhesUnidade(Long idUnidade);
 
 }

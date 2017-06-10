@@ -2,19 +2,25 @@ package br.com.ertic.descontae.interfaces.web.dto;
 
 import java.util.List;
 
+import br.com.ertic.descontae.domain.model.ImagemUnidade;
+
 public class HomeDetalheDTO {
 
     private Long idUnidade;
     private String marca;
     private String categoria;
+    private Double valor;
+    private Double desconto;
     private Double latitude;
     private Double longitude;
     private String oferta;
     private String regrasOferta;
-    private List<String> imagensProduto;
+    private List<ImagemUnidade> imagensProduto;
     private String endereco;
     private String enderecoResumido;
     private String logomarca;
+    private String fundoApp;
+
     private String filiais;
 
     public Long getIdUnidade() {
@@ -73,11 +79,11 @@ public class HomeDetalheDTO {
         this.regrasOferta = regrasOferta;
     }
 
-    public List<String> getImagensProduto() {
+    public List<ImagemUnidade> getImagensProduto() {
         return imagensProduto;
     }
 
-    public void setImagensProduto(List<String> imagensProduto) {
+    public void setImagensProduto(List<ImagemUnidade> imagensProduto) {
         this.imagensProduto = imagensProduto;
     }
 
@@ -111,6 +117,30 @@ public class HomeDetalheDTO {
 
     public void setFiliais(String filiais) {
         this.filiais = filiais;
+    }
+
+    public Double getValor() {
+        return valor;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+
+    public Double getDesconto() {
+        return desconto;
+    }
+
+    public void setDesconto(Double desconto) {
+        this.desconto = desconto;
+    }
+
+    public String getFundoApp() {
+        return fundoApp;
+    }
+
+    public void setFundoApp(String fundoApp) {
+        this.fundoApp = fundoApp;
     }
 
 }

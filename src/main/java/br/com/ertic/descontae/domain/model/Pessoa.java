@@ -1,6 +1,7 @@
 package br.com.ertic.descontae.domain.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -58,6 +60,10 @@ public class Pessoa extends EntidadeBase<Long> {
     @Temporal(TemporalType.DATE)
     @Column(name="DATA_ULTIMA_ATUALIZACAO", nullable=false)
     private Date dataAlteracao;
+
+    @OneToMany
+    @JoinColumn(name="ID_PESSOA", referencedColumnName="ID_PESSOA")
+    private List<Telefone> telefones;
 
     @ManyToOne
     @JoinColumn(name="ID_TIPO_PESSOA", nullable=false)
@@ -155,6 +161,14 @@ public class Pessoa extends EntidadeBase<Long> {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public List<Telefone> getTelefones() {
+        return telefones;
+    }
+
+    public void setTelefones(List<Telefone> telefones) {
+        this.telefones = telefones;
     }
 
 }

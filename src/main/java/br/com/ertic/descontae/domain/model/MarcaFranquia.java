@@ -16,7 +16,7 @@ public class MarcaFranquia extends EntidadeBase<Long> {
     private static final long serialVersionUID = 4010241792268709045L;
 
     public static final int MAX_LENGTH_NOME = 100;
-    public static final int MAX_LENGTH_LOGO = 200;
+    public static final int MAX_LENGTH_IMAGEM = 200;
 
     @Id
     @Column(name="ID_MARCA_FRANQUIA", columnDefinition = "serial")
@@ -26,8 +26,14 @@ public class MarcaFranquia extends EntidadeBase<Long> {
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)
     private String nome;
 
-    @Column(name="LOGO", length=MAX_LENGTH_LOGO, nullable=false)
-    private String caminhoLogomarca;
+    @Column(name="IMAGEM_LOGO", length=MAX_LENGTH_IMAGEM, nullable=false)
+    private String logomarca;
+
+    @Column(name="IMAGEM_FUNDO_APP", length=MAX_LENGTH_IMAGEM, nullable=false)
+    private String imagemFundoApp;
+
+    @Column(name="IMAGEM_THUMBNAIL", length=MAX_LENGTH_IMAGEM, nullable=false)
+    private String imagemThumbnail;
 
     @Override
     public Long getId() {
@@ -47,12 +53,28 @@ public class MarcaFranquia extends EntidadeBase<Long> {
         this.nome = nome;
     }
 
-    public String getCaminhoLogomarca() {
-        return caminhoLogomarca;
+    public String getLogomarca() {
+        return logomarca;
     }
 
-    public void setCaminhoLogomarca(String caminhoLogomarca) {
-        this.caminhoLogomarca = caminhoLogomarca;
+    public void setLogomarca(String logomarca) {
+        this.logomarca = logomarca;
+    }
+
+    public String getImagemFundoApp() {
+        return imagemFundoApp;
+    }
+
+    public void setImagemFundoApp(String imagemFundoApp) {
+        this.imagemFundoApp = imagemFundoApp;
+    }
+
+    public String getImagemThumbnail() {
+        return imagemThumbnail;
+    }
+
+    public void setImagemThumbnail(String imagemThumbnail) {
+        this.imagemThumbnail = imagemThumbnail;
     }
 
 

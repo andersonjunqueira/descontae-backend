@@ -69,6 +69,10 @@ public class Empreendimento extends EntidadeBase<Long> {
     @JoinColumn(name="ID_EMPREENDIMENTO", referencedColumnName="ID_EMPREENDIMENTO")
     private List<Unidade> unidades;
 
+    @OneToMany
+    @JoinColumn(name="ID_EMPREENDIMENTO", referencedColumnName="ID_EMPREENDIMENTO")
+    private List<Telefone> telefones;
+
     @Override
     public Long getId() {
         return id;
@@ -149,6 +153,22 @@ public class Empreendimento extends EntidadeBase<Long> {
 
     public void setMarca(MarcaFranquia marca) {
         this.marca = marca;
+    }
+
+    public List<Unidade> getUnidades() {
+        return unidades;
+    }
+
+    public void setUnidades(List<Unidade> unidades) {
+        this.unidades = unidades;
+    }
+
+    public List<Telefone> getTelefones() {
+        return telefones;
+    }
+
+    public void setTelefones(List<Telefone> telefones) {
+        this.telefones = telefones;
     }
 
 }

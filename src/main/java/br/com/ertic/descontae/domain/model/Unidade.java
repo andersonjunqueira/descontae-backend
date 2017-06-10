@@ -24,7 +24,6 @@ public class Unidade extends EntidadeBase<Long> {
     private static final long serialVersionUID = 5200631229042999757L;
 
     public static final int MAX_LENGTH_NOME = 50;
-    public static final int MAX_LENGTH_TELEFONE = 15;
 
     @Id
     @Column(name="ID_UNIDADE", columnDefinition = "serial")
@@ -33,9 +32,6 @@ public class Unidade extends EntidadeBase<Long> {
 
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)
     private String nome;
-
-    @Column(name="TELEFONE", length=MAX_LENGTH_TELEFONE, nullable=true)
-    private String telefone;
 
     @Column(name="ID_EMPREENDIMENTO", nullable=false)
     private Long idEmpreendimento;
@@ -56,6 +52,14 @@ public class Unidade extends EntidadeBase<Long> {
     @JoinColumn(name="ID_UNIDADE", referencedColumnName="ID_UNIDADE")
     private List<Avaliacao> avaliacoes;
 
+    @OneToMany
+    @JoinColumn(name="ID_UNIDADE", referencedColumnName="ID_UNIDADE")
+    private List<ImagemUnidade> imagens;
+
+    @OneToMany
+    @JoinColumn(name="ID_UNIDADE", referencedColumnName="ID_UNIDADE")
+    private List<Telefone> telefones;
+
     @Override
     public Long getId() {
         return id;
@@ -72,14 +76,6 @@ public class Unidade extends EntidadeBase<Long> {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
     }
 
     public Long getIdEmpreendimento() {
@@ -120,6 +116,22 @@ public class Unidade extends EntidadeBase<Long> {
 
     public void setAvaliacoes(List<Avaliacao> avaliacoes) {
         this.avaliacoes = avaliacoes;
+    }
+
+    public List<ImagemUnidade> getImagens() {
+        return imagens;
+    }
+
+    public void setImagens(List<ImagemUnidade> imagens) {
+        this.imagens = imagens;
+    }
+
+    public List<Telefone> getTelefones() {
+        return telefones;
+    }
+
+    public void setTelefones(List<Telefone> telefones) {
+        this.telefones = telefones;
     }
 
 }

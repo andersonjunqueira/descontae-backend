@@ -3,8 +3,10 @@ drop table TB_CONSUMO;
 drop table TB_OFERTA_UNIDADE;
 drop table TB_OFERTA;
 drop table TB_REVISTA;
+drop table TB_TELEFONE;
 drop table TB_ASSINATURA;
 drop table TB_PLANO;
+drop table TB_IMAGEM;
 drop table TB_UNIDADE;
 drop table TB_EMPREENDIMENTO;
 drop table TB_PESSOA_FISICA;
@@ -104,12 +106,24 @@ create table TB_ENDERECO (
 );
 
 /*==============================================================*/
+/* Table: TB_IMAGEM                                             */
+/*==============================================================*/
+create table TB_IMAGEM (
+   ID_IMAGEM            INT8                 not null,
+   ID_UNIDADE           INT8                 null,
+   IMAGEM               VARCHAR(200)         not null,
+   constraint PK_TB_IMAGEM primary key (ID_IMAGEM)
+);
+
+/*==============================================================*/
 /* Table: TB_MARCA_FRANQUIA                                     */
 /*==============================================================*/
 create table TB_MARCA_FRANQUIA (
    ID_MARCA_FRANQUIA    INT8                 not null,
    NOME                 VARCHAR(100)         not null,
-   LOGO                 VARCHAR(200)         not null,
+   IMAGEM_LOGO          VARCHAR(200)         not null,
+   IMAGEM_FUNDO_APP     VARCHAR(200)         not null,
+   IMAGEM_THUMBNAIL     VARCHAR(200)         not null,
    constraint PK_TB_MARCA_FRANQUIA primary key (ID_MARCA_FRANQUIA)
 );
 
@@ -119,11 +133,12 @@ create table TB_MARCA_FRANQUIA (
 create table TB_OFERTA (
    ID_OFERTA            INT8                 not null,
    DESCRICAO            VARCHAR(500)         not null,
-   IMAGEM               VARCHAR(200)         null,
-   VALOR                FLOAT8               null,
-   DESCONTO             FLOAT8               null,
+   IMAGEM_SITE          VARCHAR(200)         not null,
+   VALOR                FLOAT8               not null,
+   DESCONTO             FLOAT8               not null,
    ID_PESSOA            INT8                 not null,
    SITUACAO             VARCHAR(1)           not null,
+   REGRAS               VARCHAR(1000)        not null,
    constraint PK_TB_OFERTA primary key (ID_OFERTA)
 );
 
@@ -173,9 +188,8 @@ create table TB_PLANO (
    TITULO               VARCHAR(30)          not null,
    DESCRICAO            VARCHAR(500)         null,
    VALOR                FLOAT8               not null,
-   INICIO_VIGENCIA      DATE                 not null,
-   FIM_VIGENCIA         DATE                 null,
    SITUACAO             VARCHAR(1)           not null,
+   IMAGEM               VARCHAR(200)         not null,
    constraint PK_TB_PLANO primary key (ID_PLANO)
 );
 
@@ -185,11 +199,24 @@ create table TB_PLANO (
 create table TB_REVISTA (
    ID_REVISTA           INT8                 not null,
    EDICAO               VARCHAR(10)          not null,
-   DESCRICAO_REVISTA    VARCHAR(200)         not null,
+   DESCRICAO            VARCHAR(200)         not null,
    INICIO_VIGENCIA      DATE                 not null,
    FIM_VIGENCIA         DATE                 not null,
-   PDF                  VARCHAR(200)         null,
+   PDF                  VARCHAR(200)         not null,
+   IMAGEM               VARCHAR(200)         not null,
    constraint PK_TB_REVISTA primary key (ID_REVISTA)
+);
+
+/*==============================================================*/
+/* Table: TB_TELEFONE                                           */
+/*==============================================================*/
+create table TB_TELEFONE (
+   ID_TELEFONE          INT8                 not null,
+   ID_EMPREENDIMENTO    INT8                 null,
+   ID_UNIDADE           INT8                 null,
+   ID_PESSOA            INT8                 null,
+   NUMERO               VARCHAR(30)          not null,
+   constraint PK_TB_TELEFONE primary key (ID_TELEFONE)
 );
 
 /*==============================================================*/
@@ -219,7 +246,6 @@ create table TB_UNIDADE (
    ID_ENDERECO          INT8                 not null,
    ID_EMPREENDIMENTO    INT8                 not null,
    NOME                 VARCHAR(50)          not null,
-   TELEFONE             VARCHAR(15)          null,
    INICIO_EXPEDIENTE    TIME                 null,
    FIM_EXPEDIENTE       TIME                 null,
    constraint PK_TB_UNIDADE primary key (ID_UNIDADE)
@@ -280,6 +306,11 @@ alter table TB_ENDERECO
       references TB_CIDADE (ID_CIDADE)
       on delete restrict on update restrict;
 
+alter table TB_IMAGEM
+   add constraint FK_TB_IMAGE_REFERENCE_TB_UNIDA foreign key (ID_UNIDADE)
+      references TB_UNIDADE (ID_UNIDADE)
+      on delete restrict on update restrict;
+
 alter table TB_OFERTA
    add constraint FK_TB_OFERT_REFERENCE_TB_PESSO foreign key (ID_PESSOA)
       references TB_PESSOA_FISICA (ID_PESSOA)
@@ -308,6 +339,21 @@ alter table TB_PESSOA_FISICA
 alter table TB_PESSOA_FISICA
    add constraint FK_TB_PESSO_REFERENCE_TB_TIPO_ foreign key (ID_TIPO_PESSOA)
       references TB_TIPO_PESSOA (ID_TIPO_PESSOA)
+      on delete restrict on update restrict;
+
+alter table TB_TELEFONE
+   add constraint FK_TB_TELEF_REFERENCE_TB_EMPRE foreign key (ID_EMPREENDIMENTO)
+      references TB_EMPREENDIMENTO (ID_EMPREENDIMENTO)
+      on delete restrict on update restrict;
+
+alter table TB_TELEFONE
+   add constraint FK_TB_TELEF_REFERENCE_TB_UNIDA foreign key (ID_UNIDADE)
+      references TB_UNIDADE (ID_UNIDADE)
+      on delete restrict on update restrict;
+
+alter table TB_TELEFONE
+   add constraint FK_TB_TELEF_REFERENCE_TB_PESSO foreign key (ID_PESSOA)
+      references TB_PESSOA_FISICA (ID_PESSOA)
       on delete restrict on update restrict;
 
 alter table TB_UNIDADE

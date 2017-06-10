@@ -22,6 +22,7 @@ public class Revista extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_EDICAO = 10;
     public static final int MAX_LENGTH_DESCRICAO = 200;
     public static final int MAX_LENGTH_PDF = 200;
+    public static final int MAX_LENGTH_IMAGEM = 200;
 
     @Id
     @Column(name="ID_REVISTA", columnDefinition = "serial")
@@ -42,8 +43,11 @@ public class Revista extends EntidadeBase<Long> {
     @Column(name="FIM_VIGENCIA", nullable=false)
     private Date fimVigencia;
 
-    @Column(name="PDF", length=MAX_LENGTH_PDF,  nullable=true)
+    @Column(name="PDF", length=MAX_LENGTH_PDF,  nullable=false)
     private String pdf;
+
+    @Column(name="IMAGEM", length=MAX_LENGTH_IMAGEM,  nullable=false)
+    private String imagem;
 
     @Override
     public Long getId() {
@@ -93,6 +97,14 @@ public class Revista extends EntidadeBase<Long> {
 
     public void setEdicao(String edicao) {
         this.edicao = edicao;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 
 }

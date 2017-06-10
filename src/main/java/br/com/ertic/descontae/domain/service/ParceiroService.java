@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.ertic.descontae.infraestructure.persistence.jpa.ImagemUnidadeRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.UnidadeRepository;
 import br.com.ertic.descontae.interfaces.web.dto.HomeDetalheDTO;
 import br.com.ertic.descontae.interfaces.web.dto.HomeParceiroDTO;
@@ -21,15 +22,33 @@ public class ParceiroService  {
     @Autowired
     private UnidadeRepository repository;
 
+    @Autowired
+    private ImagemUnidadeRepository imagensRepository;
+
     public HomeDetalheDTO findOne(Long idUnidade) {
 
         TimeCount tc2 =  TimeCount.start(this.getClass(), "Consulta detalhes parceiro");
-        Object[] result = repository.findDetalhesUnidade(idUnidade);
+        List<Object[]> result = repository.findDetalhesUnidade(idUnidade);
         tc2.end();
 
         HomeDetalheDTO detalhe = null;
-        if(result != null) {
+        if(result != null && result.size() == 1) {
             detalhe = new HomeDetalheDTO();
+
+            detalhe.setIdUnidade((Long)result.get(0)[0]);
+            detalhe.setMarca((String)result.get(0)[1]);
+            detalhe.setLogomarca((String)result.get(0)[2]);
+            detalhe.setFundoApp((String)result.get(0)[3]);
+            detalhe.setCategoria((String)result.get(0)[4]);
+            detalhe.setOferta((String)result.get(0)[5]);
+            detalhe.setRegrasOferta((String)result.get(0)[6]);
+            detalhe.setValor((Double)result.get(0)[7]);
+            detalhe.setDesconto((Double)result.get(0)[8]);
+            detalhe.setLatitude((Double)result.get(0)[9]);
+            detalhe.setLongitude((Double)result.get(0)[10]);
+            detalhe.setEndereco((String)result.get(0)[11]);
+            detalhe.setEnderecoResumido((String)result.get(0)[13]);
+            detalhe.setImagensProduto(imagensRepository.findByIdUnidade(idUnidade));
 
         }
 

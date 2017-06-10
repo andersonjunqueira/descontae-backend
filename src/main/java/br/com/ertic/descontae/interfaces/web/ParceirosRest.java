@@ -27,7 +27,7 @@ public class ParceirosRest  {
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
     public HomeDetalheDTO getParceiro(@PathVariable("id") Long id,
         HttpServletResponse response) {
-        TimeCount tc =  TimeCount.start(this.getClass(), "Inicio do processamento do método /api/parceiros/{id}");
+        TimeCount tc =  TimeCount.start(this.getClass(), "Processamento do método /api/parceiros/{id}");
 
         HomeDetalheDTO saida = srv.findOne(id);
 
@@ -45,7 +45,7 @@ public class ParceirosRest  {
         @RequestParam(required=false) Double lat,
         @RequestParam(required=false) Double lon,
         HttpServletResponse response) {
-        TimeCount tc =  TimeCount.start(this.getClass(), "Inicio do processamento do método /api/parceiros/cidade/{id}");
+        TimeCount tc =  TimeCount.start(this.getClass(), "Processamento do método /api/parceiros/cidade/{id}");
 
         List<HomeParceiroDTO> saida = srv.findByCidade(idCidade, lat, lon);
 

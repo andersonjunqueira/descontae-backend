@@ -21,6 +21,7 @@ public class Oferta extends EntidadeBase<Long> {
 
     public static final int MAX_LENGTH_DESCRICAO = 500;
     public static final int MAX_LENGTH_IMAGEM = 200;
+    public static final int MAX_LENGTH_REGRAS = 1000;
 
     @Id
     @Column(name="ID_OFERTA", columnDefinition = "serial")
@@ -30,13 +31,13 @@ public class Oferta extends EntidadeBase<Long> {
     @Column(name="DESCRICAO", length=MAX_LENGTH_DESCRICAO, nullable=false)
     private String descricao;
 
-    @Column(name="IMAGEM", length=MAX_LENGTH_IMAGEM, nullable=true)
+    @Column(name="IMAGEM_SITE", length=MAX_LENGTH_IMAGEM, nullable=false)
     private String imagem;
 
-    @Column(name="VALOR", nullable=true)
+    @Column(name="VALOR", nullable=false)
     private Double valor;
 
-    @Column(name="DESCONTO", nullable=true)
+    @Column(name="DESCONTO", nullable=false)
     private Double desconto;
 
     @ManyToOne
@@ -46,6 +47,9 @@ public class Oferta extends EntidadeBase<Long> {
     @Enumerated(EnumType.STRING)
     @Column(name="SITUACAO", nullable=false)
     private SituacaoOferta situacao;
+
+    @Column(name="REGRAS", length=MAX_LENGTH_REGRAS, nullable=false)
+    private String regras;
 
     @Override
     public Long getId() {
@@ -103,6 +107,14 @@ public class Oferta extends EntidadeBase<Long> {
 
     public void setSituacao(SituacaoOferta situacao) {
         this.situacao = situacao;
+    }
+
+    public String getRegras() {
+        return regras;
+    }
+
+    public void setRegras(String regras) {
+        this.regras = regras;
     }
 
 }

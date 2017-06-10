@@ -26,6 +26,8 @@
         <mapping class="br.com.ertic.descontae.domain.model.Revista"/>
         <mapping class="br.com.ertic.descontae.domain.model.TipoPessoa"/>
         <mapping class="br.com.ertic.descontae.domain.model.Unidade"/>
+        <mapping class="br.com.ertic.descontae.domain.model.ImagemUnidade"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Telefone"/>
 
     </session-factory>
 </hibernate-configuration>
