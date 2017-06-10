@@ -118,8 +118,8 @@
     </build>
 
     <scm>
-        <connection>scm:git:ssh://bitbucket.org:ertic/descontae-backend.git</connection>
-        <developerConnection>scm:git:ssh://bitbucket.org:ertic/descontae-backend.git</developerConnection>
+        <connection>scm:git:https://github.com/andersonjunqueira/descontae-backend.git</connection>
+        <developerConnection>scm:git:https://github.com/andersonjunqueira/descontae-backend.git</developerConnection>
     </scm>
 
 
