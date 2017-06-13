@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ertic.descontae.domain.service.ParceiroService;
+import br.com.ertic.descontae.domain.service.MarcaFranquiaService;
+import br.com.ertic.descontae.interfaces.web.dto.HomeDetalheDTO;
 import br.com.ertic.descontae.interfaces.web.dto.HomeParceiroDTO;
 import br.com.ertic.util.geo.TimeCount;
 
@@ -21,7 +22,7 @@ import br.com.ertic.util.geo.TimeCount;
 public class FranquiasRest  {
 
     @Autowired
-    private ParceiroService srv;
+    private MarcaFranquiaService srv;
 
     @RequestMapping(value="/cidade/{idCidade}", method = RequestMethod.GET)
     public List<HomeParceiroDTO> findAllByCidade(
@@ -29,12 +30,31 @@ public class FranquiasRest  {
         @RequestParam(required=false) Double lat,
         @RequestParam(required=false) Double lon,
         HttpServletResponse response) {
-        TimeCount tc =  TimeCount.start(this.getClass(), "Processamento do método /api/parceiros/cidade/{id}");
+        TimeCount tc =  TimeCount.start(this.getClass(), "Processamento do método /api/franquias/cidade/{id}");
 
         List<HomeParceiroDTO> saida = srv.findFranquiasByCidade(idCidade, lat, lon);
 
         if(null == saida || saida.isEmpty()){
            response.setStatus(HttpStatus.SC_NO_CONTENT);
+        }
+
+        tc.end();
+        return saida;
+    }
+
+    @RequestMapping(value="/{id}/cidade/{idCidade}", method = RequestMethod.GET)
+    public HomeDetalheDTO getParceiro(
+        @PathVariable("id") Long id,
+        @PathVariable("idCidade") Long idCidade,
+        @RequestParam(required=false) Double lat,
+        @RequestParam(required=false) Double lon,
+        HttpServletResponse response) {
+        TimeCount tc =  TimeCount.start(this.getClass(), "Processamento do método /api/franquias/{id}/cidade/{idCidade}");
+
+        HomeDetalheDTO saida = srv.detalharFranquia(id, idCidade, lat, lon);
+
+        if(null == saida){
+           response.setStatus(HttpStatus.SC_NOT_FOUND);
         }
 
         tc.end();

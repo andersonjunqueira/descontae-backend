@@ -246,6 +246,7 @@ create table TB_UNIDADE (
    ID_ENDERECO          INT8                 not null,
    ID_EMPREENDIMENTO    INT8                 not null,
    NOME                 VARCHAR(50)          not null,
+   SOBRE                VARCHAR(1000         not null,
    INICIO_EXPEDIENTE    TIME                 null,
    FIM_EXPEDIENTE       TIME                 null,
    constraint PK_TB_UNIDADE primary key (ID_UNIDADE)

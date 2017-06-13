@@ -24,6 +24,7 @@ public class Unidade extends EntidadeBase<Long> {
     private static final long serialVersionUID = 5200631229042999757L;
 
     public static final int MAX_LENGTH_NOME = 50;
+    public static final int MAX_LENGTH_SOBRE = 1000;
 
     @Id
     @Column(name="ID_UNIDADE", columnDefinition = "serial")
@@ -32,6 +33,9 @@ public class Unidade extends EntidadeBase<Long> {
 
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)
     private String nome;
+
+    @Column(name="SOBRE", length=MAX_LENGTH_SOBRE, nullable=true)
+    private String sobre;
 
     @Column(name="ID_EMPREENDIMENTO", nullable=false)
     private Long idEmpreendimento;
