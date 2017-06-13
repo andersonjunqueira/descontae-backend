@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ public class FranquiasRest  {
     @Autowired
     private MarcaFranquiaService srv;
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="/cidade/{idCidade}", method = RequestMethod.GET)
     public List<HomeParceiroDTO> findAllByCidade(
         @PathVariable("idCidade") Long idCidade,
@@ -42,6 +44,7 @@ public class FranquiasRest  {
         return saida;
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="/{id}/cidade/{idCidade}", method = RequestMethod.GET)
     public HomeDetalheDTO getParceiro(
         @PathVariable("id") Long id,

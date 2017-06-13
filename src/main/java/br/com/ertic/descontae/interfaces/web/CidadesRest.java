@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,7 @@ public class CidadesRest extends RestFullEndpoint<Cidade, Long> {
         super(service);
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="/parcerias", method = RequestMethod.GET)
     public List<Cidade> getDocument(HttpServletResponse response) {
         List<Cidade> saida = ((CidadeService)service).findAllComParcerias();
