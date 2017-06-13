@@ -5,6 +5,7 @@ import java.util.Date;
 public class HomeParceiroDTO {
 
     private Long idUnidade;
+    private Long idMarca;
     private String marca;
     private String categoria;
     private Double distanciaKM;
@@ -75,6 +76,14 @@ public class HomeParceiroDTO {
 
     public void setImagem(String imagem) {
         this.imagem = imagem;
+    }
+
+    public Long getIdMarca() {
+        return idMarca;
+    }
+
+    public void setIdMarca(Long idMarca) {
+        this.idMarca = idMarca;
     }
 
 }

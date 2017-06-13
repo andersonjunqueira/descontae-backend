@@ -6,53 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.cdi.Eager;
 
-import br.com.ertic.descontae.domain.model.Unidade;
+import br.com.ertic.descontae.domain.model.MarcaFranquia;
 
 @Eager
-public interface UnidadeRepository extends JpaRepository<Unidade, Long> {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+public interface MarcaFranquiaRepository extends JpaRepository<MarcaFranquia, Long> {
 
     @Query(value=
         "SELECT unidade.id, " +
-        "       marca.nome, marca.logomarca, " +
-        "       categoria.nome,  " +
-        "       endereco.latitude, endereco.longitude, " +
-        "       unidade.inicioExpediente, unidade.fimExpediente, " +
-        "       (select sum(a.satisfacao) / count(*) from Avaliacao a WHERE a.idUnidade = unidade.id) " +
-        "  FROM Empreendimento empreendimento  " +
-        "       JOIN empreendimento.unidades unidade " +
-        "       JOIN empreendimento.marca marca  " +
-        "       JOIN empreendimento.categoria categoria " +
-        "       JOIN unidade.endereco endereco " +
-        "       JOIN endereco.cidade cidade  " +
-        "       JOIN cidade.estado estado,  " +
-        "       OfertaUnidade ofertaunidade  " +
-        "       JOIN ofertaunidade.revista revista " +
-        " WHERE cidade.id = ?1 " +
-        "   AND ofertaunidade.unidade = unidade " +
-        "   AND current_date() BETWEEN revista.inicioVigencia AND revista.fimVigencia")
-    List<Object[]> findUnidadesByIdCidade(Long idCidade);
-
-    @Query(value=
-        "SELECT unidade.id, " +
+        "       marca.id, " +
         "       marca.nome, " +
         "       marca.logomarca, " +
         "       marca.imagemFundoApp, " +
@@ -72,9 +33,10 @@ public interface UnidadeRepository extends JpaRepository<Unidade, Long> {
         "       Empreendimento empreendimento " +
         "       JOIN empreendimento.marca marca " +
         "       JOIN empreendimento.categoria categoria " +
-        " WHERE unidade.id = ?1 " +
+        " WHERE endereco.cidade.id = ?1 " +
         "   AND empreendimento.id = unidade.idEmpreendimento " +
-        "   AND current_date() BETWEEN revista.inicioVigencia AND revista.fimVigencia")
-        List<Object[]> findDetalhesUnidade(Long idUnidade);
+        "   AND current_date() BETWEEN revista.inicioVigencia AND revista.fimVigencia" +
+        " ORDER BY marca.id ")
+        List<Object[]> findAllByCidade(Long idCidade);
 
 }

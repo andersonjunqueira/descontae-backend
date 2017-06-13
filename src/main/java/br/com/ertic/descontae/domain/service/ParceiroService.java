@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ertic.descontae.infraestructure.persistence.jpa.ImagemUnidadeRepository;
+import br.com.ertic.descontae.infraestructure.persistence.jpa.MarcaFranquiaRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.UnidadeRepository;
 import br.com.ertic.descontae.interfaces.web.dto.HomeDetalheDTO;
 import br.com.ertic.descontae.interfaces.web.dto.HomeParceiroDTO;
@@ -23,7 +24,69 @@ public class ParceiroService  {
     private UnidadeRepository repository;
 
     @Autowired
+    private MarcaFranquiaRepository franquiaRepository;
+
+    @Autowired
     private ImagemUnidadeRepository imagensRepository;
+
+    public List<HomeParceiroDTO> findFranquiasByCidade(Long idCidade, Double lat, Double lon) {
+
+        TimeCount tc2 =  TimeCount.start(this.getClass(), "Consulta franquias/cidade");
+        List<Object[]> result = franquiaRepository.findAllByCidade(idCidade);
+        tc2.end();
+
+        List<HomeParceiroDTO> franquias = new ArrayList<>();
+
+        if(result != null) {
+            HomeParceiroDTO item = null;
+            Long idMarca = null;
+            Double distance = null;
+
+            for(Object[] r : result) {
+
+                if(!r[1].equals(idMarca)) {
+                    item = new HomeParceiroDTO();
+                    franquias.add(item);
+                    item.setIdMarca((Long)r[1]);
+                    item.setMarca((String)r[2]);
+                    item.setImagem((String)r[3]);
+                    idMarca = item.getIdMarca();
+                    distance = null;
+                }
+
+                if(lat != null && lon != null) {
+                    double tempDistance = GeoUtils.geoDistanceInKm(lat, lon, (Double)r[10], (Double)r[11]);
+                    if(distance == null) {
+                        distance = tempDistance;
+                    } else {
+                        distance = tempDistance < distance ? tempDistance : distance;
+                    }
+                }
+
+                if(distance != null) {
+                    item.setDistanciaKM(distance);
+                }
+            }
+
+        }
+
+        Collections.sort(franquias, new Comparator<HomeParceiroDTO>() {
+            @Override
+            public int compare(HomeParceiroDTO o1, HomeParceiroDTO o2) {
+                return o1.getMarca() == null ? 0 : o1.getMarca().compareTo(o2.getMarca());
+            }
+        });
+
+        return franquias;
+    }
+
+
+
+
+
+
+
+
 
     public HomeDetalheDTO findOne(Long idUnidade) {
 
