@@ -45,16 +45,15 @@ public class FranquiasRest  {
     }
 
     @CrossOrigin(origins = "*")
-    @RequestMapping(value="/{id}/cidade/{idCidade}", method = RequestMethod.GET)
+    @RequestMapping(value="/unidade/{idUnidade}", method = RequestMethod.GET)
     public HomeDetalheDTO getParceiro(
-        @PathVariable("id") Long id,
-        @PathVariable("idCidade") Long idCidade,
+        @PathVariable("idUnidade") Long idUnidade,
         @RequestParam(required=false) Double lat,
         @RequestParam(required=false) Double lon,
         HttpServletResponse response) {
         TimeCount tc =  TimeCount.start(this.getClass(), "Processamento do método /api/franquias/{id}/cidade/{idCidade}");
 
-        HomeDetalheDTO saida = srv.detalharFranquia(id, idCidade, lat, lon);
+        HomeDetalheDTO saida = srv.detalharUnidade(idUnidade, lat, lon);
 
         if(null == saida){
            response.setStatus(HttpStatus.SC_NOT_FOUND);

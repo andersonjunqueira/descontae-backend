@@ -36,34 +36,31 @@ public class MarcaFranquiaService  {
         if(result != null) {
             HomeParceiroDTO item = null;
             Long idMarca = null;
-            Double distance = null;
 
             for(Object[] r : result) {
 
-                if(!r[1].equals(idMarca)) {
+                boolean novaFranquia = !r[1].equals(idMarca);
+                if(novaFranquia) {
                     item = new HomeParceiroDTO();
                     franquias.add(item);
                     item.setIdMarca((Long)r[1]);
                     item.setMarca((String)r[2]);
                     item.setImagem((String)r[3]);
+                    item.setIdUnidade((Long)r[0]);
                     idMarca = item.getIdMarca();
-                    distance = null;
                 }
 
                 if(lat != null && lon != null) {
-                    double tempDistance = GeoUtils.geoDistanceInKm(lat, lon, (Double)r[10], (Double)r[11]);
-                    if(distance == null) {
-                        distance = tempDistance;
-                    } else {
-                        distance = tempDistance < distance ? tempDistance : distance;
+                    double distance = GeoUtils.geoDistanceInKm(lat, lon, (Double)r[10], (Double)r[11]);
+                    if(item.getDistanciaKM() == null) {
+                        item.setDistanciaKM(distance);
+                        item.setIdUnidade((Long)r[0]);
+                    } else if(distance < item.getDistanciaKM()) {
+                        item.setDistanciaKM(distance);
+                        item.setIdUnidade((Long)r[0]);
                     }
                 }
-
-                if(distance != null) {
-                    item.setDistanciaKM(distance);
-                }
             }
-
         }
 
         Collections.sort(franquias, new Comparator<HomeParceiroDTO>() {
@@ -76,62 +73,70 @@ public class MarcaFranquiaService  {
         return franquias;
     }
 
-    public HomeDetalheDTO detalharFranquia(Long idFranquia, Long idCidade, Double lat, Double lon) {
+    public HomeDetalheDTO detalharUnidade(Long idUnidade, Double lat, Double lon) {
 
-        TimeCount tc2 =  TimeCount.start(this.getClass(), "Consulta detalhes franquia/cidade");
-        List<Object[]> result = repository.findDetalhes(idFranquia, idCidade);
-        tc2.end();
+        TimeCount tc =  TimeCount.start(this.getClass(), "Consulta detalhes franquia/cidade");
+        List<Object[]> result = repository.findDetalhes(idUnidade);
+        tc.end();
 
         HomeDetalheDTO detalhe = null;
+        Long idCidade = null;
+
         if(result != null && result.size() > 0) {
             for(Object[] unidades : result) {
 
-                if(detalhe == null) {
-                    detalhe = new HomeDetalheDTO();
-                    detalhe.setIdMarca((Long)unidades[1]);
-                    detalhe.setMarca((String)unidades[2]);
-                    detalhe.setLogomarca((String)unidades[3]);
-                    detalhe.setFundoApp((String)unidades[4]);
-                    detalhe.setCategoria((String)unidades[5]);
-                    detalhe.setUnidades(new ArrayList<HomeUnidadeDTO>());
-                }
+                detalhe = new HomeDetalheDTO();
+                detalhe.setIdUnidade((Long)unidades[0]);
+                detalhe.setIdMarca((Long)unidades[1]);
+                detalhe.setMarca((String)unidades[2]);
+                detalhe.setLogomarca((String)unidades[3]);
+                detalhe.setFundoApp((String)unidades[4]);
+                detalhe.setCategoria((String)unidades[5]);
+                detalhe.setOferta((String)unidades[6]);
+                detalhe.setRegrasOferta((String)unidades[7]);
+                detalhe.setValor((Double)unidades[8]);
+                detalhe.setDesconto((Double)unidades[9]);
+                detalhe.setLatitude((Double)unidades[10]);
+                detalhe.setLongitude((Double)unidades[11]);
+                detalhe.setEndereco((String)unidades[12]);
+                detalhe.setEnderecoResumido((String)unidades[14]);
+                detalhe.setSobre((String)unidades[15]);
+                detalhe.setNotaSatisfacao((Long)unidades[16]);
+                detalhe.setNotaPreco((Long)unidades[17]);
+                detalhe.setImagensProduto(imgRepository.findByIdUnidade(detalhe.getIdUnidade()));
 
-                HomeUnidadeDTO u = new HomeUnidadeDTO();
-                detalhe.getUnidades().add(u);
-
-                u.setIdUnidade((Long)unidades[0]);
-                u.setOferta((String)unidades[6]);
-                u.setRegrasOferta((String)unidades[7]);
-                u.setValor((Double)unidades[8]);
-                u.setDesconto((Double)unidades[9]);
-                u.setLatitude((Double)unidades[10]);
-                u.setLongitude((Double)unidades[11]);
-                u.setEndereco((String)unidades[12]);
-                u.setEnderecoResumido((String)unidades[14]);
-                u.setSobre((String)unidades[15]);
-                u.setNotaSatisfacao((Long)unidades[16]);
-                u.setNotaPreco((Long)unidades[17]);
-                u.setImagensProduto(imgRepository.findByIdUnidade(u.getIdUnidade()));
+                idCidade = (Long)unidades[18];
 
                 if(lat != null && lon != null) {
-                    u.setDistancia(GeoUtils.geoDistanceInKm(lat, lon, u.getLatitude(), u.getLongitude()));
+                    detalhe.setDistancia(GeoUtils.geoDistanceInKm(lat, lon, detalhe.getLatitude(), detalhe.getLongitude()));
                 }
-
             }
-
         }
 
-        if(detalhe != null && detalhe.getUnidades() != null) {
-            Collections.sort(detalhe.getUnidades(), new Comparator<HomeUnidadeDTO>() {
-                @Override
-                public int compare(HomeUnidadeDTO o1, HomeUnidadeDTO o2) {
-                    return o1.getDistancia() == null ? 0 : o1.getDistancia().compareTo(o2.getDistancia());
+        tc =  TimeCount.start(this.getClass(), "Consulta outras unidades");
+        result = repository.findOutrasUnidades(detalhe.getIdMarca(), idCidade);
+        tc.end();
+
+        detalhe.setUnidades(new ArrayList<>());
+        List<HomeUnidadeDTO> temp = new ArrayList<>();
+        if(result != null && result.size() > 0) {
+            for(Object[] uns : result) {
+
+                HomeUnidadeDTO u = new HomeUnidadeDTO();
+                u.setIdUnidade((Long)uns[0]);
+                u.setEnderecoResumido((String)uns[1]);
+
+                if(uns[0].equals(detalhe.getIdUnidade())) {
+                    detalhe.getUnidades().add(u);
+                } else {
+                    temp.add(u);
                 }
-            });
+            }
+            detalhe.getUnidades().addAll(temp);
         }
+
         return detalhe;
 
     }
-
 
 }

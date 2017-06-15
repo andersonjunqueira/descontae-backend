@@ -6,6 +6,7 @@ public class HomeParceiroDTO {
     private String marca;
     private Double distanciaKM;
     private String imagem;
+    private Long idUnidade;
 
     public String getMarca() {
         return marca;
@@ -37,6 +38,14 @@ public class HomeParceiroDTO {
 
     public void setIdMarca(Long idMarca) {
         this.idMarca = idMarca;
+    }
+
+    public Long getIdUnidade() {
+        return idUnidade;
+    }
+
+    public void setIdUnidade(Long idUnidade) {
+        this.idUnidade = idUnidade;
     }
 
 }
