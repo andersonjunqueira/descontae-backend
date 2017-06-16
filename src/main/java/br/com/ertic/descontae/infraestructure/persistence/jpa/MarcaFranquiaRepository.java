@@ -26,7 +26,9 @@ public interface MarcaFranquiaRepository extends JpaRepository<MarcaFranquia, Lo
         "       endereco.longitude, " +
         "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro || ', ' || endereco.cidade.nome || ' - ' || endereco.cidade.estado.sigla, " +
         "       endereco.cep, " +
-        "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro " +
+        "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro, " +
+        "       unidade.inicioExpediente, " +
+        "       unidade.fimExpediente " +
         "       FROM OfertaUnidade ofertaunidade " +
         "       JOIN ofertaunidade.revista revista " +
         "       JOIN ofertaunidade.oferta oferta " +
@@ -58,7 +60,9 @@ public interface MarcaFranquiaRepository extends JpaRepository<MarcaFranquia, Lo
         "       unidade.sobre, " +
         "       (select sum(a.satisfacao) / count(*) from Avaliacao a WHERE a.idUnidade = unidade.id), " +
         "       (select sum(a.preco) / count(*) from Avaliacao a WHERE a.idUnidade = unidade.id), " +
-        "       endereco.cidade.id " +
+        "       endereco.cidade.id, " +
+        "       unidade.inicioExpediente, " +
+        "       unidade.fimExpediente " +
         "       FROM OfertaUnidade ofertaunidade " +
         "       JOIN ofertaunidade.revista revista " +
         "       JOIN ofertaunidade.oferta oferta " +

@@ -24,6 +24,8 @@ public class HomeDetalheDTO {
     private String sobre;
     private Long notaSatisfacao;
     private Long notaPreco;
+    private String horaAbrir;
+    private String horaFechar;
 
     private List<ImagemUnidade> imagensProduto;
     private List<HomeUnidadeDTO> unidades;
@@ -186,6 +188,22 @@ public class HomeDetalheDTO {
 
     public void setUnidades(List<HomeUnidadeDTO> unidades) {
         this.unidades = unidades;
+    }
+
+    public String getHoraAbrir() {
+        return horaAbrir;
+    }
+
+    public void setHoraAbrir(String horaAbrir) {
+        this.horaAbrir = horaAbrir;
+    }
+
+    public String getHoraFechar() {
+        return horaFechar;
+    }
+
+    public void setHoraFechar(String horaFechar) {
+        this.horaFechar = horaFechar;
     }
 
 

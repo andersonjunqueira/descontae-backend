@@ -7,6 +7,9 @@ public class HomeParceiroDTO {
     private Double distanciaKM;
     private String imagem;
     private Long idUnidade;
+    private String categoria;
+    private String horaAbrir;
+    private String horaFechar;
 
     public String getMarca() {
         return marca;
@@ -46,6 +49,30 @@ public class HomeParceiroDTO {
 
     public void setIdUnidade(Long idUnidade) {
         this.idUnidade = idUnidade;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getHoraAbrir() {
+        return horaAbrir;
+    }
+
+    public void setHoraAbrir(String horaAbrir) {
+        this.horaAbrir = horaAbrir;
+    }
+
+    public String getHoraFechar() {
+        return horaFechar;
+    }
+
+    public void setHoraFechar(String horaFechar) {
+        this.horaFechar = horaFechar;
     }
 
 }

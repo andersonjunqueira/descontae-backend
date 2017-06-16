@@ -1,8 +1,10 @@
 package br.com.ertic.descontae.domain.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class MarcaFranquiaService  {
 
     public List<HomeParceiroDTO> findFranquiasByCidade(Long idCidade, Double lat, Double lon) {
 
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
         TimeCount tc2 =  TimeCount.start(this.getClass(), "Consulta franquias/cidade");
         List<Object[]> result = repository.findAllByCidade(idCidade);
         tc2.end();
@@ -43,21 +47,42 @@ public class MarcaFranquiaService  {
                 if(novaFranquia) {
                     item = new HomeParceiroDTO();
                     franquias.add(item);
-                    item.setIdMarca((Long)r[1]);
+                    idMarca = (Long)r[1];
+
+                    item.setIdMarca(idMarca);
                     item.setMarca((String)r[2]);
                     item.setImagem((String)r[3]);
+                    item.setCategoria((String)r[5]);
+
                     item.setIdUnidade((Long)r[0]);
-                    idMarca = item.getIdMarca();
+                    if(r[15] != null) {
+                        item.setHoraAbrir(sdf.format((Date)r[15]));
+                        item.setHoraFechar(sdf.format((Date)r[16]));
+                    }
+
                 }
 
                 if(lat != null && lon != null) {
-                    double distance = GeoUtils.geoDistanceInKm(lat, lon, (Double)r[10], (Double)r[11]);
+                    Double distance = GeoUtils.geoDistanceInKm(lat, lon, (Double)r[10], (Double)r[11]);
+                    String d = distance.toString();
+                    d = d.substring(0, d.indexOf(".") + 3);
+                    distance = Double.parseDouble(d);
+
                     if(item.getDistanciaKM() == null) {
                         item.setDistanciaKM(distance);
                         item.setIdUnidade((Long)r[0]);
+                        if(r[15] != null) {
+                            item.setHoraAbrir(sdf.format((Date)r[15]));
+                            item.setHoraFechar(sdf.format((Date)r[16]));
+                        }
+
                     } else if(distance < item.getDistanciaKM()) {
                         item.setDistanciaKM(distance);
                         item.setIdUnidade((Long)r[0]);
+                        if(r[15] != null) {
+                            item.setHoraAbrir(sdf.format((Date)r[15]));
+                            item.setHoraFechar(sdf.format((Date)r[16]));
+                        }
                     }
                 }
             }
@@ -74,6 +99,8 @@ public class MarcaFranquiaService  {
     }
 
     public HomeDetalheDTO detalharUnidade(Long idUnidade, Double lat, Double lon) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
         TimeCount tc =  TimeCount.start(this.getClass(), "Consulta detalhes franquia/cidade");
         List<Object[]> result = repository.findDetalhes(idUnidade);
@@ -103,12 +130,21 @@ public class MarcaFranquiaService  {
                 detalhe.setSobre((String)unidades[15]);
                 detalhe.setNotaSatisfacao((Long)unidades[16]);
                 detalhe.setNotaPreco((Long)unidades[17]);
+
+                if(unidades[19] != null) {
+                    detalhe.setHoraAbrir(sdf.format((Date)unidades[19]));
+                    detalhe.setHoraFechar(sdf.format((Date)unidades[20]));
+                }
+
                 detalhe.setImagensProduto(imgRepository.findByIdUnidade(detalhe.getIdUnidade()));
 
                 idCidade = (Long)unidades[18];
 
                 if(lat != null && lon != null) {
                     detalhe.setDistancia(GeoUtils.geoDistanceInKm(lat, lon, detalhe.getLatitude(), detalhe.getLongitude()));
+                    String d = detalhe.getDistancia().toString();
+                    d = d.substring(0, d.indexOf(".") + 3);
+                    detalhe.setDistancia(Double.parseDouble(d));
                 }
             }
         }
