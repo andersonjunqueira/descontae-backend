@@ -19,13 +19,13 @@ import br.com.ertic.descontae.interfaces.web.dto.HomeParceiroDTO;
 import br.com.ertic.util.geo.TimeCount;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/franquias")
 public class FranquiasRest  {
 
     @Autowired
     private MarcaFranquiaService srv;
 
-    @CrossOrigin(origins = "*")
     @RequestMapping(value="/cidade/{idCidade}", method = RequestMethod.GET)
     public List<HomeParceiroDTO> findAllByCidade(
         @PathVariable("idCidade") Long idCidade,
@@ -44,7 +44,6 @@ public class FranquiasRest  {
         return saida;
     }
 
-    @CrossOrigin(origins = "*")
     @RequestMapping(value="/unidade/{idUnidade}", method = RequestMethod.GET)
     public HomeDetalheDTO getParceiro(
         @PathVariable("idUnidade") Long idUnidade,

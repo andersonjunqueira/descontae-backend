@@ -16,6 +16,7 @@ import br.com.ertic.descontae.domain.service.CidadeService;
 import br.com.ertic.util.infraestructure.web.RestFullEndpoint;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/cidades")
 public class CidadesRest extends RestFullEndpoint<Cidade, Long> {
 
@@ -24,7 +25,6 @@ public class CidadesRest extends RestFullEndpoint<Cidade, Long> {
         super(service);
     }
 
-    @CrossOrigin(origins = "*")
     @RequestMapping(value="/parcerias", method = RequestMethod.GET)
     public List<Cidade> getDocument(HttpServletResponse response) {
         List<Cidade> saida = ((CidadeService)service).findAllComParcerias();
