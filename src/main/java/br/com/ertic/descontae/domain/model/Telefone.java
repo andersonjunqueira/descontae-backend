@@ -22,8 +22,8 @@ public class Telefone extends EntidadeBase<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="ID_EMPREENDIMENTO", nullable=true)
-    private Long idEmpreendimento;
+    @Column(name="ID_PARCEIRO", nullable=true)
+    private Long idParceiro;
 
     @Column(name="ID_PESSOA", nullable=true)
     private Long idPessoa;
@@ -42,14 +42,6 @@ public class Telefone extends EntidadeBase<Long> {
     @Override
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdEmpreendimento() {
-        return idEmpreendimento;
-    }
-
-    public void setIdEmpreendimento(Long idEmpreendimento) {
-        this.idEmpreendimento = idEmpreendimento;
     }
 
     public Long getIdPessoa() {
@@ -74,6 +66,14 @@ public class Telefone extends EntidadeBase<Long> {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public Long getIdParceiro() {
+        return idParceiro;
+    }
+
+    public void setIdParceiro(Long idParceiro) {
+        this.idParceiro = idParceiro;
     }
 
 

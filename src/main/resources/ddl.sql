@@ -6,6 +6,8 @@ drop table TB_REVISTA;
 drop table TB_TELEFONE;
 drop table TB_ASSINATURA;
 drop table TB_PLANO;
+drop table TB_CARTAO;
+drop table TB_CLIENTE;
 drop table TB_IMAGEM;
 drop table TB_UNIDADE;
 drop table TB_EMPREENDIMENTO;
@@ -22,8 +24,8 @@ drop table TB_UF;
 /*==============================================================*/
 create table TB_ASSINATURA (
    ID_ASSINATURA        INT8                 not null,
-   ID_PESSOA            INT8                 not null,
    ID_PLANO             INT8                 not null,
+   ID_CARTAO            INT8                 null,
    CODIGO_CARTAO        VARCHAR(30)          not null,
    INICIO_VIGENCIA      DATE                 not null,
    FIM_VIGENCIA         DATE                 null,
@@ -39,7 +41,19 @@ create table TB_AVALIACAO (
    ID_UNIDADE           INT8                 not null,
    NOTA_PRECO           INT4                 null,
    NOTA_SATISFACAO      INT4                 null,
+   CURTIU               INT2                 null,
    constraint PK_TB_AVALIACAO primary key (ID_AVALIACAO)
+);
+
+/*==============================================================*/
+/* Table: TB_CARTAO                                             */
+/*==============================================================*/
+create table TB_CARTAO (
+   ID_CARTAO            INT8                 not null,
+   ID_CLIENTE           INT8                 null,
+   ID_PESSOA            INT8                 null,
+   CODIGO               VARCHAR(50)          not null,
+   constraint PK_TB_CARTAO primary key (ID_CARTAO)
 );
 
 /*==============================================================*/
@@ -62,6 +76,22 @@ create table TB_CIDADE (
 );
 
 /*==============================================================*/
+/* Table: TB_CLIENTE                                            */
+/*==============================================================*/
+create table TB_CLIENTE (
+   ID_CLIENTE           INT8                 not null,
+   ID_ENDERECO          INT8                 null,
+   ID_PESSOA            INT8                 not null,
+   CNPJ                 VARCHAR(14)          not null,
+   NOME_FANTASIA        VARCHAR(100)         not null,
+   NOME                 VARCHAR(100)         not null,
+   EMAIL                VARCHAR(100)         null,
+   DATA_CADASTRO        date                 not null,
+   DATA_ULTIMA_ATUALIZACAO date                 not null,
+   constraint PK_TB_CLIENTE primary key (ID_CLIENTE)
+);
+
+/*==============================================================*/
 /* Table: TB_CONSUMO                                            */
 /*==============================================================*/
 create table TB_CONSUMO (
@@ -70,23 +100,6 @@ create table TB_CONSUMO (
    ID_ASSINATURA        INT8                 null,
    DATA_CONSUMO         DATE                 not null,
    constraint PK_TB_CONSUMO primary key (ID_CONSUMO)
-);
-
-/*==============================================================*/
-/* Table: TB_EMPREENDIMENTO                                     */
-/*==============================================================*/
-create table TB_EMPREENDIMENTO (
-   ID_EMPREENDIMENTO    INT8                 not null,
-   ID_CATEGORIA         INT8                 not null,
-   ID_MARCA_FRANQUIA    INT8                 not null,
-   ID_PESSOA            INT8                 not null,
-   CNPJ                 VARCHAR(14)          not null,
-   NOME_FANTASIA        VARCHAR(100)         not null,
-   NOME                 VARCHAR(100)         not null,
-   EMAIL                VARCHAR(100)         null,
-   DATA_CADASTRO        date                 not null,
-   DATA_ULTIMA_ATUALIZACAO date                 not null,
-   constraint PK_TB_EMPREENDIMENTO primary key (ID_EMPREENDIMENTO)
 );
 
 /*==============================================================*/
@@ -163,6 +176,23 @@ ID_REVISTA
 );
 
 /*==============================================================*/
+/* Table: TB_PARCEIRO                                           */
+/*==============================================================*/
+create table TB_PARCEIRO (
+   ID_PARCEIRO          INT8                 not null,
+   ID_CATEGORIA         INT8                 not null,
+   ID_MARCA_FRANQUIA    INT8                 not null,
+   ID_PESSOA            INT8                 not null,
+   CNPJ                 VARCHAR(14)          not null,
+   NOME_FANTASIA        VARCHAR(100)         not null,
+   NOME                 VARCHAR(100)         not null,
+   EMAIL                VARCHAR(100)         null,
+   DATA_CADASTRO        date                 not null,
+   DATA_ULTIMA_ATUALIZACAO date                 not null,
+   constraint PK_TB_PARCEIRO primary key (ID_PARCEIRO)
+);
+
+/*==============================================================*/
 /* Table: TB_PESSOA_FISICA                                      */
 /*==============================================================*/
 create table TB_PESSOA_FISICA (
@@ -212,9 +242,10 @@ create table TB_REVISTA (
 /*==============================================================*/
 create table TB_TELEFONE (
    ID_TELEFONE          INT8                 not null,
-   ID_EMPREENDIMENTO    INT8                 null,
+   ID_PARCEIRO          INT8                 null,
    ID_UNIDADE           INT8                 null,
    ID_PESSOA            INT8                 null,
+   ID_CLIENTE           INT8                 null,
    NUMERO               VARCHAR(30)          not null,
    constraint PK_TB_TELEFONE primary key (ID_TELEFONE)
 );
@@ -244,22 +275,22 @@ create table TB_UF (
 create table TB_UNIDADE (
    ID_UNIDADE           INT8                 not null,
    ID_ENDERECO          INT8                 not null,
-   ID_EMPREENDIMENTO    INT8                 not null,
+   ID_PARCEIRO          INT8                 not null,
    NOME                 VARCHAR(50)          not null,
-   SOBRE                VARCHAR(1000         not null,
+   SOBRE                VARCHAR(1000)        null,
    INICIO_EXPEDIENTE    TIME                 null,
    FIM_EXPEDIENTE       TIME                 null,
    constraint PK_TB_UNIDADE primary key (ID_UNIDADE)
 );
 
 alter table TB_ASSINATURA
-   add constraint FK_TB_ASSIN_REFERENCE_TB_PESSO foreign key (ID_PESSOA)
-      references TB_PESSOA_FISICA (ID_PESSOA)
+   add constraint FK_TB_ASSIN_REFERENCE_TB_PLANO foreign key (ID_PLANO)
+      references TB_PLANO (ID_PLANO)
       on delete restrict on update restrict;
 
 alter table TB_ASSINATURA
-   add constraint FK_TB_ASSIN_REFERENCE_TB_PLANO foreign key (ID_PLANO)
-      references TB_PLANO (ID_PLANO)
+   add constraint FK_TB_ASSIN_REFERENCE_TB_CARTA foreign key (ID_CARTAO)
+      references TB_CARTAO (ID_CARTAO)
       on delete restrict on update restrict;
 
 alter table TB_AVALIACAO
@@ -272,9 +303,29 @@ alter table TB_AVALIACAO
       references TB_UNIDADE (ID_UNIDADE)
       on delete restrict on update restrict;
 
+alter table TB_CARTAO
+   add constraint FK_TB_CARTA_REFERENCE_TB_CLIEN foreign key (ID_CLIENTE)
+      references TB_CLIENTE (ID_CLIENTE)
+      on delete restrict on update restrict;
+
+alter table TB_CARTAO
+   add constraint FK_TB_CARTA_REFERENCE_TB_PESSO foreign key (ID_PESSOA)
+      references TB_PESSOA_FISICA (ID_PESSOA)
+      on delete restrict on update restrict;
+
 alter table TB_CIDADE
    add constraint FK_TB_CIDAD_REFERENCE_TB_UF foreign key (ID_UF)
       references TB_UF (ID_UF)
+      on delete restrict on update restrict;
+
+alter table TB_CLIENTE
+   add constraint FK_TB_CLIEN_REFERENCE_TB_ENDER foreign key (ID_ENDERECO)
+      references TB_ENDERECO (ID_ENDERECO)
+      on delete restrict on update restrict;
+
+alter table TB_CLIENTE
+   add constraint FK_TB_CLIEN_REFERENCE_TB_PESSO foreign key (ID_PESSOA)
+      references TB_PESSOA_FISICA (ID_PESSOA)
       on delete restrict on update restrict;
 
 alter table TB_CONSUMO
@@ -285,21 +336,6 @@ alter table TB_CONSUMO
 alter table TB_CONSUMO
    add constraint FK_TB_CONSU_REFERENCE_TB_ASSIN foreign key (ID_ASSINATURA)
       references TB_ASSINATURA (ID_ASSINATURA)
-      on delete restrict on update restrict;
-
-alter table TB_EMPREENDIMENTO
-   add constraint FK_TB_EMPRE_REFERENCE_TB_MARCA foreign key (ID_MARCA_FRANQUIA)
-      references TB_MARCA_FRANQUIA (ID_MARCA_FRANQUIA)
-      on delete restrict on update restrict;
-
-alter table TB_EMPREENDIMENTO
-   add constraint FK_TB_EMPRE_REFERENCE_TB_PESSO foreign key (ID_PESSOA)
-      references TB_PESSOA_FISICA (ID_PESSOA)
-      on delete restrict on update restrict;
-
-alter table TB_EMPREENDIMENTO
-   add constraint FK_TB_EMPRE_REFERENCE_TB_CATEG foreign key (ID_CATEGORIA)
-      references TB_CATEGORIA (ID_CATEGORIA)
       on delete restrict on update restrict;
 
 alter table TB_ENDERECO
@@ -332,6 +368,21 @@ alter table TB_OFERTA_UNIDADE
       references TB_REVISTA (ID_REVISTA)
       on delete restrict on update restrict;
 
+alter table TB_PARCEIRO
+   add constraint FK_TB_PARCE_REFERENCE_TB_MARCA foreign key (ID_MARCA_FRANQUIA)
+      references TB_MARCA_FRANQUIA (ID_MARCA_FRANQUIA)
+      on delete restrict on update restrict;
+
+alter table TB_PARCEIRO
+   add constraint FK_TB_PARCE_REFERENCE_TB_PESSO foreign key (ID_PESSOA)
+      references TB_PESSOA_FISICA (ID_PESSOA)
+      on delete restrict on update restrict;
+
+alter table TB_PARCEIRO
+   add constraint FK_TB_PARCE_REFERENCE_TB_CATEG foreign key (ID_CATEGORIA)
+      references TB_CATEGORIA (ID_CATEGORIA)
+      on delete restrict on update restrict;
+
 alter table TB_PESSOA_FISICA
    add constraint FK_TB_PESSO_REFERENCE_TB_ENDER foreign key (ID_ENDERECO)
       references TB_ENDERECO (ID_ENDERECO)
@@ -343,8 +394,8 @@ alter table TB_PESSOA_FISICA
       on delete restrict on update restrict;
 
 alter table TB_TELEFONE
-   add constraint FK_TB_TELEF_REFERENCE_TB_EMPRE foreign key (ID_EMPREENDIMENTO)
-      references TB_EMPREENDIMENTO (ID_EMPREENDIMENTO)
+   add constraint FK_TB_TELEF_REFERENCE_TB_PARCE foreign key (ID_PARCEIRO)
+      references TB_PARCEIRO (ID_PARCEIRO)
       on delete restrict on update restrict;
 
 alter table TB_TELEFONE
@@ -357,13 +408,18 @@ alter table TB_TELEFONE
       references TB_PESSOA_FISICA (ID_PESSOA)
       on delete restrict on update restrict;
 
+alter table TB_TELEFONE
+   add constraint FK_TB_TELEF_REFERENCE_TB_CLIEN foreign key (ID_CLIENTE)
+      references TB_CLIENTE (ID_CLIENTE)
+      on delete restrict on update restrict;
+
 alter table TB_UNIDADE
    add constraint FK_TB_UNIDA_REFERENCE_TB_ENDER foreign key (ID_ENDERECO)
       references TB_ENDERECO (ID_ENDERECO)
       on delete restrict on update restrict;
 
 alter table TB_UNIDADE
-   add constraint FK_TB_UNIDA_REFERENCE_TB_EMPRE foreign key (ID_EMPREENDIMENTO)
-      references TB_EMPREENDIMENTO (ID_EMPREENDIMENTO)
+   add constraint FK_TB_UNIDA_REFERENCE_TB_PARCE foreign key (ID_PARCEIRO)
+      references TB_PARCEIRO (ID_PARCEIRO)
       on delete restrict on update restrict;
 

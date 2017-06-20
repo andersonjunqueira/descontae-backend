@@ -18,8 +18,8 @@ import javax.persistence.TemporalType;
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
 @Entity
-@Table(name = "TB_EMPREENDIMENTO")
-public class Empreendimento extends EntidadeBase<Long> {
+@Table(name = "TB_PARCEIRO")
+public class Parceiro extends EntidadeBase<Long> {
 
     private static final long serialVersionUID = 239405336985899452L;
 
@@ -29,7 +29,7 @@ public class Empreendimento extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_EMAIL = 100;
 
     @Id
-    @Column(name="ID_EMPREENDIMENTO", columnDefinition = "serial")
+    @Column(name="ID_PARCEIRO", columnDefinition = "serial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -66,11 +66,11 @@ public class Empreendimento extends EntidadeBase<Long> {
     private MarcaFranquia marca;
 
     @OneToMany
-    @JoinColumn(name="ID_EMPREENDIMENTO", referencedColumnName="ID_EMPREENDIMENTO")
+    @JoinColumn(name="ID_PARCEIRO", referencedColumnName="ID_PARCEIRO")
     private List<Unidade> unidades;
 
     @OneToMany
-    @JoinColumn(name="ID_EMPREENDIMENTO", referencedColumnName="ID_EMPREENDIMENTO")
+    @JoinColumn(name="ID_PARCEIRO", referencedColumnName="ID_PARCEIRO")
     private List<Telefone> telefones;
 
     @Override

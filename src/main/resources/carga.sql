@@ -6,9 +6,11 @@ delete from TB_REVISTA;
 delete from TB_TELEFONE;
 delete from TB_ASSINATURA; 
 delete from TB_PLANO;  
+delete from TB_CARTAO;
+delete from TB_CLIENTE;
 delete from TB_IMAGEM; 
 delete from TB_UNIDADE;
-delete from TB_EMPREENDIMENTO; 
+delete from TB_PARCEIRO; 
 delete from TB_PESSOA_FISICA;  
 delete from TB_ENDERECO;
 delete from TB_CATEGORIA;  
@@ -72,14 +74,14 @@ values (1, '70735110', 'SQN 303 Bloco K', 'Apto', '101', 'Asa Norte', 1, null, n
 insert into tb_pessoa_fisica(id_pessoa, nome, email, cpf, telefone, facebook, instagram, id_tipo_pessoa, id_endereco, data_cadastro, data_ultima_atualizacao)  
 values(1, 'Parceiro 1', 'nao@teconto.com.br', '12353786243', '6112345678', null, null, 2, 1, '08/06/2017', '08/06/2017');  
 
-insert into tb_empreendimento(id_empreendimento, nome, nome_fantasia, email, cnpj, id_categoria, id_pessoa, id_marca_franquia, data_cadastro, data_ultima_atualizacao) 
+insert into tb_parceiro(id_parceiro, nome, nome_fantasia, email, cnpj, id_categoria, id_pessoa, id_marca_franquia, data_cadastro, data_ultima_atualizacao) 
 values(1, 'SUBWAY CNPJ 1', 'SUBWAY', 'nao@teconto.com', '63279427000190', 1, 1, 1, '08/06/2017', '08/06/2017');
 
 -- SUBWAY 304N 
 insert into tb_endereco(id_endereco, cep, logradouro, complemento, numero, bairro, id_cidade, loc_latitude, loc_longitude) 
 values (2, '70736520', 'SCN 304 Bloco B', 'Loja', '7', 'Asa Norte', 1, -15.774597, -47.885590);
 
-insert into tb_unidade(id_unidade, nome, id_empreendimento, inicio_expediente, fim_expediente, id_endereco)  
+insert into tb_unidade(id_unidade, nome, id_parceiro, inicio_expediente, fim_expediente, id_endereco)  
 values (1, 'SUBWAY 304N', 1, null, null, 2); 
 
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
@@ -92,7 +94,7 @@ values (1, 1, 1, 1);
 insert into tb_endereco(id_endereco, cep, logradouro, complemento, numero, bairro, id_cidade, loc_latitude, loc_longitude) 
 values (3, '70235520', 'SCN 706/707 Bloco F', 'Loja', '36/39', 'Asa Norte', 1, -15.769196, -47.890580);
 
-insert into tb_unidade(id_unidade, nome, id_empreendimento, inicio_expediente, fim_expediente, id_endereco)  
+insert into tb_unidade(id_unidade, nome, id_parceiro, inicio_expediente, fim_expediente, id_endereco)  
 values (2, 'SUBWAY 706N', 1, null, null, 3); 
 
 insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
@@ -105,14 +107,14 @@ values (4, '71505220', 'SHIN QI 03 Conjunto 02', 'Casa', '8', 'Lago Norte', 1, n
 insert into tb_pessoa_fisica(id_pessoa, nome, email, cpf, telefone, facebook, instagram, id_tipo_pessoa, id_endereco, data_cadastro, data_ultima_atualizacao)  
 values(2, 'Parceiro 2', 'nao@teconto.com.br', '50561648875', '6198765432', null, null, 2, 2, '08/06/2017', '08/06/2017');  
 
-insert into tb_empreendimento(id_empreendimento, nome, nome_fantasia, email, cnpj, id_categoria, id_pessoa, id_marca_franquia, data_cadastro, data_ultima_atualizacao) 
+insert into tb_parceiro(id_parceiro, nome, nome_fantasia, email, cnpj, id_categoria, id_pessoa, id_marca_franquia, data_cadastro, data_ultima_atualizacao) 
 values(2, 'SUBWAY CNPJ 2', 'SUBWAY', 'nao@teconto.com', '94033097000182', 1, 2, 1, '08/06/2017', '08/06/2017');
 
 -- SUBWAY 405s 
 insert into tb_endereco(id_endereco, cep, logradouro, complemento, numero, bairro, id_cidade, loc_latitude, loc_longitude) 
 values (5, '70239500', 'SCS 405 Bloco A', 'Loja', '6', 'Asa Sul', 1, -15.814477, -47.889956);  
 
-insert into tb_unidade(id_unidade, nome, id_empreendimento, inicio_expediente, fim_expediente, id_endereco)  
+insert into tb_unidade(id_unidade, nome, id_parceiro, inicio_expediente, fim_expediente, id_endereco)  
 values (3, 'SUBWAY 405S', 2, null, null, 5); 
 
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)
@@ -128,14 +130,14 @@ values (6, '71505220', 'SHIN QI 03 Conjunto 02', 'Casa', '2', 'Lago Norte', 1, n
 insert into tb_pessoa_fisica(id_pessoa, nome, email, cpf, telefone, facebook, instagram, id_tipo_pessoa, id_endereco, data_cadastro, data_ultima_atualizacao)  
 values(3, 'Parceiro 3', 'nao@teconto.com.br', '82153342880', '6198765432', null, null, 2, 6, '08/06/2017', '08/06/2017');  
 
-insert into tb_empreendimento(id_empreendimento, nome, nome_fantasia, email, cnpj, id_categoria, id_pessoa, id_marca_franquia, data_cadastro, data_ultima_atualizacao) 
+insert into tb_parceiro(id_parceiro, nome, nome_fantasia, email, cnpj, id_categoria, id_pessoa, id_marca_franquia, data_cadastro, data_ultima_atualizacao) 
 values(3, 'Chiquinho Sorvetes', 'CHIQUINHO SORVETES', 'nao@teconto.com', '04233588000184', 2, 3, 2, '08/06/2017', '08/06/2017');
 
 -- CHIQUINHO 706N  
 insert into tb_endereco(id_endereco, cep, logradouro, complemento, numero, bairro, id_cidade, loc_latitude, loc_longitude) 
 values (7, '70736520', 'SCN 304 Bloco G', 'Loja', '13', 'Asa Norte', 1, -15.769257, -47.890767);
 
-insert into tb_unidade(id_unidade, nome, id_empreendimento, inicio_expediente, fim_expediente, id_endereco)  
+insert into tb_unidade(id_unidade, nome, id_parceiro, inicio_expediente, fim_expediente, id_endereco)  
 values (4, 'CHIQUINHO 304N', 3, null, null, 7);  
 
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)

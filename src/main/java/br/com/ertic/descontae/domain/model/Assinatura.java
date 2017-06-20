@@ -40,8 +40,8 @@ public class Assinatura extends EntidadeBase<Long> {
     private Date fimVigencia;
 
     @ManyToOne
-    @JoinColumn(name="ID_PESSOA", nullable=false)
-    private Pessoa pessoa;
+    @JoinColumn(name="ID_CARTAO", nullable=false)
+    private Cartao cartao;
 
     @ManyToOne
     @JoinColumn(name="ID_PLANO", nullable=false)
@@ -81,20 +81,20 @@ public class Assinatura extends EntidadeBase<Long> {
         this.fimVigencia = fimVigencia;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
-
     public Plano getPlano() {
         return plano;
     }
 
     public void setPlano(Plano plano) {
         this.plano = plano;
+    }
+
+    public Cartao getCartao() {
+        return cartao;
+    }
+
+    public void setCartao(Cartao cartao) {
+        this.cartao = cartao;
     }
 
 

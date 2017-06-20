@@ -37,8 +37,8 @@ public class Unidade extends EntidadeBase<Long> {
     @Column(name="SOBRE", length=MAX_LENGTH_SOBRE, nullable=true)
     private String sobre;
 
-    @Column(name="ID_EMPREENDIMENTO", nullable=false)
-    private Long idEmpreendimento;
+    @Column(name="ID_PARCEIRO", nullable=false)
+    private Long idParceiro;
 
     @Temporal(TemporalType.TIME)
     @Column(name="INICIO_EXPEDIENTE", nullable=true)
@@ -80,14 +80,6 @@ public class Unidade extends EntidadeBase<Long> {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public Long getIdEmpreendimento() {
-        return idEmpreendimento;
-    }
-
-    public void setIdEmpreendimento(Long idEmpreendimento) {
-        this.idEmpreendimento = idEmpreendimento;
     }
 
     public Endereco getEndereco() {
@@ -136,6 +128,22 @@ public class Unidade extends EntidadeBase<Long> {
 
     public void setTelefones(List<Telefone> telefones) {
         this.telefones = telefones;
+    }
+
+    public Long getIdParceiro() {
+        return idParceiro;
+    }
+
+    public void setIdParceiro(Long idParceiro) {
+        this.idParceiro = idParceiro;
+    }
+
+    public String getSobre() {
+        return sobre;
+    }
+
+    public void setSobre(String sobre) {
+        this.sobre = sobre;
     }
 
 }

@@ -34,11 +34,11 @@ public interface MarcaFranquiaRepository extends JpaRepository<MarcaFranquia, Lo
         "       JOIN ofertaunidade.oferta oferta " +
         "       JOIN ofertaunidade.unidade unidade " +
         "       JOIN unidade.endereco endereco, " +
-        "       Empreendimento empreendimento " +
-        "       JOIN empreendimento.marca marca " +
-        "       JOIN empreendimento.categoria categoria " +
+        "       Parceiro parceiro " +
+        "       JOIN parceiro.marca marca " +
+        "       JOIN parceiro.categoria categoria " +
         " WHERE endereco.cidade.id = ?1 " +
-        "   AND empreendimento.id = unidade.idEmpreendimento " +
+        "   AND parceiro.id = unidade.idParceiro " +
         "   AND current_date() BETWEEN revista.inicioVigencia AND revista.fimVigencia" +
         " ORDER BY marca.id ")
     List<Object[]> findAllByCidade(Long idCidade);
@@ -60,6 +60,10 @@ public interface MarcaFranquiaRepository extends JpaRepository<MarcaFranquia, Lo
         "       unidade.sobre, " +
         "       (select sum(a.satisfacao) / count(*) from Avaliacao a WHERE a.idUnidade = unidade.id), " +
         "       (select sum(a.preco) / count(*) from Avaliacao a WHERE a.idUnidade = unidade.id), " +
+
+//        "       (SELECT COUNT(*) FROM Avaliacao a WHERE a.curtiu = 1 AND a.idUnidade = unidade.id), " +
+//        "       (SELECT COUNT(*) FROM Avaliacao a WHERE a.curtiu = -1 AND a.idUnidade = unidade.id), " +
+
         "       endereco.cidade.id, " +
         "       unidade.inicioExpediente, " +
         "       unidade.fimExpediente " +
@@ -68,11 +72,11 @@ public interface MarcaFranquiaRepository extends JpaRepository<MarcaFranquia, Lo
         "       JOIN ofertaunidade.oferta oferta " +
         "       JOIN ofertaunidade.unidade unidade " +
         "       JOIN unidade.endereco endereco, " +
-        "       Empreendimento empreendimento " +
-        "       JOIN empreendimento.marca marca " +
-        "       JOIN empreendimento.categoria categoria " +
+        "       Parceiro parceiro " +
+        "       JOIN parceiro.marca marca " +
+        "       JOIN parceiro.categoria categoria " +
         " WHERE unidade.id = ?1 " +
-        "   AND empreendimento.id = unidade.idEmpreendimento " +
+        "   AND parceiro.id = unidade.idParceiro " +
         "   AND current_date() BETWEEN revista.inicioVigencia AND revista.fimVigencia ")
     List<Object[]> findDetalhes(Long idUnidade);
 
@@ -84,12 +88,12 @@ public interface MarcaFranquiaRepository extends JpaRepository<MarcaFranquia, Lo
         "       JOIN ofertaunidade.oferta oferta " +
         "       JOIN ofertaunidade.unidade unidade " +
         "       JOIN unidade.endereco endereco, " +
-        "       Empreendimento empreendimento " +
-        "       JOIN empreendimento.marca marca " +
-        "       JOIN empreendimento.categoria categoria " +
+        "       Parceiro parceiro " +
+        "       JOIN parceiro.marca marca " +
+        "       JOIN parceiro.categoria categoria " +
         " WHERE marca.id = ?1 " +
         "   AND endereco.cidade.id = ?2 " +
-        "   AND empreendimento.id = unidade.idEmpreendimento " +
+        "   AND parceiro.id = unidade.idParceiro " +
         "   AND current_date() BETWEEN revista.inicioVigencia AND revista.fimVigencia ")
     List<Object[]> findOutrasUnidades(Long idMarca, Long idCidade);
 

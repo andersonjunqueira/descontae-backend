@@ -12,10 +12,12 @@
 
         <mapping class="br.com.ertic.descontae.domain.model.Assinatura"/>
         <mapping class="br.com.ertic.descontae.domain.model.Avaliacao"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Cartao"/>
         <mapping class="br.com.ertic.descontae.domain.model.Categoria"/>
         <mapping class="br.com.ertic.descontae.domain.model.Cidade"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Cliente"/>
         <mapping class="br.com.ertic.descontae.domain.model.Consumo"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Empreendimento"/>
+        <mapping class="br.com.ertic.descontae.domain.model.Parceiro"/>
         <mapping class="br.com.ertic.descontae.domain.model.Endereco"/>
         <mapping class="br.com.ertic.descontae.domain.model.Estado"/>
         <mapping class="br.com.ertic.descontae.domain.model.MarcaFranquia"/>
