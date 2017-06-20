@@ -128,8 +128,21 @@ public class MarcaFranquiaService  {
                 detalhe.setEndereco((String)unidades[12]);
                 detalhe.setEnderecoResumido((String)unidades[14]);
                 detalhe.setSobre((String)unidades[15]);
+
                 detalhe.setNotaSatisfacao((Long)unidades[16]);
                 detalhe.setNotaPreco((Long)unidades[17]);
+
+                Double curtidas = (Double)unidades[16];
+                Double descurtidas = (Double)unidades[17];
+                Double total = curtidas + descurtidas;
+
+                String p = new Double(curtidas/total).toString();
+                p = p.substring(0, p.indexOf(".") + 3);
+                detalhe.setCurtidas(Double.parseDouble(p));
+
+                p = new Double(descurtidas/total).toString();
+                p = p.substring(0, p.indexOf(".") + 3);
+                detalhe.setDescurtidas(Double.parseDouble(p));
 
                 if(unidades[19] != null) {
                     detalhe.setHoraAbrir(sdf.format((Date)unidades[19]));

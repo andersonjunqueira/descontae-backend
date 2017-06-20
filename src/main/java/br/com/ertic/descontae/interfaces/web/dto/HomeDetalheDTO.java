@@ -22,10 +22,13 @@ public class HomeDetalheDTO {
     private String enderecoResumido;
     private Double distancia;
     private String sobre;
-    private Long notaSatisfacao;
-    private Long notaPreco;
     private String horaAbrir;
     private String horaFechar;
+
+    private Long notaSatisfacao;
+    private Long notaPreco;
+    private Double curtidas;
+    private Double descurtidas;
 
     private List<ImagemUnidade> imagensProduto;
     private List<HomeUnidadeDTO> unidades;
@@ -204,6 +207,22 @@ public class HomeDetalheDTO {
 
     public void setHoraFechar(String horaFechar) {
         this.horaFechar = horaFechar;
+    }
+
+    public Double getCurtidas() {
+        return curtidas;
+    }
+
+    public void setCurtidas(Double curtidas) {
+        this.curtidas = curtidas;
+    }
+
+    public Double getDescurtidas() {
+        return descurtidas;
+    }
+
+    public void setDescurtidas(Double descurtidas) {
+        this.descurtidas = descurtidas;
     }
 
 
