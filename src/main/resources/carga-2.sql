@@ -581,7 +581,8 @@ from tb_marca_franquia;
 
 */
 
-
+update tb_endereco set loc_latitude = -15.769257, loc_longitude = -47.890767;
+update tb_unidade set inicio_expediente = '08:00', fim_expediente = '18:00';
 
 
 
