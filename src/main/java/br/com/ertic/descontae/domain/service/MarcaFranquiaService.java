@@ -62,7 +62,7 @@ public class MarcaFranquiaService  {
 
                 }
 
-                if(lat != null && lon != null) {
+                if(lat != null && lon != null && r[10] != null) {
                     Double distance = GeoUtils.geoDistanceInKm(lat, lon, (Double)r[10], (Double)r[11]);
                     String d = distance.toString();
                     d = d.substring(0, d.indexOf(".") + 3);
@@ -153,7 +153,7 @@ public class MarcaFranquiaService  {
 
                 idCidade = (Long)unidades[18];
 
-                if(lat != null && lon != null) {
+                if(lat != null && lon != null && detalhe.getLatitude() != null) {
                     detalhe.setDistancia(GeoUtils.geoDistanceInKm(lat, lon, detalhe.getLatitude(), detalhe.getLongitude()));
                     String d = detalhe.getDistancia().toString();
                     d = d.substring(0, d.indexOf(".") + 3);
