@@ -15,6 +15,7 @@ public interface CidadeRepository extends JpaRepository<Cidade, Long> {
         "SELECT DISTINCT c " +
         "  FROM Unidade u " +
         "       JOIN u.endereco e " +
-        "       JOIN e.cidade c ")
+        "       JOIN e.cidade c " +
+        " ORDER BY c.nome ")
     List<Cidade> findAllComParcerias();
 }
