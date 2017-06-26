@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,8 +25,9 @@ public class Assinatura extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_CODIGO_CARTAO = 30;
 
     @Id
-    @Column(name="ID_ASSINATURA", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ID_ASSINATURA")
+    @SequenceGenerator(name="SEQ_ASSINATURA", sequenceName="SEQ_ASSINATURA", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_ASSINATURA")
     private Long id;
 
     @Column(name="CODIGO_CARTAO", length=MAX_LENGTH_CODIGO_CARTAO, nullable=false)

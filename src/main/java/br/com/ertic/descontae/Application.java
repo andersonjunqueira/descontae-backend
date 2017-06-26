@@ -1,13 +1,9 @@
 package br.com.ertic.descontae;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan(basePackages={
+@SpringBootApplication(scanBasePackages={
     "br.com.ertic.descontae.interfaces.web",
     "br.com.ertic.descontae.domain.service",
     "br.com.ertic.descontae.infraestructure.persistence.jpa",

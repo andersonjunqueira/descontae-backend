@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,8 +23,9 @@ public class Consumo extends EntidadeBase<Long> {
     private static final long serialVersionUID = -8063441764461188142L;
 
     @Id
-    @Column(name="ID_CONSUMO", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ID_CONSUMO")
+    @SequenceGenerator(name="SEQ_CONSUMO", sequenceName="SEQ_CONSUMO", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_CONSUMO")
     private Long id;
 
     @ManyToOne

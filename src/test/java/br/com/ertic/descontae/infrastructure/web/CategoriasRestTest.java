@@ -2,6 +2,8 @@ package br.com.ertic.descontae.infrastructure.web;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import org.keycloak.util.JsonSerialization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,29 +17,27 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.testng.annotations.Test;
 
-import br.com.ertic.util.infraestructure.dto.CepDTO;
 import br.com.ertic.util.test.BaseRestTest;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class CepRestTest extends BaseRestTest {
+public class CategoriasRestTest extends BaseRestTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
-    public void getEstados() throws Exception {
+    public void getAll() throws Exception {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<?> e = new HttpEntity<Object>(headers);
 
-        ResponseEntity<String> entity = restTemplate.exchange("/ceps/71505220", HttpMethod.GET, e, String.class);
+        ResponseEntity<String> entity = restTemplate.exchange("/categorias", HttpMethod.GET, e, String.class);
         assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        CepDTO z = JsonSerialization.readValue(entity.getBody(), CepDTO.class);
-        assertThat(z.getUf()).isEqualTo("DF");
-
+        List<?> l = JsonSerialization.readValue(entity.getBody(), List.class);
+        assertThat(l.size()).isGreaterThan(0);
     }
 
 }

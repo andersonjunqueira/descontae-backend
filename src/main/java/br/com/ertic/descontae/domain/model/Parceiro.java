@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,8 +30,9 @@ public class Parceiro extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_EMAIL = 100;
 
     @Id
-    @Column(name="ID_PARCEIRO", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ID_PARCEIRO")
+    @SequenceGenerator(name="SEQ_PARCEIRO", sequenceName="SEQ_PARCEIRO", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_PARCEIRO")
     private Long id;
 
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)

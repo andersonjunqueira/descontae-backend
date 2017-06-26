@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,10 +30,12 @@ public class Pessoa extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_TELEFONE = 15;
     public static final int MAX_LENGTH_NOME = 100;
     public static final int MAX_LENGTH_EMAIL = 100;
+    public static final int MAX_LENGTH_IDIOMA = 5;
 
     @Id
-    @Column(name="ID_PESSOA", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ID_PESSOA")
+    @SequenceGenerator(name="SEQ_PESSOA_FISICA", sequenceName="SEQ_PESSOA_FISICA", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_PESSOA_FISICA")
     private Long id;
 
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)
@@ -41,7 +44,7 @@ public class Pessoa extends EntidadeBase<Long> {
     @Column(name="EMAIL", length=MAX_LENGTH_EMAIL, nullable=false)
     private String email;
 
-    @Column(name="CPF", length=MAX_LENGTH_CPF, nullable=false)
+    @Column(name="CPF", length=MAX_LENGTH_CPF, nullable=true)
     private String cpf;
 
     @Column(name="TELEFONE", length=MAX_LENGTH_TELEFONE, nullable=true)
@@ -52,6 +55,9 @@ public class Pessoa extends EntidadeBase<Long> {
 
     @Column(name="INSTAGRAM", length=MAX_LENGTH_INSTAGRAM, nullable=true)
     private String instagram;
+
+    @Column(name="IDIOMA", length=MAX_LENGTH_IDIOMA, nullable=false)
+    private String idioma;
 
     @Temporal(TemporalType.DATE)
     @Column(name="DATA_CADASTRO", nullable=false)
@@ -169,6 +175,14 @@ public class Pessoa extends EntidadeBase<Long> {
 
     public void setTelefones(List<Telefone> telefones) {
         this.telefones = telefones;
+    }
+
+    public String getIdioma() {
+        return idioma;
+    }
+
+    public void setIdioma(String idioma) {
+        this.idioma = idioma;
     }
 
 }

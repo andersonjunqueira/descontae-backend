@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
@@ -18,8 +19,9 @@ public class OfertaUnidade extends EntidadeBase<Long> {
     private static final long serialVersionUID = -3635692840951394323L;
 
     @Id
-    @Column(name="ID_OFERTA_UNIDADE", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ID_OFERTA_UNIDADE")
+    @SequenceGenerator(name="SEQ_OFERTA_UNIDADE", sequenceName="SEQ_OFERTA_UNIDADE", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_OFERTA_UNIDADE")
     private Long id;
 
     @ManyToOne

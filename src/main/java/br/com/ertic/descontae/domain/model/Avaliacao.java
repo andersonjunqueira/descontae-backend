@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
@@ -18,8 +19,9 @@ public class Avaliacao extends EntidadeBase<Long> {
     private static final long serialVersionUID = -3477321390404847487L;
 
     @Id
-    @Column(name="ID_AVALIACAO", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ID_AVALIACAO")
+    @SequenceGenerator(name="SEQ_AVALIACAO", sequenceName="SEQ_AVALIACAO", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_AVALIACAO")
     private Long id;
 
     @Column(name="NOTA_PRECO", nullable=true)

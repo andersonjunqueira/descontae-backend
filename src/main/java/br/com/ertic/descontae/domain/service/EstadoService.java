@@ -1,6 +1,7 @@
 package br.com.ertic.descontae.domain.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -19,7 +20,7 @@ public class EstadoService extends RestFullService<Estado, Long> {
     }
 
     @Override
-    public List<Estado> findAll() {
+    public List<Estado> findAll(Map<String, String[]> params) {
         return repository.findAll(new Sort(Sort.Direction.ASC, "nome"));
     }
 

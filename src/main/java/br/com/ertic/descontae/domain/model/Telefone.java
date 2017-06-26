@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
@@ -18,8 +19,9 @@ public class Telefone extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_IMAGEM = 200;
 
     @Id
-    @Column(name="ID_TELEFONE", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ID_TELEFONE")
+    @SequenceGenerator(name="SEQ_TELEFONE", sequenceName="SEQ_TELEFONE", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_TELEFONE")
     private Long id;
 
     @Column(name="ID_PARCEIRO", nullable=true)

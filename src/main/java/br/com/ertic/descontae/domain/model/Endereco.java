@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
@@ -24,8 +25,9 @@ public class Endereco extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_BAIRRO = 50;
 
     @Id
-    @Column(name="ID_ENDERECO", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ID_ENDERECO")
+    @SequenceGenerator(name="SEQ_ENDERECO", sequenceName="SEQ_ENDERECO", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_ENDERECO")
     private Long id;
 
     @Column(name="CEP", length=MAX_LENGTH_CEP, nullable=false)

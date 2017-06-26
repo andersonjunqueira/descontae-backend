@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
@@ -18,8 +19,9 @@ public class ImagemUnidade extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_IMAGEM = 200;
 
     @Id
-    @Column(name="ID_IMAGEM", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ID_IMAGEM")
+    @SequenceGenerator(name="SEQ_IMAGEM", sequenceName="SEQ_IMAGEM", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_IMAGEM")
     private Long id;
 
     @Column(name="IMAGEM", length=MAX_LENGTH_IMAGEM, nullable=false)

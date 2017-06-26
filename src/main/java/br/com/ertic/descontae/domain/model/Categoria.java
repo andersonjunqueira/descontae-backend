@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
@@ -18,8 +19,9 @@ public class Categoria extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_NOME = 30;
 
     @Id
-    @Column(name="ID_CATEGORIA", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ID_CATEGORIA")
+    @SequenceGenerator(name="SEQ_CATEGORIA", sequenceName="SEQ_CATEGORIA", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_CATEGORIA")
     private Long id;
 
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)

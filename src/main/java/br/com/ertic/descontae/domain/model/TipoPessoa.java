@@ -2,8 +2,6 @@ package br.com.ertic.descontae.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -17,13 +15,23 @@ public class TipoPessoa extends EntidadeBase<Long> {
 
     public static final int MAX_LENGTH_NOME = 30;
 
+    public static final TipoPessoa TIPO_ADMINISTRADOR = new TipoPessoa(1L);
+    public static final TipoPessoa TIPO_PARCEIRO = new TipoPessoa(2L);
+    public static final TipoPessoa TIPO_CLIENTE = new TipoPessoa(3L);
+    public static final TipoPessoa TIPO_USUARIO = new TipoPessoa(4L);
+
     @Id
-    @Column(name="ID_TIPO_PESSOA", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ID_TIPO_PESSOA")
     private Long id;
 
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)
     private String nome;
+
+    public TipoPessoa() {}
+
+    public TipoPessoa(Long id) {
+        setId(id);
+    }
 
     @Override
     public Long getId() {

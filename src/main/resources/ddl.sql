@@ -10,7 +10,7 @@ drop table TB_CARTAO;
 drop table TB_CLIENTE;
 drop table TB_IMAGEM;
 drop table TB_UNIDADE;
-drop table TB_EMPREENDIMENTO;
+drop table TB_PARCEIRO;
 drop table TB_PESSOA_FISICA;
 drop table TB_ENDERECO;
 drop table TB_CATEGORIA;
@@ -18,6 +18,42 @@ drop table TB_CIDADE;
 drop table TB_MARCA_FRANQUIA;
 drop table TB_TIPO_PESSOA;
 drop table TB_UF;
+
+drop sequence SEQ_ASSINATURA;
+drop sequence SEQ_AVALIACAO;
+drop sequence SEQ_CARTAO;
+drop sequence SEQ_CLIENTE;
+drop sequence SEQ_CONSUMO;
+drop sequence SEQ_ENDERECO;
+drop sequence SEQ_IMAGEM;
+drop sequence SEQ_MARCA_FRANQUIA;
+drop sequence SEQ_OFERTA;
+drop sequence SEQ_OFERTA_UNIDADE;
+drop sequence SEQ_PARCEIRO;
+drop sequence SEQ_PESSOA_FISICA;
+drop sequence SEQ_PLANO;
+drop sequence SEQ_REVISTA;
+drop sequence SEQ_TELEFONE;
+drop sequence SEQ_UNIDADE;
+drop sequence SEQ_CATEGORIA;
+
+create sequence SEQ_ASSINATURA;
+create sequence SEQ_AVALIACAO;
+create sequence SEQ_CARTAO;
+create sequence SEQ_CLIENTE;
+create sequence SEQ_CONSUMO;
+create sequence SEQ_ENDERECO;
+create sequence SEQ_IMAGEM;
+create sequence SEQ_MARCA_FRANQUIA;
+create sequence SEQ_OFERTA;
+create sequence SEQ_OFERTA_UNIDADE;
+create sequence SEQ_PARCEIRO;
+create sequence SEQ_PESSOA_FISICA;
+create sequence SEQ_PLANO;
+create sequence SEQ_REVISTA;
+create sequence SEQ_TELEFONE;
+create sequence SEQ_UNIDADE;
+create sequence SEQ_CATEGORIA;
 
 /*==============================================================*/
 /* Table: TB_ASSINATURA                                         */
@@ -201,12 +237,13 @@ create table TB_PESSOA_FISICA (
    ID_ENDERECO          INT8                 null,
    NOME                 VARCHAR(100)         not null,
    EMAIL                VARCHAR(100)         not null,
-   CPF                  VARCHAR(11)          not null,
+   CPF                  VARCHAR(11)          null,
    TELEFONE             VARCHAR(15)          null,
    INSTAGRAM            VARCHAR(50)          null,
    FACEBOOK             VARCHAR(50)          null,
    DATA_CADASTRO        date                 not null,
-   DATA_ULTIMA_ATUALIZACAO date                 not null,
+   DATA_ULTIMA_ATUALIZACAO date              not null,
+   IDIOMA               VARCHAR(5)           not null,
    constraint PK_TB_PESSOA_FISICA primary key (ID_PESSOA)
 );
 

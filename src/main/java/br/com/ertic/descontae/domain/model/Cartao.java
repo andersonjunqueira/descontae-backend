@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
@@ -20,8 +21,9 @@ public class Cartao extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_CODIGO = 50;
 
     @Id
-    @Column(name="ID_CARTAO", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ID_CARTAO")
+    @SequenceGenerator(name="SEQ_CARTAO", sequenceName="SEQ_CARTAO", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_CARTAO")
     private Long id;
 
     @Column(name="CODIGO", length=MAX_LENGTH_CODIGO, nullable=false)

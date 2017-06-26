@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,8 +26,9 @@ public class Revista extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_IMAGEM = 200;
 
     @Id
-    @Column(name="ID_REVISTA", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ID_REVISTA")
+    @SequenceGenerator(name="SEQ_REVISTA", sequenceName="SEQ_REVISTA", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_REVISTA")
     private Long id;
 
     @Column(name="EDICAO", length=MAX_LENGTH_EDICAO,  nullable=false)
