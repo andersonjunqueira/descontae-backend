@@ -28,8 +28,8 @@ public class CategoriaService extends RestFullService<Categoria, Long> {
 
             Categoria c = new Categoria();
             c.setNome(params.get("nome")[0]);
-            Example<Categoria> example = Example.of(c,
-                matching().withMatcher("nome", matcher -> matcher.startsWith()));
+            Example<Categoria> example = Example.of(c, matching()
+                .withMatcher("nome", matcher -> matcher.startsWith().ignoreCase()));
 
             return super.findAll(example);
 
