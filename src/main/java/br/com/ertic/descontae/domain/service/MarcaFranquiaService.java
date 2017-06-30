@@ -1,15 +1,21 @@
 package br.com.ertic.descontae.domain.service;
 
+import static org.springframework.data.domain.ExampleMatcher.matching;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import br.com.ertic.descontae.domain.model.MarcaFranquia;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.ImagemUnidadeRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.MarcaFranquiaRepository;
 import br.com.ertic.descontae.interfaces.web.dto.HomeDetalheDTO;
@@ -17,12 +23,32 @@ import br.com.ertic.descontae.interfaces.web.dto.HomeParceiroDTO;
 import br.com.ertic.descontae.interfaces.web.dto.HomeUnidadeDTO;
 import br.com.ertic.util.geo.GeoUtils;
 import br.com.ertic.util.geo.TimeCount;
+import br.com.ertic.util.infraestructure.service.RestFullService;
 
 @Service
-public class MarcaFranquiaService  {
+public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> {
 
     @Autowired
-    private MarcaFranquiaRepository repository;
+    public MarcaFranquiaService(MarcaFranquiaRepository repository) {
+        super(repository);
+    }
+
+    @Override
+    public List<MarcaFranquia> findAll(Map<String, String[]> params) {
+
+        if(params.get("nome") != null) {
+
+            MarcaFranquia c = new MarcaFranquia();
+            c.setNome(params.get("nome")[0]);
+            Example<MarcaFranquia> example = Example.of(c, matching()
+                .withMatcher("nome", matcher -> matcher.startsWith().ignoreCase()));
+
+            return super.findAll(example, new Sort(Sort.Direction.ASC, "nome"));
+
+        }
+
+        return super.findAll(new Sort(Sort.Direction.ASC, "nome"));
+    }
 
     @Autowired
     private ImagemUnidadeRepository imgRepository;
@@ -32,7 +58,7 @@ public class MarcaFranquiaService  {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
         TimeCount tc2 =  TimeCount.start(this.getClass(), "Consulta franquias/cidade");
-        List<Object[]> result = repository.findAllByCidade(idCidade);
+        List<Object[]> result = ((MarcaFranquiaRepository)getRepository()).findAllByCidade(idCidade);
         tc2.end();
 
         List<HomeParceiroDTO> franquias = new ArrayList<>();
@@ -103,7 +129,7 @@ public class MarcaFranquiaService  {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
         TimeCount tc =  TimeCount.start(this.getClass(), "Consulta detalhes franquia/cidade");
-        List<Object[]> result = repository.findDetalhes(idUnidade);
+        List<Object[]> result = ((MarcaFranquiaRepository)getRepository()).findDetalhes(idUnidade);
         tc.end();
 
         HomeDetalheDTO detalhe = null;
@@ -163,7 +189,7 @@ public class MarcaFranquiaService  {
         }
 
         tc =  TimeCount.start(this.getClass(), "Consulta outras unidades");
-        result = repository.findOutrasUnidades(detalhe.getIdMarca(), idCidade);
+        result = ((MarcaFranquiaRepository)getRepository()).findOutrasUnidades(detalhe.getIdMarca(), idCidade);
         tc.end();
 
         detalhe.setUnidades(new ArrayList<>());

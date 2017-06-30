@@ -17,7 +17,7 @@ import br.com.ertic.util.infraestructure.service.RestFullService;
 public class CategoriaService extends RestFullService<Categoria, Long> {
 
     @Autowired
-    CategoriaService(CategoriaRepository repository) {
+    public CategoriaService(CategoriaRepository repository) {
         super(repository);
     }
 

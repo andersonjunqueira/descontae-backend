@@ -13,18 +13,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.ertic.descontae.domain.model.MarcaFranquia;
 import br.com.ertic.descontae.domain.service.MarcaFranquiaService;
 import br.com.ertic.descontae.interfaces.web.dto.HomeDetalheDTO;
 import br.com.ertic.descontae.interfaces.web.dto.HomeParceiroDTO;
 import br.com.ertic.util.geo.TimeCount;
+import br.com.ertic.util.infraestructure.web.RestFullEndpoint;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/franquias")
-public class FranquiasRest  {
+public class FranquiasRest extends RestFullEndpoint<MarcaFranquia, Long> {
 
     @Autowired
     private MarcaFranquiaService srv;
+
+    @Autowired
+    public FranquiasRest(MarcaFranquiaService service) {
+        super(service);
+    }
 
     @RequestMapping(value="/cidade/{idCidade}", method = RequestMethod.GET)
     public List<HomeParceiroDTO> findAllByCidade(
