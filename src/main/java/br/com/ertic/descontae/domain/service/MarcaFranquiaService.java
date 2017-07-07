@@ -1,18 +1,13 @@
 package br.com.ertic.descontae.domain.service;
 
-import static org.springframework.data.domain.ExampleMatcher.matching;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.ertic.descontae.domain.model.MarcaFranquia;
@@ -33,22 +28,23 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
         super(repository);
     }
 
-    @Override
-    public List<MarcaFranquia> findAll(Map<String, String[]> params) {
-
-        if(params.get("nome") != null) {
-
-            MarcaFranquia c = new MarcaFranquia();
-            c.setNome(params.get("nome")[0]);
-            Example<MarcaFranquia> example = Example.of(c, matching()
-                .withMatcher("nome", matcher -> matcher.startsWith().ignoreCase()));
-
-            return super.findAll(example, new Sort(Sort.Direction.ASC, "nome"));
-
-        }
-
-        return super.findAll(new Sort(Sort.Direction.ASC, "nome"));
-    }
+//    @Override
+//    public List<MarcaFranquia> findAll(Map<String, String[]> params) {
+//
+//        if(params.get("nome") != null) {
+//
+//            MarcaFranquia c = new MarcaFranquia();
+//            c.setNome(params.get("nome")[0]);
+//            Example<MarcaFranquia> example = Example.of(c, matching()
+//                .withMatcher("nome", matcher -> matcher.startsWith().ignoreCase()));
+//
+//            return super.findAll(example, new Sort(Sort.Direction.ASC, "nome"));
+//
+//        }
+//
+//        return super.findAll(new Sort(Sort.Direction.ASC, "nome"));
+//
+//    }
 
     @Autowired
     private ImagemUnidadeRepository imgRepository;
