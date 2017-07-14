@@ -170,9 +170,9 @@ create table TB_IMAGEM (
 create table TB_MARCA_FRANQUIA (
    ID_MARCA_FRANQUIA    INT8                 not null,
    NOME                 VARCHAR(100)         not null,
-   IMAGEM_LOGO          VARCHAR(200)         not null,
-   IMAGEM_FUNDO_APP     VARCHAR(200)         not null,
-   IMAGEM_THUMBNAIL     VARCHAR(200)         not null,
+   IMAGEM_LOGO          TEXT                 not null,
+   IMAGEM_FUNDO_APP     TEXT                 not null,
+   IMAGEM_THUMBNAIL     TEXT                 not null,
    constraint PK_TB_MARCA_FRANQUIA primary key (ID_MARCA_FRANQUIA)
 );
 

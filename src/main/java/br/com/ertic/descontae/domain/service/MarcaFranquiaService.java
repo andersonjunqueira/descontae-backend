@@ -28,24 +28,6 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
         super(repository);
     }
 
-//    @Override
-//    public List<MarcaFranquia> findAll(Map<String, String[]> params) {
-//
-//        if(params.get("nome") != null) {
-//
-//            MarcaFranquia c = new MarcaFranquia();
-//            c.setNome(params.get("nome")[0]);
-//            Example<MarcaFranquia> example = Example.of(c, matching()
-//                .withMatcher("nome", matcher -> matcher.startsWith().ignoreCase()));
-//
-//            return super.findAll(example, new Sort(Sort.Direction.ASC, "nome"));
-//
-//        }
-//
-//        return super.findAll(new Sort(Sort.Direction.ASC, "nome"));
-//
-//    }
-
     @Autowired
     private ImagemUnidadeRepository imgRepository;
 
