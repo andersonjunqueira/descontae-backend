@@ -71,16 +71,16 @@
             <artifactId>keycloak-tomcat8-adapter</artifactId>
             <version>${keycloak.version}</version>
         </dependency>
-        <!-- <dependency> -->
-        <!-- <groupId>org.keycloak</groupId> -->
-        <!-- <artifactId>keycloak-spring-boot-adapter</artifactId> -->
-        <!-- <version>${keycloak.version}</version> -->
-        <!-- </dependency> -->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-spring-boot-adapter</artifactId>
+            <version>${keycloak.version}</version>
         </dependency>
+<!--         <dependency> -->
+<!--             <groupId>com.h2database</groupId> -->
+<!--             <artifactId>h2</artifactId> -->
+<!--             <scope>runtime</scope> -->
+<!--         </dependency> -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>

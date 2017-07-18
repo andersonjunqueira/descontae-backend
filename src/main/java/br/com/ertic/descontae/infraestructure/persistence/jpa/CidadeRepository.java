@@ -18,4 +18,10 @@ public interface CidadeRepository extends JpaRepository<Cidade, Long> {
         "       JOIN e.cidade c " +
         " ORDER BY c.nome ")
     List<Cidade> findAllComParcerias();
+
+    @Query(value=
+        "SELECT DISTINCT c " +
+        "  FROM Cidade c JOIN c.estado e " +
+        " WHERE c.nome = ?1 AND e.sigla = ?2")
+    Cidade findByNomeAndSigla(String nome, String siglaEstado);
 }

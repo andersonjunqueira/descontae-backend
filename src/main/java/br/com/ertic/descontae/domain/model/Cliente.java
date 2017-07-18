@@ -59,6 +59,10 @@ public class Cliente extends EntidadeBase<Long> {
     @JoinColumn(name="ID_PESSOA", nullable=false)
     private Pessoa pessoa;
 
+    @ManyToOne
+    @JoinColumn(name="ID_ENDERECO", nullable=true)
+    private Endereco endereco;
+
     @OneToMany
     @JoinColumn(name="ID_CLIENTE", referencedColumnName="ID_CLIENTE")
     private List<Telefone> telefones;
@@ -135,6 +139,14 @@ public class Cliente extends EntidadeBase<Long> {
 
     public void setTelefones(List<Telefone> telefones) {
         this.telefones = telefones;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
 

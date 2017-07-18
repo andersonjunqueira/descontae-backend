@@ -8,4 +8,6 @@ import br.com.ertic.descontae.domain.model.Estado;
 @Eager
 public interface EstadoRepository extends JpaRepository<Estado, Long> {
 
+    Estado findBySigla(String sigla);
+
 }

@@ -24,4 +24,7 @@ public class EstadoService extends RestFullService<Estado, Long> {
         return repository.findAll(new Sort(Sort.Direction.ASC, "nome"));
     }
 
+    public Estado findBySigla(String sigla) {
+        return ((EstadoRepository)repository).findBySigla(sigla);
+    }
 }
