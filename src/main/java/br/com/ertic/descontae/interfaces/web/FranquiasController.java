@@ -22,14 +22,14 @@ import br.com.ertic.util.infraestructure.web.RestFullEndpoint;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/franquias")
-public class FranquiasRest extends RestFullEndpoint<MarcaFranquia, Long> {
+@RequestMapping("/api/franquias")
+public class FranquiasController extends RestFullEndpoint<MarcaFranquia, Long> {
 
     @Autowired
     private MarcaFranquiaService srv;
 
     @Autowired
-    public FranquiasRest(MarcaFranquiaService service) {
+    public FranquiasController(MarcaFranquiaService service) {
         super(service);
     }
 

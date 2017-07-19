@@ -11,11 +11,11 @@ import br.com.ertic.util.infraestructure.web.RestFullEndpoint;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/categorias")
-public class CategoriasRest extends RestFullEndpoint<Categoria, Long> {
+@RequestMapping("/api/categorias")
+public class CategoriasController extends RestFullEndpoint<Categoria, Long> {
 
     @Autowired
-    public CategoriasRest(CategoriaService service) {
+    public CategoriasController(CategoriaService service) {
         super(service);
     }
 

@@ -13,7 +13,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-@SpringBootApplication(scanBasePackages={
+@SpringBootApplication(scanBasePackages = {
     "br.com.ertic.descontae.interfaces.web",
     "br.com.ertic.descontae.domain.service",
     "br.com.ertic.descontae.infraestructure.persistence.jpa",

@@ -11,11 +11,11 @@ import br.com.ertic.util.infraestructure.web.RestFullEndpoint;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/estados")
-public class EstadosRest extends RestFullEndpoint<Estado, Long> {
+@RequestMapping("/api/estados")
+public class EstadosController extends RestFullEndpoint<Estado, Long> {
 
     @Autowired
-    public EstadosRest(EstadoService service) {
+    public EstadosController(EstadoService service) {
         super(service);
     }
 

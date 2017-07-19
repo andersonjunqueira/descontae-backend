@@ -15,11 +15,11 @@ import br.com.ertic.util.infraestructure.web.RestFullEndpoint;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/pessoas")
-public class PessoasRest extends RestFullEndpoint<Pessoa, Long> {
+@RequestMapping("/api/pessoas")
+public class PessoasController extends RestFullEndpoint<Pessoa, Long> {
 
     @Autowired
-    public PessoasRest(PessoaService service) {
+    public PessoasController(PessoaService service) {
         super(service);
     }
 
@@ -35,4 +35,5 @@ public class PessoasRest extends RestFullEndpoint<Pessoa, Long> {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 }

@@ -17,11 +17,11 @@ import br.com.ertic.util.infraestructure.web.RestFullEndpoint;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/cidades")
-public class CidadesRest extends RestFullEndpoint<Cidade, Long> {
+@RequestMapping("/api/cidades")
+public class CidadesController extends RestFullEndpoint<Cidade, Long> {
 
     @Autowired
-    public CidadesRest(CidadeService service) {
+    public CidadesController(CidadeService service) {
         super(service);
     }
 
