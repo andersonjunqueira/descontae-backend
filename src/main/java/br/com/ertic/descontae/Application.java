@@ -7,6 +7,7 @@ import org.keycloak.representations.AccessToken;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.context.WebApplicationContext;
@@ -20,6 +21,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
     "br.com.ertic.util.infraestructure.web",
     "br.com.ertic.util.infraestructure.service"
 })
+@Import(value={ WebConfig.class, WebSecurityConfig.class })
 public class Application {
 
     public static void main(String[] args) {
