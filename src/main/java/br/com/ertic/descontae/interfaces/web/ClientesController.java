@@ -1,6 +1,5 @@
 package br.com.ertic.descontae.interfaces.web;
 
-import org.keycloak.representations.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,9 +17,6 @@ import br.com.ertic.util.infraestructure.web.RestFullEndpoint;
 public class ClientesController extends RestFullEndpoint<Cliente, Long> {
 
     @Autowired
-    private AccessToken accessToken;
-
-    @Autowired
     public ClientesController(ClienteService service) {
         super(service);
     }
@@ -28,7 +24,7 @@ public class ClientesController extends RestFullEndpoint<Cliente, Long> {
     @Override
     public ResponseEntity<?> add(Cliente input) {
         input.setPessoa(new Pessoa());
-        input.getPessoa().setEmail(accessToken.getEmail());
+        input.getPessoa().setEmail(token.getUsername());
         return super.add(input);
     }
 
