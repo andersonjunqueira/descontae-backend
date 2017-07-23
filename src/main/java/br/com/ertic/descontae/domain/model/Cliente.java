@@ -3,6 +3,7 @@ package br.com.ertic.descontae.domain.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -55,15 +56,15 @@ public class Cliente extends EntidadeBase<Long> {
     @Column(name="DATA_ULTIMA_ATUALIZACAO", nullable=false)
     private Date dataAlteracao;
 
-    @ManyToOne
+    @ManyToOne(cascade={CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name="ID_PESSOA", nullable=false)
     private Pessoa pessoa;
 
-    @ManyToOne
+    @ManyToOne(cascade={CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name="ID_ENDERECO", nullable=true)
     private Endereco endereco;
 
-    @OneToMany
+    @OneToMany(cascade={CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name="ID_CLIENTE", referencedColumnName="ID_CLIENTE")
     private List<Telefone> telefones;
 
