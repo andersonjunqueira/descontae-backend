@@ -40,6 +40,9 @@ public class ClienteService extends RestFullService<Cliente, Long> {
         }
 
         if(e.getEndereco().getLogradouro() == null || e.getEndereco().getLogradouro().isEmpty())  {
+            if(e.getEndereco().getId() != null) {
+                enderecoService.delete(e.getEndereco().getId());
+            }
             e.setEndereco(null);
         } else {
             e.setEndereco(enderecoService.save(e.getEndereco()));

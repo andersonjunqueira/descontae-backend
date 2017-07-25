@@ -64,7 +64,7 @@ public class Cliente extends EntidadeBase<Long> {
     @JoinColumn(name="ID_ENDERECO", nullable=true)
     private Endereco endereco;
 
-    @OneToMany(cascade={CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(cascade={CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval=true)
     @JoinColumn(name="ID_CLIENTE", referencedColumnName="ID_CLIENTE")
     private List<Telefone> telefones;
 

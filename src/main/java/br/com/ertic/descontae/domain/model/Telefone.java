@@ -33,6 +33,9 @@ public class Telefone extends EntidadeBase<Long> {
     @Column(name="ID_UNIDADE", nullable=true)
     private Long idUnidade;
 
+    @Column(name="ID_CLIENTE", nullable=true)
+    private Long idCliente;
+
     @Column(name="NUMERO", nullable=false)
     private String numero;
 
@@ -76,6 +79,14 @@ public class Telefone extends EntidadeBase<Long> {
 
     public void setIdParceiro(Long idParceiro) {
         this.idParceiro = idParceiro;
+    }
+
+    public Long getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Long idCliente) {
+        this.idCliente = idCliente;
     }
 
 
