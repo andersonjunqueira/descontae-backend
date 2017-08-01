@@ -11,7 +11,7 @@ import br.com.ertic.descontae.domain.model.MarcaFranquia;
 @Eager
 public interface MarcaFranquiaRepository extends JpaRepository<MarcaFranquia, Long> {
 
-    @Query(value=
+    String HOME_QUERY =
         "SELECT unidade.id, " +
         "       marca.id, " +
         "       marca.nome, " +
@@ -38,10 +38,13 @@ public interface MarcaFranquiaRepository extends JpaRepository<MarcaFranquia, Lo
         "       JOIN parceiro.marca marca " +
         "       JOIN parceiro.categoria categoria " +
         " WHERE endereco.cidade.id = ?1 " +
-        "   AND parceiro.id = unidade.idParceiro " +
-        "   AND current_date() BETWEEN revista.inicioVigencia AND revista.fimVigencia" +
-        " ORDER BY marca.id ")
+        "   AND parceiro.id = unidade.idParceiro ";
+
+    @Query(value=HOME_QUERY)
     List<Object[]> findAllByCidade(Long idCidade);
+
+    @Query(value=HOME_QUERY + " AND (categoria.nome LIKE ?2 OR unidade.nome LIKE ?2) ")
+    List<Object[]> findAllByCidade(Long idCidade, String filtro);
 
     @Query(value=
         "SELECT unidade.id, " +

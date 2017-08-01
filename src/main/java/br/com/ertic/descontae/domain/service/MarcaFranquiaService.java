@@ -31,12 +31,20 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
     @Autowired
     private ImagemUnidadeRepository imgRepository;
 
-    public List<HomeParceiroDTO> findFranquiasByCidade(Long idCidade, Double lat, Double lon) {
+    public List<HomeParceiroDTO> findFranquiasByCidade(Long idCidade, String filtro, Double lat, Double lon) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
         TimeCount tc2 =  TimeCount.start(this.getClass(), "Consulta franquias/cidade");
-        List<Object[]> result = ((MarcaFranquiaRepository)getRepository()).findAllByCidade(idCidade);
+
+        List<Object[]> result = null;
+        if(filtro != null) {
+            String f = filtro + "%";
+            result = ((MarcaFranquiaRepository)getRepository()).findAllByCidade(idCidade, f);
+        } else {
+            result = ((MarcaFranquiaRepository)getRepository()).findAllByCidade(idCidade);
+        }
+
         tc2.end();
 
         List<HomeParceiroDTO> franquias = new ArrayList<>();

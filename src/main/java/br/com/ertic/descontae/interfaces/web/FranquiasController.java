@@ -38,10 +38,11 @@ public class FranquiasController extends RestFullEndpoint<MarcaFranquia, Long> {
         @PathVariable("idCidade") Long idCidade,
         @RequestParam(required=false) Double lat,
         @RequestParam(required=false) Double lon,
+        @RequestParam(required=false) String filtro,
         HttpServletResponse response) {
         TimeCount tc =  TimeCount.start(this.getClass(), "Processamento do método /api/franquias/cidade/{id}");
 
-        List<HomeParceiroDTO> saida = srv.findFranquiasByCidade(idCidade, lat, lon);
+        List<HomeParceiroDTO> saida = srv.findFranquiasByCidade(idCidade, filtro, lat, lon);
 
         if(null == saida || saida.isEmpty()){
            response.setStatus(HttpStatus.SC_NO_CONTENT);
