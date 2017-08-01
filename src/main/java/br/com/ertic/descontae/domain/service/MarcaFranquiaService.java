@@ -145,16 +145,25 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
                 detalhe.setNotaPreco((Long)unidades[17]);
 
                 Double curtidas = (Double)unidades[16];
+                curtidas = curtidas == null ? 0 : curtidas;
+
                 Double descurtidas = (Double)unidades[17];
+                descurtidas = descurtidas == null ? 0 : descurtidas;
+
                 Double total = curtidas + descurtidas;
+                if(total == 0) {
+                    detalhe.setCurtidas(0D);
+                    detalhe.setDescurtidas(0D);
 
-                String p = new Double(curtidas/total).toString();
-                p = p.substring(0, p.indexOf(".") + 3);
-                detalhe.setCurtidas(Double.parseDouble(p));
+                } else {
+                    String p = new Double(curtidas/total).toString();
+                    p = p.substring(0, p.indexOf(".") + 3);
+                    detalhe.setCurtidas(Double.parseDouble(p));
 
-                p = new Double(descurtidas/total).toString();
-                p = p.substring(0, p.indexOf(".") + 3);
-                detalhe.setDescurtidas(Double.parseDouble(p));
+                    p = new Double(descurtidas/total).toString();
+                    p = p.substring(0, p.indexOf(".") + 3);
+                    detalhe.setDescurtidas(Double.parseDouble(p));
+                }
 
                 if(unidades[19] != null) {
                     detalhe.setHoraAbrir(sdf.format((Date)unidades[19]));
@@ -172,28 +181,29 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
                     detalhe.setDistancia(Double.parseDouble(d));
                 }
             }
-        }
 
-        tc =  TimeCount.start(this.getClass(), "Consulta outras unidades");
-        result = ((MarcaFranquiaRepository)getRepository()).findOutrasUnidades(detalhe.getIdMarca(), idCidade);
-        tc.end();
+            tc =  TimeCount.start(this.getClass(), "Consulta outras unidades");
+            result = ((MarcaFranquiaRepository)getRepository()).findOutrasUnidades(detalhe.getIdMarca(), idCidade);
+            tc.end();
 
-        detalhe.setUnidades(new ArrayList<>());
-        List<HomeUnidadeDTO> temp = new ArrayList<>();
-        if(result != null && result.size() > 0) {
-            for(Object[] uns : result) {
+            detalhe.setUnidades(new ArrayList<>());
+            List<HomeUnidadeDTO> temp = new ArrayList<>();
+            if(result != null && result.size() > 0) {
+                for(Object[] uns : result) {
 
-                HomeUnidadeDTO u = new HomeUnidadeDTO();
-                u.setIdUnidade((Long)uns[0]);
-                u.setEnderecoResumido((String)uns[1]);
+                    HomeUnidadeDTO u = new HomeUnidadeDTO();
+                    u.setIdUnidade((Long)uns[0]);
+                    u.setEnderecoResumido((String)uns[1]);
 
-                if(uns[0].equals(detalhe.getIdUnidade())) {
-                    detalhe.getUnidades().add(u);
-                } else {
-                    temp.add(u);
+                    if(uns[0].equals(detalhe.getIdUnidade())) {
+                        detalhe.getUnidades().add(u);
+                    } else {
+                        temp.add(u);
+                    }
                 }
+                detalhe.getUnidades().addAll(temp);
             }
-            detalhe.getUnidades().addAll(temp);
+
         }
 
         return detalhe;
