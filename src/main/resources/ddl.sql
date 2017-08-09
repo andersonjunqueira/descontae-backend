@@ -1,3 +1,8 @@
+CREATE DATABASE descontae;
+CREATE USER descontaeusr WITH PASSWORD 'descontaeusr';
+GRANT CONNECT ON DATABASE descontae TO descontaeusr;
+ALTER USER descontaeusr WITH SUPERUSER;
+
 drop table TB_AVALIACAO;
 drop table TB_CONSUMO;
 drop table TB_OFERTA_UNIDADE;
@@ -182,7 +187,7 @@ create table TB_MARCA_FRANQUIA (
 create table TB_OFERTA (
    ID_OFERTA            INT8                 not null,
    DESCRICAO            VARCHAR(500)         not null,
-   IMAGEM_SITE          VARCHAR(200)         not null,
+   IMAGEM_SITE          TEXT                 not null,
    VALOR                FLOAT8               not null,
    DESCONTO             FLOAT8               not null,
    ID_PESSOA            INT8                 not null,
@@ -256,7 +261,7 @@ create table TB_PLANO (
    DESCRICAO            VARCHAR(500)         null,
    VALOR                FLOAT8               not null,
    SITUACAO             VARCHAR(1)           not null,
-   IMAGEM               VARCHAR(200)         not null,
+   IMAGEM               TEXT                 not null,
    constraint PK_TB_PLANO primary key (ID_PLANO)
 );
 
@@ -269,8 +274,8 @@ create table TB_REVISTA (
    DESCRICAO            VARCHAR(200)         not null,
    INICIO_VIGENCIA      DATE                 not null,
    FIM_VIGENCIA         DATE                 not null,
-   PDF                  VARCHAR(200)         not null,
-   IMAGEM               VARCHAR(200)         not null,
+   PDF                  TEXT                 not null,
+   IMAGEM               TEXT                 not null,
    constraint PK_TB_REVISTA primary key (ID_REVISTA)
 );
 
