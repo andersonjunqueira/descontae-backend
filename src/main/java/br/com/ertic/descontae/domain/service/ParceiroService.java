@@ -24,6 +24,12 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
     private PessoaService pessoaService;
 
     @Autowired
+    private CategoriaService categoriaService;
+
+    @Autowired
+    private MarcaFranquiaService marcaService;
+
+    @Autowired
     public ParceiroService(ParceiroRepository repository) {
         super(repository);
     }
@@ -39,14 +45,19 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
             e.setPessoa(pessoaService.findOne(e.getPessoa().getId()));
         }
 
-//        if(e.getEndereco().getLogradouro() == null || e.getEndereco().getLogradouro().isEmpty())  {
-//            if(e.getEndereco().getId() != null) {
-//                enderecoService.delete(e.getEndereco().getId());
-//            }
-//            e.setEndereco(null);
-//        } else {
-//            e.setEndereco(enderecoService.save(e.getEndereco()));
-//        }
+        e.getUnidades().stream().forEach(unidade -> {
+            if(unidade.getEndereco().getLogradouro() == null || unidade.getEndereco().getLogradouro().isEmpty())  {
+                if(unidade.getEndereco().getId() != null) {
+                    enderecoService.delete(unidade.getEndereco().getId());
+                }
+                unidade.setEndereco(null);
+            } else {
+                unidade.setEndereco(enderecoService.save(unidade.getEndereco()));
+            }
+        });
+
+        e.setCategoria(categoriaService.findOne(e.getCategoria().getId()));
+        e.setMarca(marcaService.findOne(e.getMarca().getId()));
 
         e.setDataAlteracao(new Date(System.currentTimeMillis()));
         return super.save(e);

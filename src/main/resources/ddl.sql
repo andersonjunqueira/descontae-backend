@@ -164,8 +164,8 @@ create table TB_ENDERECO (
 /*==============================================================*/
 create table TB_IMAGEM (
    ID_IMAGEM            INT8                 not null,
-   ID_UNIDADE           INT8                 null,
-   IMAGEM               VARCHAR(200)         not null,
+   ID_UNIDADE           INT8                 not null,
+   IMAGEM               TEXT                 not null,
    constraint PK_TB_IMAGEM primary key (ID_IMAGEM)
 );
 

@@ -16,16 +16,14 @@ public class ImagemUnidade extends EntidadeBase<Long> {
 
     private static final long serialVersionUID = 3087745627866627549L;
 
-    public static final int MAX_LENGTH_IMAGEM = 200;
-
     @Id
     @Column(name="ID_IMAGEM")
     @SequenceGenerator(name="SEQ_IMAGEM", sequenceName="SEQ_IMAGEM", allocationSize=1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_IMAGEM")
     private Long id;
 
-    @Column(name="IMAGEM", length=MAX_LENGTH_IMAGEM, nullable=false)
-    private String caminho;
+    @Column(name="IMAGEM", nullable=false)
+    private String imagem;
 
     @Column(name="ID_UNIDADE", nullable=false)
     private Long idUnidade;
@@ -40,20 +38,20 @@ public class ImagemUnidade extends EntidadeBase<Long> {
         this.id = id;
     }
 
-    public String getCaminho() {
-        return caminho;
-    }
-
-    public void setCaminho(String caminho) {
-        this.caminho = caminho;
-    }
-
     public Long getIdUnidade() {
         return idUnidade;
     }
 
     public void setIdUnidade(Long idUnidade) {
         this.idUnidade = idUnidade;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 
 }

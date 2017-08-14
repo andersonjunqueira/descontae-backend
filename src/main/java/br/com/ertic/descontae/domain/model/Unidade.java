@@ -3,6 +3,7 @@ package br.com.ertic.descontae.domain.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
@@ -43,10 +46,12 @@ public class Unidade extends EntidadeBase<Long> {
     private Long idParceiro;
 
     @Temporal(TemporalType.TIME)
+    @JsonFormat(pattern="hh:mm:ss")
     @Column(name="INICIO_EXPEDIENTE", nullable=true)
     private Date inicioExpediente;
 
     @Temporal(TemporalType.TIME)
+    @JsonFormat(pattern="hh:mm:ss")
     @Column(name="FIM_EXPEDIENTE", nullable=true)
     private Date fimExpediente;
 
@@ -54,15 +59,15 @@ public class Unidade extends EntidadeBase<Long> {
     @JoinColumn(name="ID_ENDERECO", nullable=false)
     private Endereco endereco;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name="ID_UNIDADE", referencedColumnName="ID_UNIDADE")
     private List<Avaliacao> avaliacoes;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name="ID_UNIDADE", referencedColumnName="ID_UNIDADE")
     private List<ImagemUnidade> imagens;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name="ID_UNIDADE", referencedColumnName="ID_UNIDADE")
     private List<Telefone> telefones;
 

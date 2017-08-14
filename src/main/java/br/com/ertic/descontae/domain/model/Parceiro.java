@@ -3,6 +3,7 @@ package br.com.ertic.descontae.domain.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -67,11 +68,11 @@ public class Parceiro extends EntidadeBase<Long> {
     @JoinColumn(name="ID_MARCA_FRANQUIA", nullable=false)
     private MarcaFranquia marca;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name="ID_PARCEIRO", referencedColumnName="ID_PARCEIRO")
     private List<Unidade> unidades;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name="ID_PARCEIRO", referencedColumnName="ID_PARCEIRO")
     private List<Telefone> telefones;
 
