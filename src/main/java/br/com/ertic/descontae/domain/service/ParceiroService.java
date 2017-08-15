@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ertic.descontae.domain.model.Parceiro;
+import br.com.ertic.descontae.domain.model.Unidade;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.ParceiroRepository;
 import br.com.ertic.util.infraestructure.dto.Token;
 import br.com.ertic.util.infraestructure.service.RestFullService;
@@ -16,6 +17,9 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
 
     @Autowired
     private Token token;
+
+    @Autowired
+    private UnidadeService unidadeService;
 
     @Autowired
     private EnderecoService enderecoService;
@@ -36,16 +40,31 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
 
     @Override
     @Transactional
-    public Parceiro save(Parceiro e) {
+    public Parceiro save(Parceiro parceiro) {
 
-        if(e.getId() == null) {
-            e.setPessoa(pessoaService.findByEmail(token.getUsername()));
-            e.setDataCadastro(new Date(System.currentTimeMillis()));
+        if(parceiro.getId() == null) {
+            parceiro.setPessoa(pessoaService.findByEmail(token.getUsername()));
+            parceiro.setDataCadastro(new Date(System.currentTimeMillis()));
+            parceiro.setId(super.nextVal(Parceiro.SEQUENCE));
         } else {
-            e.setPessoa(pessoaService.findOne(e.getPessoa().getId()));
+            parceiro.setPessoa(pessoaService.findOne(parceiro.getPessoa().getId()));
         }
 
-        e.getUnidades().stream().forEach(unidade -> {
+        final Long idParceiro = parceiro.getId();
+
+        parceiro.setCategoria(categoriaService.findOne(parceiro.getCategoria().getId()));
+        parceiro.setMarca(marcaService.findOne(parceiro.getMarca().getId()));
+        parceiro.setDataAlteracao(new Date(System.currentTimeMillis()));
+
+        // SALVANDO OS TELEFONES
+        parceiro.getTelefones().stream().forEach(telefone -> {
+            telefone.setIdParceiro(idParceiro);
+        });
+
+        parceiro.getUnidades().stream().forEach(unidade -> {
+            unidade.setIdParceiro(idParceiro);
+
+            // SALVANDO O ENDEREÇO DA UNIDADE
             if(unidade.getEndereco().getLogradouro() == null || unidade.getEndereco().getLogradouro().isEmpty())  {
                 if(unidade.getEndereco().getId() != null) {
                     enderecoService.delete(unidade.getEndereco().getId());
@@ -54,12 +73,25 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
             } else {
                 unidade.setEndereco(enderecoService.save(unidade.getEndereco()));
             }
+
+            if(unidade.getId() == null) {
+                unidade.setId(unidadeService.nextVal(Unidade.SEQUENCE));
+            }
+
+            final Long unidadeId = unidade.getId();
+
+            // SALVANDO AS IMAGENS
+            unidade.getImagens().stream().forEach(imagem -> {
+                imagem.setIdUnidade(unidadeId);
+            });
+
+            // SALVANDO OS TELEFONES
+            unidade.getTelefones().stream().forEach(telefone -> {
+                telefone.setIdUnidade(unidadeId);
+            });
+
         });
 
-        e.setCategoria(categoriaService.findOne(e.getCategoria().getId()));
-        e.setMarca(marcaService.findOne(e.getMarca().getId()));
-
-        e.setDataAlteracao(new Date(System.currentTimeMillis()));
-        return super.save(e);
+        return super.save(parceiro);
     }
 }

@@ -27,13 +27,14 @@ public class Unidade extends EntidadeBase<Long> {
 
     private static final long serialVersionUID = 5200631229042999757L;
 
+    public static final String SEQUENCE = "SEQ_UNIDADE";
     public static final int MAX_LENGTH_NOME = 50;
     public static final int MAX_LENGTH_SOBRE = 1000;
 
     @Id
     @Column(name="ID_UNIDADE")
-    @SequenceGenerator(name="SEQ_UNIDADE", sequenceName="SEQ_UNIDADE", allocationSize=1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_UNIDADE")
+    @SequenceGenerator(name=SEQUENCE, sequenceName=SEQUENCE, allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator=SEQUENCE)
     private Long id;
 
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)

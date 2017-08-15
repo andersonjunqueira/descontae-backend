@@ -2,14 +2,14 @@ package br.com.ertic.descontae.infraestructure.persistence.jpa;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.cdi.Eager;
 
 import br.com.ertic.descontae.domain.model.Cidade;
+import br.com.ertic.util.infraestructure.jpa.RepositoryBase;
 
 @Eager
-public interface CidadeRepository extends JpaRepository<Cidade, Long> {
+public interface CidadeRepository extends RepositoryBase<Cidade, Long> {
 
     @Query(value=
         "SELECT DISTINCT c " +

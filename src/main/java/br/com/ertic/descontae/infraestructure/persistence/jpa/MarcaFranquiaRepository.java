@@ -2,14 +2,14 @@ package br.com.ertic.descontae.infraestructure.persistence.jpa;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.cdi.Eager;
 
 import br.com.ertic.descontae.domain.model.MarcaFranquia;
+import br.com.ertic.util.infraestructure.jpa.RepositoryBase;
 
 @Eager
-public interface MarcaFranquiaRepository extends JpaRepository<MarcaFranquia, Long> {
+public interface MarcaFranquiaRepository extends RepositoryBase<MarcaFranquia, Long> {
 
     String HOME_QUERY =
         "SELECT unidade.id, " +

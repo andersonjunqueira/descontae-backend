@@ -25,6 +25,7 @@ public class Parceiro extends EntidadeBase<Long> {
 
     private static final long serialVersionUID = 239405336985899452L;
 
+    public static final String SEQUENCE = "SEQ_PARCEIRO";
     public static final int MAX_LENGTH_CNPJ = 14;
     public static final int MAX_LENGTH_NOME = 100;
     public static final int MAX_LENGTH_NOME_FANTASIA = 100;
@@ -32,8 +33,8 @@ public class Parceiro extends EntidadeBase<Long> {
 
     @Id
     @Column(name="ID_PARCEIRO")
-    @SequenceGenerator(name="SEQ_PARCEIRO", sequenceName="SEQ_PARCEIRO", allocationSize=1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_PARCEIRO")
+    @SequenceGenerator(name=SEQUENCE, sequenceName=SEQUENCE, allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator=SEQUENCE)
     private Long id;
 
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)
