@@ -5,8 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
@@ -24,17 +28,25 @@ public class Telefone extends EntidadeBase<Long> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_TELEFONE")
     private Long id;
 
-    @Column(name="ID_PARCEIRO", nullable=true)
-    private Long idParceiro;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name="ID_PARCEIRO", nullable=true)
+    private Parceiro parceiro;
 
-    @Column(name="ID_PESSOA", nullable=true)
-    private Long idPessoa;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name="ID_PESSOA", nullable=true)
+    private Pessoa pessoa;
 
-    @Column(name="ID_UNIDADE", nullable=true)
-    private Long idUnidade;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name="ID_UNIDADE", nullable=true)
+    private Unidade unidade;
 
-    @Column(name="ID_CLIENTE", nullable=true)
-    private Long idCliente;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name="ID_CLIENTE", nullable=true)
+    private Cliente cliente;
 
     @Column(name="NUMERO", nullable=false)
     private String numero;
@@ -49,20 +61,36 @@ public class Telefone extends EntidadeBase<Long> {
         this.id = id;
     }
 
-    public Long getIdPessoa() {
-        return idPessoa;
+    public Parceiro getParceiro() {
+        return parceiro;
     }
 
-    public void setIdPessoa(Long idPessoa) {
-        this.idPessoa = idPessoa;
+    public void setParceiro(Parceiro parceiro) {
+        this.parceiro = parceiro;
     }
 
-    public Long getIdUnidade() {
-        return idUnidade;
+    public Pessoa getPessoa() {
+        return pessoa;
     }
 
-    public void setIdUnidade(Long idUnidade) {
-        this.idUnidade = idUnidade;
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
+
+    public Unidade getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(Unidade unidade) {
+        this.unidade = unidade;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public String getNumero() {
@@ -72,22 +100,5 @@ public class Telefone extends EntidadeBase<Long> {
     public void setNumero(String numero) {
         this.numero = numero;
     }
-
-    public Long getIdParceiro() {
-        return idParceiro;
-    }
-
-    public void setIdParceiro(Long idParceiro) {
-        this.idParceiro = idParceiro;
-    }
-
-    public Long getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(Long idCliente) {
-        this.idCliente = idCliente;
-    }
-
 
 }

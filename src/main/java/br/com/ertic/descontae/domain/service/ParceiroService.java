@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ertic.descontae.domain.model.Parceiro;
-import br.com.ertic.descontae.domain.model.Unidade;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.ParceiroRepository;
 import br.com.ertic.util.infraestructure.dto.Token;
 import br.com.ertic.util.infraestructure.service.RestFullService;
@@ -17,9 +16,6 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
 
     @Autowired
     private Token token;
-
-    @Autowired
-    private UnidadeService unidadeService;
 
     @Autowired
     private EnderecoService enderecoService;
@@ -50,19 +46,17 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
             parceiro.setPessoa(pessoaService.findOne(parceiro.getPessoa().getId()));
         }
 
-        final Long idParceiro = parceiro.getId();
-
         parceiro.setCategoria(categoriaService.findOne(parceiro.getCategoria().getId()));
         parceiro.setMarca(marcaService.findOne(parceiro.getMarca().getId()));
         parceiro.setDataAlteracao(new Date(System.currentTimeMillis()));
 
         // SALVANDO OS TELEFONES
         parceiro.getTelefones().stream().forEach(telefone -> {
-            telefone.setIdParceiro(idParceiro);
+            telefone.setParceiro(parceiro);
         });
 
         parceiro.getUnidades().stream().forEach(unidade -> {
-            unidade.setIdParceiro(idParceiro);
+            unidade.setParceiro(parceiro);
 
             // SALVANDO O ENDEREÇO DA UNIDADE
             if(unidade.getEndereco().getLogradouro() == null || unidade.getEndereco().getLogradouro().isEmpty())  {
@@ -74,20 +68,14 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
                 unidade.setEndereco(enderecoService.save(unidade.getEndereco()));
             }
 
-            if(unidade.getId() == null) {
-                unidade.setId(unidadeService.nextVal(Unidade.SEQUENCE));
-            }
-
-            final Long unidadeId = unidade.getId();
-
             // SALVANDO AS IMAGENS
             unidade.getImagens().stream().forEach(imagem -> {
-                imagem.setIdUnidade(unidadeId);
+                imagem.setUnidade(unidade);
             });
 
             // SALVANDO OS TELEFONES
             unidade.getTelefones().stream().forEach(telefone -> {
-                telefone.setIdUnidade(unidadeId);
+                telefone.setUnidade(unidade);
             });
 
         });

@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
 @Entity
@@ -34,8 +36,10 @@ public class Avaliacao extends EntidadeBase<Long> {
     @JoinColumn(name="ID_PESSOA", nullable=false)
     private Pessoa pessoa;
 
-    @Column(name="ID_UNIDADE", nullable=false)
-    private Long idUnidade;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name="ID_UNIDADE", nullable=false)
+    private Unidade unidade;
 
     @Override
     public Long getId() {
@@ -71,12 +75,12 @@ public class Avaliacao extends EntidadeBase<Long> {
         this.pessoa = pessoa;
     }
 
-    public Long getIdUnidade() {
-        return idUnidade;
+    public Unidade getUnidade() {
+        return unidade;
     }
 
-    public void setIdUnidade(Long idUnidade) {
-        this.idUnidade = idUnidade;
+    public void setUnidade(Unidade unidade) {
+        this.unidade = unidade;
     }
 
 }

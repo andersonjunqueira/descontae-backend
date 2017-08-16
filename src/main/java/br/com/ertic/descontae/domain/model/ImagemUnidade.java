@@ -5,8 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
@@ -25,8 +29,10 @@ public class ImagemUnidade extends EntidadeBase<Long> {
     @Column(name="IMAGEM", nullable=false)
     private String imagem;
 
-    @Column(name="ID_UNIDADE", nullable=false)
-    private Long idUnidade;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name="ID_UNIDADE", nullable=false)
+    private Unidade unidade;
 
     @Override
     public Long getId() {
@@ -38,20 +44,20 @@ public class ImagemUnidade extends EntidadeBase<Long> {
         this.id = id;
     }
 
-    public Long getIdUnidade() {
-        return idUnidade;
-    }
-
-    public void setIdUnidade(Long idUnidade) {
-        this.idUnidade = idUnidade;
-    }
-
     public String getImagem() {
         return imagem;
     }
 
     public void setImagem(String imagem) {
         this.imagem = imagem;
+    }
+
+    public Unidade getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(Unidade unidade) {
+        this.unidade = unidade;
     }
 
 }

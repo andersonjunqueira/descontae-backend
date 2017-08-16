@@ -69,12 +69,10 @@ public class Parceiro extends EntidadeBase<Long> {
     @JoinColumn(name="ID_MARCA_FRANQUIA", nullable=false)
     private MarcaFranquia marca;
 
-    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
-    @JoinColumn(name="ID_PARCEIRO", referencedColumnName="ID_PARCEIRO")
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="parceiro")
     private List<Unidade> unidades;
 
-    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
-    @JoinColumn(name="ID_PARCEIRO", referencedColumnName="ID_PARCEIRO")
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="parceiro")
     private List<Telefone> telefones;
 
     @Override

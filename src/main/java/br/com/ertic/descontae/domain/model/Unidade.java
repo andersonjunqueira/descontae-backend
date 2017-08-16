@@ -18,6 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
@@ -43,8 +44,10 @@ public class Unidade extends EntidadeBase<Long> {
     @Column(name="SOBRE", length=MAX_LENGTH_SOBRE, nullable=true)
     private String sobre;
 
-    @Column(name="ID_PARCEIRO", nullable=false)
-    private Long idParceiro;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name="ID_PARCEIRO", nullable=false)
+    private Parceiro parceiro;
 
     @Temporal(TemporalType.TIME)
     @JsonFormat(pattern="hh:mm:ss")
@@ -60,16 +63,13 @@ public class Unidade extends EntidadeBase<Long> {
     @JoinColumn(name="ID_ENDERECO", nullable=false)
     private Endereco endereco;
 
-    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
-    @JoinColumn(name="ID_UNIDADE", referencedColumnName="ID_UNIDADE")
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="unidade")
     private List<Avaliacao> avaliacoes;
 
-    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
-    @JoinColumn(name="ID_UNIDADE", referencedColumnName="ID_UNIDADE")
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="unidade")
     private List<ImagemUnidade> imagens;
 
-    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
-    @JoinColumn(name="ID_UNIDADE", referencedColumnName="ID_UNIDADE")
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="unidade")
     private List<Telefone> telefones;
 
     @Override
@@ -138,20 +138,20 @@ public class Unidade extends EntidadeBase<Long> {
         this.telefones = telefones;
     }
 
-    public Long getIdParceiro() {
-        return idParceiro;
-    }
-
-    public void setIdParceiro(Long idParceiro) {
-        this.idParceiro = idParceiro;
-    }
-
     public String getSobre() {
         return sobre;
     }
 
     public void setSobre(String sobre) {
         this.sobre = sobre;
+    }
+
+    public Parceiro getParceiro() {
+        return parceiro;
+    }
+
+    public void setParceiro(Parceiro parceiro) {
+        this.parceiro = parceiro;
     }
 
 }

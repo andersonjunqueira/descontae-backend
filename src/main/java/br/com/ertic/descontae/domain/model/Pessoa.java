@@ -67,8 +67,7 @@ public class Pessoa extends EntidadeBase<Long> {
     @Column(name="DATA_ULTIMA_ATUALIZACAO", nullable=false)
     private Date dataAlteracao;
 
-    @OneToMany
-    @JoinColumn(name="ID_PESSOA", referencedColumnName="ID_PESSOA")
+    @OneToMany(mappedBy="pessoa")
     private List<Telefone> telefones;
 
     @ManyToOne

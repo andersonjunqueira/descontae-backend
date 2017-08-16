@@ -38,7 +38,7 @@ public interface MarcaFranquiaRepository extends RepositoryBase<MarcaFranquia, L
         "       JOIN parceiro.marca marca " +
         "       JOIN parceiro.categoria categoria " +
         " WHERE endereco.cidade.id = ?1 " +
-        "   AND parceiro.id = unidade.idParceiro ";
+        "   AND parceiro = unidade.parceiro ";
 
     @Query(value=HOME_QUERY)
     List<Object[]> findAllByCidade(Long idCidade);
@@ -61,11 +61,11 @@ public interface MarcaFranquiaRepository extends RepositoryBase<MarcaFranquia, L
         "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro || ', ' || endereco.cidade.nome || ' - ' || endereco.cidade.estado.sigla, endereco.cep, " +
         "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro, " +
         "       unidade.sobre, " +
-        "       (select sum(a.satisfacao) / count(*) from Avaliacao a WHERE a.idUnidade = unidade.id), " +
-        "       (select sum(a.preco) / count(*) from Avaliacao a WHERE a.idUnidade = unidade.id), " +
+        "       (select sum(a.satisfacao) / count(*) from Avaliacao a WHERE a.unidade = unidade), " +
+        "       (select sum(a.preco) / count(*) from Avaliacao a WHERE a.unidade = unidade), " +
 
-//        "       (SELECT COUNT(*) FROM Avaliacao a WHERE a.curtiu = 1 AND a.idUnidade = unidade.id), " +
-//        "       (SELECT COUNT(*) FROM Avaliacao a WHERE a.curtiu = -1 AND a.idUnidade = unidade.id), " +
+//        "       (SELECT COUNT(*) FROM Avaliacao a WHERE a.curtiu = 1 AND a.unidade = unidade), " +
+//        "       (SELECT COUNT(*) FROM Avaliacao a WHERE a.curtiu = -1 AND a.unidade = unidade), " +
 
         "       endereco.cidade.id, " +
         "       unidade.inicioExpediente, " +
@@ -79,7 +79,7 @@ public interface MarcaFranquiaRepository extends RepositoryBase<MarcaFranquia, L
         "       JOIN parceiro.marca marca " +
         "       JOIN parceiro.categoria categoria " +
         " WHERE unidade.id = ?1 " +
-        "   AND parceiro.id = unidade.idParceiro " +
+        "   AND parceiro = unidade.parceiro " +
         "   AND current_date() BETWEEN revista.inicioVigencia AND revista.fimVigencia ")
     List<Object[]> findDetalhes(Long idUnidade);
 
@@ -96,7 +96,7 @@ public interface MarcaFranquiaRepository extends RepositoryBase<MarcaFranquia, L
         "       JOIN parceiro.categoria categoria " +
         " WHERE marca.id = ?1 " +
         "   AND endereco.cidade.id = ?2 " +
-        "   AND parceiro.id = unidade.idParceiro " +
+        "   AND parceiro = unidade.parceiro " +
         "   AND current_date() BETWEEN revista.inicioVigencia AND revista.fimVigencia ")
     List<Object[]> findOutrasUnidades(Long idMarca, Long idCidade);
 
