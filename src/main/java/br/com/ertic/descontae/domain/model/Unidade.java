@@ -50,12 +50,12 @@ public class Unidade extends EntidadeBase<Long> {
     private Parceiro parceiro;
 
     @Temporal(TemporalType.TIME)
-    @JsonFormat(pattern="hh:mm:ss")
+    @JsonFormat(pattern="hh:mm")
     @Column(name="INICIO_EXPEDIENTE", nullable=true)
     private Date inicioExpediente;
 
     @Temporal(TemporalType.TIME)
-    @JsonFormat(pattern="hh:mm:ss")
+    @JsonFormat(pattern="hh:mm")
     @Column(name="FIM_EXPEDIENTE", nullable=true)
     private Date fimExpediente;
 
