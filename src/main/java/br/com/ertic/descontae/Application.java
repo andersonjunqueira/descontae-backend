@@ -2,6 +2,7 @@ package br.com.ertic.descontae;
 
 import java.util.Base64;
 
+import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.boot.SpringApplication;
@@ -54,6 +55,11 @@ public class Application {
         }
 
         return null;
+    }
+
+    @Bean
+    public Filter compressFilter() {
+        return new JSONFilter();
     }
 
 }

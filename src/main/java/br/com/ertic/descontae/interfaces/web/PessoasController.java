@@ -36,4 +36,21 @@ public class PessoasController extends RestFullEndpoint<Pessoa, Long> {
         }
     }
 
+    @RequestMapping(method = RequestMethod.GET, path="/verificar")
+    public ResponseEntity<Pessoa> verificar(
+        @RequestParam(name="email", required=false) String email,
+        @RequestParam(name="cpf", required=false) String cpf) {
+
+        if(cpf == null && email == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        boolean encontrado = ((PessoaService)service).verificar(cpf, email);
+
+        if(!encontrado) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
