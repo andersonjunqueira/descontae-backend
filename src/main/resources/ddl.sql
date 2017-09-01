@@ -7,7 +7,6 @@ drop table TB_AVALIACAO;
 drop table TB_CONSUMO;
 drop table TB_OFERTA_UNIDADE;
 drop table TB_OFERTA;
-drop table TB_REVISTA;
 drop table TB_TELEFONE;
 drop table TB_ASSINATURA;
 drop table TB_PLANO;
@@ -37,7 +36,6 @@ drop sequence SEQ_OFERTA_UNIDADE;
 drop sequence SEQ_PARCEIRO;
 drop sequence SEQ_PESSOA_FISICA;
 drop sequence SEQ_PLANO;
-drop sequence SEQ_REVISTA;
 drop sequence SEQ_TELEFONE;
 drop sequence SEQ_UNIDADE;
 drop sequence SEQ_CATEGORIA;
@@ -203,7 +201,6 @@ create table TB_OFERTA_UNIDADE (
    ID_OFERTA_UNIDADE    INT8                 not null,
    ID_OFERTA            INT8                 not null,
    ID_UNIDADE           INT8                 not null,
-   ID_REVISTA           INT8                 not null,
    constraint PK_TB_OFERTA_UNIDADE primary key (ID_OFERTA_UNIDADE)
 );
 
@@ -249,6 +246,8 @@ create table TB_PESSOA_FISICA (
    DATA_CADASTRO        date                 not null,
    DATA_ULTIMA_ATUALIZACAO date              not null,
    IDIOMA               VARCHAR(5)           not null,
+   SEXO                 VARCHAR(1)           null,
+   DATA_NASCIMENTO      DATE                 null,
    constraint PK_TB_PESSOA_FISICA primary key (ID_PESSOA)
 );
 
@@ -263,20 +262,6 @@ create table TB_PLANO (
    SITUACAO             VARCHAR(1)           not null,
    IMAGEM               TEXT                 not null,
    constraint PK_TB_PLANO primary key (ID_PLANO)
-);
-
-/*==============================================================*/
-/* Table: TB_REVISTA                                            */
-/*==============================================================*/
-create table TB_REVISTA (
-   ID_REVISTA           INT8                 not null,
-   EDICAO               VARCHAR(10)          not null,
-   DESCRICAO            VARCHAR(200)         not null,
-   INICIO_VIGENCIA      DATE                 not null,
-   FIM_VIGENCIA         DATE                 not null,
-   PDF                  TEXT                 not null,
-   IMAGEM               TEXT                 not null,
-   constraint PK_TB_REVISTA primary key (ID_REVISTA)
 );
 
 /*==============================================================*/
@@ -403,11 +388,6 @@ alter table TB_OFERTA_UNIDADE
 alter table TB_OFERTA_UNIDADE
    add constraint FK_TB_OFERT_REFERENCE_TB_UNIDA foreign key (ID_UNIDADE)
       references TB_UNIDADE (ID_UNIDADE)
-      on delete restrict on update restrict;
-
-alter table TB_OFERTA_UNIDADE
-   add constraint FK_TB_OFERT_REFERENCE_TB_REVIS foreign key (ID_REVISTA)
-      references TB_REVISTA (ID_REVISTA)
       on delete restrict on update restrict;
 
 alter table TB_PARCEIRO

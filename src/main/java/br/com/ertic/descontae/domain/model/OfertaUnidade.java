@@ -32,10 +32,6 @@ public class OfertaUnidade extends EntidadeBase<Long> {
     @JoinColumn(name="ID_UNIDADE", nullable=false)
     private Unidade unidade;
 
-    @ManyToOne
-    @JoinColumn(name="ID_REVISTA", nullable=false)
-    private Revista revista;
-
     @Override
     public Long getId() {
         return id;
@@ -52,14 +48,6 @@ public class OfertaUnidade extends EntidadeBase<Long> {
 
     public void setOferta(Oferta oferta) {
         this.oferta = oferta;
-    }
-
-    public Revista getRevista() {
-        return revista;
-    }
-
-    public void setRevista(Revista revista) {
-        this.revista = revista;
     }
 
     public Unidade getUnidade() {

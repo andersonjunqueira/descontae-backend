@@ -30,7 +30,6 @@ public interface MarcaFranquiaRepository extends RepositoryBase<MarcaFranquia, L
         "       unidade.inicioExpediente, " +
         "       unidade.fimExpediente " +
         "       FROM OfertaUnidade ofertaunidade " +
-        "       JOIN ofertaunidade.revista revista " +
         "       JOIN ofertaunidade.oferta oferta " +
         "       JOIN ofertaunidade.unidade unidade " +
         "       JOIN unidade.endereco endereco, " +
@@ -38,7 +37,8 @@ public interface MarcaFranquiaRepository extends RepositoryBase<MarcaFranquia, L
         "       JOIN parceiro.marca marca " +
         "       JOIN parceiro.categoria categoria " +
         " WHERE endereco.cidade.id = ?1 " +
-        "   AND parceiro = unidade.parceiro ";
+        "   AND parceiro = unidade.parceiro " +
+        "   AND oferta.situacao = 'A' ";
 
     @Query(value=HOME_QUERY)
     List<Object[]> findAllByCidade(Long idCidade);
@@ -71,7 +71,6 @@ public interface MarcaFranquiaRepository extends RepositoryBase<MarcaFranquia, L
         "       unidade.inicioExpediente, " +
         "       unidade.fimExpediente " +
         "       FROM OfertaUnidade ofertaunidade " +
-        "       JOIN ofertaunidade.revista revista " +
         "       JOIN ofertaunidade.oferta oferta " +
         "       JOIN ofertaunidade.unidade unidade " +
         "       JOIN unidade.endereco endereco, " +
@@ -80,14 +79,13 @@ public interface MarcaFranquiaRepository extends RepositoryBase<MarcaFranquia, L
         "       JOIN parceiro.categoria categoria " +
         " WHERE unidade.id = ?1 " +
         "   AND parceiro = unidade.parceiro " +
-        "   AND current_date() BETWEEN revista.inicioVigencia AND revista.fimVigencia ")
+        "   AND oferta.situacao = 'A'")
     List<Object[]> findDetalhes(Long idUnidade);
 
     @Query(value=
         "SELECT unidade.id, " +
         "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro " +
         "       FROM OfertaUnidade ofertaunidade " +
-        "       JOIN ofertaunidade.revista revista " +
         "       JOIN ofertaunidade.oferta oferta " +
         "       JOIN ofertaunidade.unidade unidade " +
         "       JOIN unidade.endereco endereco, " +
@@ -97,7 +95,7 @@ public interface MarcaFranquiaRepository extends RepositoryBase<MarcaFranquia, L
         " WHERE marca.id = ?1 " +
         "   AND endereco.cidade.id = ?2 " +
         "   AND parceiro = unidade.parceiro " +
-        "   AND current_date() BETWEEN revista.inicioVigencia AND revista.fimVigencia ")
+        "   AND oferta.situacao = 'A' ")
     List<Object[]> findOutrasUnidades(Long idMarca, Long idCidade);
 
 }

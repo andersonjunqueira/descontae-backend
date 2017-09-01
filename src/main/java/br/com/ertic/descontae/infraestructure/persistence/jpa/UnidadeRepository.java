@@ -11,7 +11,7 @@ import br.com.ertic.util.infraestructure.jpa.RepositoryBase;
 @Eager
 public interface UnidadeRepository extends RepositoryBase<Unidade, Long> {
 
-    @Query(value="SELECT DISTINCT o.unidade FROM OfertaUnidade o WHERE o.revista.id = ?1 AND o.oferta.id = ?2")
-    List<Unidade> findAllByRevistaEOferta(Long idRevista, Long idOferta);
+    @Query(value="SELECT DISTINCT o.unidade FROM OfertaUnidade o WHERE o.oferta.situacao = 'A'")
+    List<Unidade> findAllByOferta(Long idOferta);
 
 }
