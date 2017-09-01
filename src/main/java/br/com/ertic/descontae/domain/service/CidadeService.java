@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.ertic.descontae.domain.model.Cidade;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.CidadeRepository;
+import br.com.ertic.util.infraestructure.exception.NegocioException;
 import br.com.ertic.util.infraestructure.service.RestFullService;
 
 @Service
@@ -24,15 +25,15 @@ public class CidadeService extends RestFullService<Cidade, Long> {
         return ((CidadeRepository)repository).findAllComParcerias();
     }
 
-    public Cidade findByNomeAndSigla(String nome, String siglaEstado) {
+    public Cidade findByNomeAndSigla(String nome, String siglaEstado) throws NegocioException {
         return findByNomeAndSigla(nome, siglaEstado, false);
     }
 
-    public Cidade findByNomeAndSigla(String nome, String siglaEstado, boolean create) {
+    public Cidade findByNomeAndSigla(String nome, String siglaEstado, boolean create) throws NegocioException {
 
         Cidade c = ((CidadeRepository)repository).findByNomeAndSigla(nome, siglaEstado);
 
-        if(c == null) {
+        if(c == null && create) {
             c = new Cidade();
             c.setEstado(estadoService.findBySigla(siglaEstado));
             c.setNome(nome);

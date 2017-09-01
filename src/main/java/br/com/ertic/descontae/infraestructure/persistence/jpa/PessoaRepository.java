@@ -9,7 +9,10 @@ import br.com.ertic.util.infraestructure.jpa.RepositoryBase;
 @Eager
 public interface PessoaRepository extends RepositoryBase<Pessoa, Long> {
 
-    @Query(value="SELECT COUNT(*) FROM Pessoa p WHERE p.email = ?1 OR p.cpf = ?1")
-    Long checkDuplicate(String cpfOuEmail);
+    @Query(value="SELECT COUNT(*) FROM Pessoa p WHERE p.cpf = ?1")
+    Long verificarCPFDuplicado(String cpf);
+
+    @Query(value="SELECT COUNT(*) FROM Pessoa p WHERE p.email = ?1")
+    Long verificarEmailDuplicado(String email);
 
 }

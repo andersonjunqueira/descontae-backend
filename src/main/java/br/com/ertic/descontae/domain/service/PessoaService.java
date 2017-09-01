@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.ertic.descontae.domain.model.Pessoa;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.PessoaRepository;
+import br.com.ertic.util.infraestructure.exception.NegocioException;
 import br.com.ertic.util.infraestructure.service.RestFullService;
 
 @Service
@@ -28,7 +29,7 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
     }
 
     @Override
-    public Pessoa save(Pessoa e) {
+    public Pessoa save(Pessoa e) throws NegocioException {
 
         if(e.getId() == null) {
             e.setDataCadastro(new Date(System.currentTimeMillis()));
@@ -50,7 +51,15 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
     }
 
     public boolean verificar(String cpf, String email) {
-        Long total = ((PessoaRepository)repository).checkDuplicate(cpf != null ? cpf : email);
+        Long total = 0L;
+        if(cpf != null) {
+            total += ((PessoaRepository)repository).verificarCPFDuplicado(cpf);
+        }
+
+        if(email != null) {
+            total += ((PessoaRepository)repository).verificarEmailDuplicado(email);
+        }
+
         return total > 0;
     }
 

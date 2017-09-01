@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.ertic.descontae.domain.model.Cliente;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.ClienteRepository;
 import br.com.ertic.util.infraestructure.dto.Token;
+import br.com.ertic.util.infraestructure.exception.NegocioException;
 import br.com.ertic.util.infraestructure.service.RestFullService;
 
 @Service
@@ -30,7 +31,7 @@ public class ClienteService extends RestFullService<Cliente, Long> {
 
     @Override
     @Transactional
-    public Cliente save(Cliente e) {
+    public Cliente save(Cliente e) throws NegocioException {
 
         if(e.getId() == null) {
             e.setPessoa(pessoaService.findByEmail(token.getUsername()));

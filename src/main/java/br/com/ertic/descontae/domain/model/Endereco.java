@@ -1,5 +1,6 @@
 package br.com.ertic.descontae.domain.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -45,7 +46,7 @@ public class Endereco extends EntidadeBase<Long> {
     @Column(name="BAIRRO", length=MAX_LENGTH_BAIRRO, nullable=false)
     private String bairro;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="ID_CIDADE", nullable=false)
     private Cidade cidade;
 

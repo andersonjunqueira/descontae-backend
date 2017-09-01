@@ -14,6 +14,7 @@ import br.com.ertic.descontae.infraestructure.persistence.jpa.OfertaRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.RevistaRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.UnidadeRepository;
 import br.com.ertic.descontae.interfaces.web.dto.OfertaDTO;
+import br.com.ertic.util.infraestructure.exception.NegocioException;
 import br.com.ertic.util.infraestructure.service.RestFullService;
 
 @Service
@@ -31,7 +32,7 @@ public class RevistaService extends RestFullService<Revista, Long> {
     }
 
     @Override
-    public Revista save(Revista e) {
+    public Revista save(Revista e) throws NegocioException {
 
         long t = e.getInicioVigencia().getTime() - TimeZone.getDefault().getOffset(e.getInicioVigencia().getTime());
         e.setInicioVigencia(new Date(t));

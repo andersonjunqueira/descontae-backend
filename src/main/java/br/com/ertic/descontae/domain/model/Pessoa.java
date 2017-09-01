@@ -3,8 +3,11 @@ package br.com.ertic.descontae.domain.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +18,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
@@ -31,6 +35,7 @@ public class Pessoa extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_NOME = 100;
     public static final int MAX_LENGTH_EMAIL = 100;
     public static final int MAX_LENGTH_IDIOMA = 5;
+    public static final int MAX_LENGTH_SEXO = 1;
 
     @Id
     @Column(name="ID_PESSOA")
@@ -67,6 +72,14 @@ public class Pessoa extends EntidadeBase<Long> {
     @Column(name="DATA_ULTIMA_ATUALIZACAO", nullable=false)
     private Date dataAlteracao;
 
+    @Temporal(TemporalType.DATE)
+    @Column(name="DATA_NASCIMENTO", nullable=false)
+    private Date dataNascimento;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="SEXO", length=MAX_LENGTH_SEXO, nullable=false)
+    private Sexo sexo;
+
     @OneToMany(mappedBy="pessoa")
     private List<Telefone> telefones;
 
@@ -74,9 +87,12 @@ public class Pessoa extends EntidadeBase<Long> {
     @JoinColumn(name="ID_TIPO_PESSOA", nullable=false)
     private TipoPessoa tipoPessoa;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="ID_ENDERECO", nullable=true)
     private Endereco endereco;
+
+    @Transient
+    private String senha;
 
     @Override
     public Long getId() {
@@ -182,6 +198,14 @@ public class Pessoa extends EntidadeBase<Long> {
 
     public void setIdioma(String idioma) {
         this.idioma = idioma;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
 }

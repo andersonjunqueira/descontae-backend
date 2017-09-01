@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ertic.descontae.domain.model.Parceiro;
+import br.com.ertic.descontae.domain.model.Unidade;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.ParceiroRepository;
 import br.com.ertic.util.infraestructure.dto.Token;
+import br.com.ertic.util.infraestructure.exception.NegocioException;
 import br.com.ertic.util.infraestructure.service.RestFullService;
 
 @Service
@@ -36,7 +38,7 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
 
     @Override
     @Transactional
-    public Parceiro save(Parceiro parceiro) {
+    public Parceiro save(Parceiro parceiro) throws NegocioException {
 
         if(parceiro.getId() == null) {
             parceiro.setPessoa(pessoaService.findByEmail(token.getUsername()));
@@ -55,7 +57,7 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
             telefone.setParceiro(parceiro);
         });
 
-        parceiro.getUnidades().stream().forEach(unidade -> {
+        for(Unidade unidade : parceiro.getUnidades()) {
             unidade.setParceiro(parceiro);
 
             // SALVANDO O ENDEREÇO DA UNIDADE
@@ -78,7 +80,7 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
                 telefone.setUnidade(unidade);
             });
 
-        });
+        }
 
         return super.save(parceiro);
     }
