@@ -20,6 +20,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import br.com.ertic.descontae.domain.model.serializer.DataDeserializer;
+import br.com.ertic.descontae.domain.model.serializer.DataSerializer;
+import br.com.ertic.descontae.domain.model.serializer.SexoDeserializer;
+import br.com.ertic.descontae.domain.model.serializer.SexoSerializer;
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
 @Entity
@@ -64,18 +71,26 @@ public class Pessoa extends EntidadeBase<Long> {
     @Column(name="IDIOMA", length=MAX_LENGTH_IDIOMA, nullable=false)
     private String idioma;
 
+    @JsonSerialize(using=DataSerializer.class)
+    @JsonDeserialize(using=DataDeserializer.class)
     @Temporal(TemporalType.DATE)
     @Column(name="DATA_CADASTRO", nullable=false)
     private Date dataCadastro;
 
+    @JsonSerialize(using=DataSerializer.class)
+    @JsonDeserialize(using=DataDeserializer.class)
     @Temporal(TemporalType.DATE)
     @Column(name="DATA_ULTIMA_ATUALIZACAO", nullable=false)
     private Date dataAlteracao;
 
+    @JsonSerialize(using=DataSerializer.class)
+    @JsonDeserialize(using=DataDeserializer.class)
     @Temporal(TemporalType.DATE)
     @Column(name="DATA_NASCIMENTO", nullable=false)
     private Date dataNascimento;
 
+    @JsonSerialize(using=SexoSerializer.class)
+    @JsonDeserialize(using=SexoDeserializer.class)
     @Enumerated(EnumType.STRING)
     @Column(name="SEXO", length=MAX_LENGTH_SEXO, nullable=false)
     private Sexo sexo;

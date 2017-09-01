@@ -14,6 +14,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import br.com.ertic.descontae.domain.model.serializer.DataDeserializer;
+import br.com.ertic.descontae.domain.model.serializer.DataSerializer;
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
 @Entity
@@ -33,10 +38,14 @@ public class Assinatura extends EntidadeBase<Long> {
     @Column(name="CODIGO_CARTAO", length=MAX_LENGTH_CODIGO_CARTAO, nullable=false)
     private String codigoCartao;
 
+    @JsonSerialize(using=DataSerializer.class)
+    @JsonDeserialize(using=DataDeserializer.class)
     @Temporal(TemporalType.DATE)
     @Column(name="INICIO_VIGENCIA", nullable=false)
     private Date inicioVigencia;
 
+    @JsonSerialize(using=DataSerializer.class)
+    @JsonDeserialize(using=DataDeserializer.class)
     @Temporal(TemporalType.DATE)
     @Column(name="FIM_VIGENCIA", nullable=true)
     private Date fimVigencia;

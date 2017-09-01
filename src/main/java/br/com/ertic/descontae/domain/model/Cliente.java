@@ -17,6 +17,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import br.com.ertic.descontae.domain.model.serializer.DataDeserializer;
+import br.com.ertic.descontae.domain.model.serializer.DataSerializer;
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
 @Entity
@@ -48,10 +53,14 @@ public class Cliente extends EntidadeBase<Long> {
     @Column(name="CNPJ", length=MAX_LENGTH_CNPJ, nullable=false)
     private String cnpj;
 
+    @JsonSerialize(using=DataSerializer.class)
+    @JsonDeserialize(using=DataDeserializer.class)
     @Temporal(TemporalType.DATE)
     @Column(name="DATA_CADASTRO", nullable=false)
     private Date dataCadastro;
 
+    @JsonSerialize(using=DataSerializer.class)
+    @JsonDeserialize(using=DataDeserializer.class)
     @Temporal(TemporalType.DATE)
     @Column(name="DATA_ULTIMA_ATUALIZACAO", nullable=false)
     private Date dataAlteracao;
