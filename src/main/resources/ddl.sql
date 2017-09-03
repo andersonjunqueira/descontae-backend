@@ -80,7 +80,7 @@ create table TB_AVALIACAO (
    ID_UNIDADE           INT8                 not null,
    NOTA_PRECO           INT4                 null,
    NOTA_SATISFACAO      INT4                 null,
-   CURTIU               INT2                 null,
+   CURTIU               INT4                 null,
    constraint PK_TB_AVALIACAO primary key (ID_AVALIACAO)
 );
 

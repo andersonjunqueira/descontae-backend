@@ -25,7 +25,6 @@
         <mapping class="br.com.ertic.descontae.domain.model.OfertaUnidade"/>
         <mapping class="br.com.ertic.descontae.domain.model.Pessoa"/>
         <mapping class="br.com.ertic.descontae.domain.model.Plano"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Revista"/>
         <mapping class="br.com.ertic.descontae.domain.model.TipoPessoa"/>
         <mapping class="br.com.ertic.descontae.domain.model.Unidade"/>
         <mapping class="br.com.ertic.descontae.domain.model.ImagemUnidade"/>

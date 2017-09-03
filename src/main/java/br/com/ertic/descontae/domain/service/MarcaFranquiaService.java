@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import br.com.ertic.descontae.domain.model.MarcaFranquia;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.ImagemUnidadeRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.MarcaFranquiaRepository;
+import br.com.ertic.descontae.infraestructure.persistence.jpa.OfertaRepository;
 import br.com.ertic.descontae.interfaces.web.dto.HomeDetalheDTO;
 import br.com.ertic.descontae.interfaces.web.dto.HomeParceiroDTO;
 import br.com.ertic.descontae.interfaces.web.dto.HomeUnidadeDTO;
@@ -30,6 +31,9 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
 
     @Autowired
     private ImagemUnidadeRepository imgRepository;
+
+    @Autowired
+    private OfertaRepository ofertaRepository;
 
     public List<HomeParceiroDTO> findFranquiasByCidade(Long idCidade, String filtro, Double lat, Double lon) {
 
@@ -131,26 +135,19 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
                 detalhe.setLogomarca((String)unidades[3]);
                 detalhe.setFundoApp((String)unidades[4]);
                 detalhe.setCategoria((String)unidades[5]);
-                detalhe.setOferta((String)unidades[6]);
-                detalhe.setRegrasOferta((String)unidades[7]);
-                detalhe.setValor((Double)unidades[8]);
-                detalhe.setDesconto((Double)unidades[9]);
-                detalhe.setLatitude((Double)unidades[10]);
-                detalhe.setLongitude((Double)unidades[11]);
-                detalhe.setEndereco((String)unidades[12]);
-                detalhe.setEnderecoResumido((String)unidades[14]);
-                detalhe.setSobre((String)unidades[15]);
+                detalhe.setLatitude((Double)unidades[6]);
+                detalhe.setLongitude((Double)unidades[7]);
+                detalhe.setEndereco((String)unidades[8]);
+                detalhe.setEnderecoResumido((String)unidades[10]);
+                detalhe.setSobre((String)unidades[11]);
 
-                detalhe.setNotaSatisfacao((Long)unidades[16]);
-                detalhe.setNotaPreco((Long)unidades[17]);
-
-                Double curtidas = (Double)unidades[16];
+                Long curtidas = (Long)unidades[12];
                 curtidas = curtidas == null ? 0 : curtidas;
 
-                Double descurtidas = (Double)unidades[17];
+                Long descurtidas = (Long)unidades[13];
                 descurtidas = descurtidas == null ? 0 : descurtidas;
 
-                Double total = curtidas + descurtidas;
+                Long total = curtidas + descurtidas;
                 if(total == 0) {
                     detalhe.setCurtidas(0D);
                     detalhe.setDescurtidas(0D);
@@ -165,14 +162,15 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
                     detalhe.setDescurtidas(Double.parseDouble(p));
                 }
 
-                if(unidades[19] != null) {
-                    detalhe.setHoraAbrir(sdf.format((Date)unidades[19]));
-                    detalhe.setHoraFechar(sdf.format((Date)unidades[20]));
+                idCidade = (Long)unidades[14];
+
+                if(unidades[15] != null) {
+                    detalhe.setHoraAbrir(sdf.format((Date)unidades[15]));
+                    detalhe.setHoraFechar(sdf.format((Date)unidades[16]));
                 }
 
                 detalhe.setImagensProduto(imgRepository.findByIdUnidade(detalhe.getIdUnidade()));
 
-                idCidade = (Long)unidades[18];
 
                 if(lat != null && lon != null && detalhe.getLatitude() != null) {
                     detalhe.setDistancia(GeoUtils.geoDistanceInKm(lat, lon, detalhe.getLatitude(), detalhe.getLongitude()));
@@ -203,6 +201,8 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
                 }
                 detalhe.getUnidades().addAll(temp);
             }
+
+            detalhe.setOfertas(ofertaRepository.findAllAtivasByUnidade(detalhe.getIdUnidade()));
 
         }
 

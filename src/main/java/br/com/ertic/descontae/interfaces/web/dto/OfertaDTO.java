@@ -2,15 +2,12 @@ package br.com.ertic.descontae.interfaces.web.dto;
 
 import java.util.List;
 
-import br.com.ertic.descontae.domain.model.MarcaFranquia;
 import br.com.ertic.descontae.domain.model.Oferta;
-import br.com.ertic.descontae.domain.model.Unidade;
 
 public class OfertaDTO {
 
     private Oferta oferta;
-    private MarcaFranquia marca;
-    private List<Unidade> unidades;
+    private List<OfertaUnidadeDTO> unidades;
 
     public Oferta getOferta() {
         return oferta;
@@ -20,19 +17,11 @@ public class OfertaDTO {
         this.oferta = oferta;
     }
 
-    public MarcaFranquia getMarca() {
-        return marca;
-    }
-
-    public void setMarca(MarcaFranquia marca) {
-        this.marca = marca;
-    }
-
-    public List<Unidade> getUnidades() {
+    public List<OfertaUnidadeDTO> getUnidades() {
         return unidades;
     }
 
-    public void setUnidades(List<Unidade> unidades) {
+    public void setUnidades(List<OfertaUnidadeDTO> unidades) {
         this.unidades = unidades;
     }
 

@@ -3,33 +3,28 @@ package br.com.ertic.descontae.interfaces.web.dto;
 import java.util.List;
 
 import br.com.ertic.descontae.domain.model.ImagemUnidade;
+import br.com.ertic.descontae.domain.model.Oferta;
 
 public class HomeDetalheDTO {
 
     private Long idMarca;
+    private Long idUnidade;
     private String marca;
     private String logomarca;
     private String fundoApp;
     private String categoria;
-    private Long idUnidade;
-    private Double valor;
-    private Double desconto;
     private Double latitude;
     private Double longitude;
-    private String oferta;
-    private String regrasOferta;
     private String endereco;
     private String enderecoResumido;
     private Double distancia;
     private String sobre;
     private String horaAbrir;
     private String horaFechar;
-
-    private Long notaSatisfacao;
-    private Long notaPreco;
     private Double curtidas;
     private Double descurtidas;
 
+    private List<Oferta> ofertas;
     private List<ImagemUnidade> imagensProduto;
     private List<HomeUnidadeDTO> unidades;
 
@@ -81,22 +76,6 @@ public class HomeDetalheDTO {
         this.idUnidade = idUnidade;
     }
 
-    public Double getValor() {
-        return valor;
-    }
-
-    public void setValor(Double valor) {
-        this.valor = valor;
-    }
-
-    public Double getDesconto() {
-        return desconto;
-    }
-
-    public void setDesconto(Double desconto) {
-        this.desconto = desconto;
-    }
-
     public Double getLatitude() {
         return latitude;
     }
@@ -111,22 +90,6 @@ public class HomeDetalheDTO {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
-    }
-
-    public String getOferta() {
-        return oferta;
-    }
-
-    public void setOferta(String oferta) {
-        this.oferta = oferta;
-    }
-
-    public String getRegrasOferta() {
-        return regrasOferta;
-    }
-
-    public void setRegrasOferta(String regrasOferta) {
-        this.regrasOferta = regrasOferta;
     }
 
     public String getEndereco() {
@@ -169,22 +132,6 @@ public class HomeDetalheDTO {
         this.sobre = sobre;
     }
 
-    public Long getNotaSatisfacao() {
-        return notaSatisfacao;
-    }
-
-    public void setNotaSatisfacao(Long notaSatisfacao) {
-        this.notaSatisfacao = notaSatisfacao;
-    }
-
-    public Long getNotaPreco() {
-        return notaPreco;
-    }
-
-    public void setNotaPreco(Long notaPreco) {
-        this.notaPreco = notaPreco;
-    }
-
     public List<HomeUnidadeDTO> getUnidades() {
         return unidades;
     }
@@ -223,6 +170,14 @@ public class HomeDetalheDTO {
 
     public void setDescurtidas(Double descurtidas) {
         this.descurtidas = descurtidas;
+    }
+
+    public List<Oferta> getOfertas() {
+        return ofertas;
+    }
+
+    public void setOfertas(List<Oferta> ofertas) {
+        this.ofertas = ofertas;
     }
 
 

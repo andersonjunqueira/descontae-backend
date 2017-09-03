@@ -32,6 +32,9 @@ public class Avaliacao extends EntidadeBase<Long> {
     @Column(name="NOTA_SATISFACAO", nullable=true)
     private Integer satisfacao;
 
+    @Column(name="CURTIU", nullable=true)
+    private Integer curtiu;
+
     @ManyToOne
     @JoinColumn(name="ID_PESSOA", nullable=false)
     private Pessoa pessoa;

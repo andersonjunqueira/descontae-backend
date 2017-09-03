@@ -52,50 +52,44 @@ public interface MarcaFranquiaRepository extends RepositoryBase<MarcaFranquia, L
         "       marca.nome, " +
         "       marca.logomarca, " +
         "       marca.imagemFundoApp, " +
-        "       categoria.nome, " +
-        "       oferta.descricao, " +
-        "       oferta.regras, " +
-        "       oferta.valor, " +
-        "       oferta.desconto, " +
-        "       endereco.latitude, endereco.longitude, " +
-        "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro || ', ' || endereco.cidade.nome || ' - ' || endereco.cidade.estado.sigla, endereco.cep, " +
+        "       categoria.nome,  " +
+        "       endereco.latitude, " +
+        "       endereco.longitude, " +
+        "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro || ', ' || endereco.cidade.nome || ' - ' || endereco.cidade.estado.sigla, " +
+        "       endereco.cep, " +
         "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro, " +
-        "       unidade.sobre, " +
-        "       (select sum(a.satisfacao) / count(*) from Avaliacao a WHERE a.unidade = unidade), " +
-        "       (select sum(a.preco) / count(*) from Avaliacao a WHERE a.unidade = unidade), " +
-
-//        "       (SELECT COUNT(*) FROM Avaliacao a WHERE a.curtiu = 1 AND a.unidade = unidade), " +
-//        "       (SELECT COUNT(*) FROM Avaliacao a WHERE a.curtiu = -1 AND a.unidade = unidade), " +
-
-        "       endereco.cidade.id, " +
+        "       unidade.sobre,  " +
+        "       (SELECT COUNT(*) FROM Avaliacao a WHERE a.curtiu = 1 AND a.unidade = unidade), " +
+        "       (SELECT COUNT(*) FROM Avaliacao a WHERE a.curtiu = -1 AND a.unidade = unidade), " +
+        "       endereco.cidade.id,  " +
         "       unidade.inicioExpediente, " +
         "       unidade.fimExpediente " +
-        "       FROM OfertaUnidade ofertaunidade " +
-        "       JOIN ofertaunidade.oferta oferta " +
-        "       JOIN ofertaunidade.unidade unidade " +
+        "  FROM Unidade unidade " +
         "       JOIN unidade.endereco endereco, " +
         "       Parceiro parceiro " +
         "       JOIN parceiro.marca marca " +
         "       JOIN parceiro.categoria categoria " +
         " WHERE unidade.id = ?1 " +
         "   AND parceiro = unidade.parceiro " +
-        "   AND oferta.situacao = 'A'")
+        "   AND unidade.id in (SELECT ou.unidade.id " +
+        "                        FROM OfertaUnidade ou " +
+        "                       WHERE ou.oferta.situacao = 'A') ")
     List<Object[]> findDetalhes(Long idUnidade);
 
     @Query(value=
         "SELECT unidade.id, " +
-        "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro " +
-        "       FROM OfertaUnidade ofertaunidade " +
-        "       JOIN ofertaunidade.oferta oferta " +
-        "       JOIN ofertaunidade.unidade unidade " +
-        "       JOIN unidade.endereco endereco, " +
-        "       Parceiro parceiro " +
-        "       JOIN parceiro.marca marca " +
-        "       JOIN parceiro.categoria categoria " +
-        " WHERE marca.id = ?1 " +
-        "   AND endereco.cidade.id = ?2 " +
-        "   AND parceiro = unidade.parceiro " +
-        "   AND oferta.situacao = 'A' ")
+        "    endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro " +
+        "FROM Unidade unidade " +
+        "    JOIN unidade.endereco endereco, " +
+        "    Parceiro parceiro  " +
+        "    JOIN parceiro.marca marca " +
+        "    JOIN parceiro.categoria categoria " +
+        "WHERE marca.id = ?1 " +
+        "  AND endereco.cidade.id = ?2 " +
+        "  AND parceiro = unidade.parceiro  " +
+        "  AND unidade.id in (SELECT ou.unidade.id " +
+        "                       FROM OfertaUnidade ou " +
+        "                      WHERE ou.oferta.situacao = 'A') ")
     List<Object[]> findOutrasUnidades(Long idMarca, Long idCidade);
 
 }

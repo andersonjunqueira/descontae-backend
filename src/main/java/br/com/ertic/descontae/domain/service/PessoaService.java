@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.ertic.descontae.domain.model.Pessoa;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.PessoaRepository;
 import br.com.ertic.util.infraestructure.exception.NegocioException;
+import br.com.ertic.util.infraestructure.service.KeycloakService;
 import br.com.ertic.util.infraestructure.service.RestFullService;
 
 @Service
@@ -16,6 +17,9 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
 
     @Autowired
     private EnderecoService enderecoService;
+
+    @Autowired
+    private KeycloakService keycloakService;
 
     @Autowired
     PessoaService(PessoaRepository repository) {
@@ -44,7 +48,7 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
 
         e.setDataAlteracao(e.getDataCadastro());
 
-        //TODO CRIAR O USUÁRIO NO KEYCLOAK
+        keycloakService.createUser(e.getNome(), null, e.getEmail(), e.getSenha());
 
         return super.save(e);
 
