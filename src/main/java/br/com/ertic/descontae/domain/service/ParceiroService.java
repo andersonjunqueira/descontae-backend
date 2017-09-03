@@ -38,7 +38,7 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
 
     @Override
     @Transactional
-    public Parceiro save(Parceiro parceiro) throws NegocioException {
+    public Parceiro addOrUpdate(Parceiro parceiro) throws NegocioException {
 
         if(parceiro.getId() == null) {
             parceiro.setPessoa(pessoaService.findByEmail(token.getUsername()));
@@ -67,7 +67,7 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
                 }
                 unidade.setEndereco(null);
             } else {
-                unidade.setEndereco(enderecoService.save(unidade.getEndereco()));
+                unidade.setEndereco(enderecoService.addOrUpdate(unidade.getEndereco()));
             }
 
             // SALVANDO AS IMAGENS
@@ -82,6 +82,6 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
 
         }
 
-        return super.save(parceiro);
+        return super.addOrUpdate(parceiro);
     }
 }

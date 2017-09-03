@@ -20,24 +20,24 @@
 //import br.com.ertic.util.test.BaseRestTest;
 //
 //@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-//public class EstadosRestTest extends BaseRestTest {
+//public class ClientesRestTest extends BaseRestTest {
 //
 //    @Autowired
 //    private TestRestTemplate restTemplate;
 //
 //    @Test
-//    public void getEstados() throws Exception {
+//    public void getAll() throws Exception {
 //
 //        HttpHeaders headers = new HttpHeaders();
 //        headers.setContentType(MediaType.APPLICATION_JSON);
 //
 //        HttpEntity<?> e = new HttpEntity<Object>(headers);
 //
-//        ResponseEntity<String> entity = restTemplate.exchange("/estados", HttpMethod.GET, e, String.class);
+//        ResponseEntity<String> entity = restTemplate.exchange("/clientes", HttpMethod.GET, e, String.class);
 //        assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 //
 //        List<?> l = JsonSerialization.readValue(entity.getBody(), List.class);
-//        assertThat(l.size()).isEqualTo(27);
+//        assertThat(l.size()).isGreaterThan(0);
 //    }
 //
 //}

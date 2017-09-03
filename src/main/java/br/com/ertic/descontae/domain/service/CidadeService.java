@@ -37,7 +37,7 @@ public class CidadeService extends RestFullService<Cidade, Long> {
             c = new Cidade();
             c.setEstado(estadoService.findBySigla(siglaEstado));
             c.setNome(nome);
-            c = save(c);
+            c = addOrUpdate(c);
         }
 
         return c;

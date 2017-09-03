@@ -31,7 +31,7 @@ public class ClienteService extends RestFullService<Cliente, Long> {
 
     @Override
     @Transactional
-    public Cliente save(Cliente e) throws NegocioException {
+    public Cliente addOrUpdate(Cliente e) throws NegocioException {
 
         if(e.getId() == null) {
             e.setPessoa(pessoaService.findByEmail(token.getUsername()));
@@ -46,10 +46,10 @@ public class ClienteService extends RestFullService<Cliente, Long> {
             }
             e.setEndereco(null);
         } else {
-            e.setEndereco(enderecoService.save(e.getEndereco()));
+            e.setEndereco(enderecoService.addOrUpdate(e.getEndereco()));
         }
 
         e.setDataAlteracao(new Date(System.currentTimeMillis()));
-        return super.save(e);
+        return super.addOrUpdate(e);
     }
 }

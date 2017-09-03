@@ -33,7 +33,7 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
     }
 
     @Override
-    public Pessoa save(Pessoa e) throws NegocioException {
+    public Pessoa addOrUpdate(Pessoa e) throws NegocioException {
 
         if(e.getId() == null) {
             e.setDataCadastro(new Date(System.currentTimeMillis()));
@@ -41,7 +41,7 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
         }
 
         if(e.getEndereco() != null && e.getEndereco().getCep() != null)  {
-            e.setEndereco(enderecoService.save(e.getEndereco()));
+            e.setEndereco(enderecoService.addOrUpdate(e.getEndereco()));
         } else {
             e.setEndereco(null);
         }
@@ -50,7 +50,7 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
 
         keycloakService.createUser(e.getNome(), null, e.getEmail(), e.getSenha());
 
-        return super.save(e);
+        return super.addOrUpdate(e);
 
     }
 

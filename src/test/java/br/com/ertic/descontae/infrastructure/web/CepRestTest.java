@@ -11,7 +11,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.testng.annotations.Test;
 
@@ -25,18 +24,29 @@ public class CepRestTest extends BaseRestTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void getEstados() throws Exception {
+    public void getCEP() throws Exception {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpHeaders headers = getDefaultHeaders();
 
         HttpEntity<?> e = new HttpEntity<Object>(headers);
 
-        ResponseEntity<String> entity = restTemplate.exchange("/ceps/71505220", HttpMethod.GET, e, String.class);
+        ResponseEntity<String> entity = restTemplate.exchange("/api/ceps/71505220", HttpMethod.GET, e, String.class);
         assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         CepDTO z = JsonSerialization.readValue(entity.getBody(), CepDTO.class);
         assertThat(z.getUf()).isEqualTo("DF");
+
+    }
+
+    @Test
+    public void getInexistentCEP() throws Exception {
+
+        HttpHeaders headers = getDefaultHeaders();
+
+        HttpEntity<?> e = new HttpEntity<Object>(headers);
+
+        ResponseEntity<String> entity = restTemplate.exchange("/api/ceps/70000000", HttpMethod.GET, e, String.class);
+        assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
     }
 
