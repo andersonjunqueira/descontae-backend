@@ -1,5 +1,6 @@
 package br.com.ertic.descontae.domain.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -42,7 +43,7 @@ public class Oferta extends EntidadeBase<Long> {
     @Column(name="DESCONTO", nullable=false)
     private Double desconto;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="ID_PESSOA", nullable=false)
     private Pessoa pessoa;
 

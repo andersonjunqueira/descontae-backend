@@ -28,16 +28,15 @@ public class UnidadesController extends RestFullEndpoint<Unidade, Long> {
         super(service);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path="/franquia/{marcaId}/oferta/{idOferta}")
-    public ResponseEntity<?> getAllByFranquia(@PathVariable Long marcaId,
-        @PathVariable Long ofertaId) {
+    @RequestMapping(method = RequestMethod.GET, path="/marca/{marcaId}/dto")
+    public ResponseEntity<?> getUnidadesByMarca(@PathVariable Long marcaId) {
         try {
 
-            List<OfertaUnidadeDTO> saida = ((UnidadeService)service).findAllByMarcaSelecionadoPorOferta(marcaId, ofertaId);
-            if(saida == null || saida.size() == 0) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            List<OfertaUnidadeDTO> dto = ((UnidadeService)service).findUnidadesDTOByMarca(marcaId);
+            if(dto == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
-                return new ResponseEntity<>(saida, HttpStatus.OK);
+                return new ResponseEntity<>(dto, HttpStatus.OK);
             }
 
         } catch (NegocioException ex) {
@@ -49,5 +48,4 @@ public class UnidadesController extends RestFullEndpoint<Unidade, Long> {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

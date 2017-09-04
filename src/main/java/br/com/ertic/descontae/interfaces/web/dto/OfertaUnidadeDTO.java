@@ -5,16 +5,9 @@ public class OfertaUnidadeDTO {
     private Long id;
     private String nome;
     private String endereco;
-    private int selecionada;
+    private boolean selecionada;
 
     public OfertaUnidadeDTO() {}
-
-    public OfertaUnidadeDTO(Long id, String nome, String endereco, int selecionada) {
-        setId(id);
-        setNome(nome);
-        setEndereco(endereco);
-        setSelecionada(selecionada);
-    }
 
     public Long getId() {
         return id;
@@ -40,11 +33,11 @@ public class OfertaUnidadeDTO {
         this.endereco = endereco;
     }
 
-    public int isSelecionada() {
+    public boolean isSelecionada() {
         return selecionada;
     }
 
-    public void setSelecionada(int selecionada) {
+    public void setSelecionada(boolean selecionada) {
         this.selecionada = selecionada;
     }
 
