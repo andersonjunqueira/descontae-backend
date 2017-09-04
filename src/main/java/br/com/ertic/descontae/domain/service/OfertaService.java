@@ -146,4 +146,13 @@ public class OfertaService extends RestFullService<Oferta, Long> {
 
     }
 
+    @Transactional
+    @Override
+    public void delete(Long id) throws NegocioException {
+        List<OfertaUnidade>ous = ofertaUnidadeRepository.findAllByOferta(id);
+        if(ous != null && !ous.isEmpty()) {
+            ofertaUnidadeRepository.delete(ous);
+        }
+        super.delete(id);
+    }
 }

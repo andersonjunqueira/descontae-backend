@@ -43,7 +43,7 @@ public class Oferta extends EntidadeBase<Long> {
     @Column(name="DESCONTO", nullable=false)
     private Double desconto;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name="ID_PESSOA", nullable=false)
     private Pessoa pessoa;
 
