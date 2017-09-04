@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ertic.descontae.domain.model.Pessoa;
 import br.com.ertic.descontae.domain.service.PessoaService;
+import br.com.ertic.util.infraestructure.log.Log;
 import br.com.ertic.util.infraestructure.web.RestFullEndpoint;
 
 @RestController
@@ -24,15 +25,20 @@ public class PessoasController extends RestFullEndpoint<Pessoa, Long> {
     }
 
     @RequestMapping(method = RequestMethod.GET, path="/login")
-    public ResponseEntity<Pessoa> getByEmail(
+    public ResponseEntity<?> getByEmail(
         @RequestParam(name="email", required=true) String email) {
+        try {
+            Pessoa p = ((PessoaService)service).findByEmail(email);
 
-        Pessoa p = ((PessoaService)service).findByEmail(email);
+            if(p != null) {
+                return new ResponseEntity<>(p, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
 
-        if(p != null) {
-            return new ResponseEntity<>(p, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception ex) {
+            Log.error(this.getClass(), ex);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -53,4 +59,5 @@ public class PessoasController extends RestFullEndpoint<Pessoa, Long> {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

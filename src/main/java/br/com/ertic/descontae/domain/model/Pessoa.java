@@ -109,6 +109,9 @@ public class Pessoa extends EntidadeBase<Long> {
     @Transient
     private String senha;
 
+    @Transient
+    private boolean cartaoAtivo;
+
     @Override
     public Long getId() {
         return id;
@@ -221,6 +224,30 @@ public class Pessoa extends EntidadeBase<Long> {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public boolean isCartaoAtivo() {
+        return cartaoAtivo;
+    }
+
+    public void setCartaoAtivo(boolean cartaoAtivo) {
+        this.cartaoAtivo = cartaoAtivo;
+    }
+
+    public Date getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public Sexo getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
     }
 
 }

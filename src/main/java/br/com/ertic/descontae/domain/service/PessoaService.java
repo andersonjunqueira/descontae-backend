@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import br.com.ertic.descontae.domain.model.Cartao;
 import br.com.ertic.descontae.domain.model.Pessoa;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.PessoaRepository;
 import br.com.ertic.util.infraestructure.exception.NegocioException;
@@ -22,14 +23,23 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
     private KeycloakService keycloakService;
 
     @Autowired
+    private CartaoService cartaoService;
+
+    @Autowired
     PessoaService(PessoaRepository repository) {
         super(repository);
     }
 
-    public Pessoa findByEmail(String email) {
+    public Pessoa findByEmail(String email) throws NegocioException {
+
         Pessoa pessoa = new Pessoa();
         pessoa.setEmail(email);
-        return getRepository().findOne(Example.of(pessoa));
+        pessoa = getRepository().findOne(Example.of(pessoa));
+
+        Cartao c = cartaoService.findAtivoPorUsuario(email);
+        pessoa.setCartaoAtivo(c != null);
+
+        return pessoa;
     }
 
     @Override
