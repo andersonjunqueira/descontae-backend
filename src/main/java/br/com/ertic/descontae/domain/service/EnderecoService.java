@@ -27,7 +27,7 @@ public class EnderecoService extends RestFullService<Endereco, Long> {
 
     @Override
     @Transactional
-    public Endereco addOrUpdate(Endereco e) throws NegocioException {
+    public Endereco save(Endereco e) throws NegocioException {
 
         if(e.getCep() != null) {
             CepDTO cep = cepService.find(e.getCep());
@@ -42,7 +42,7 @@ public class EnderecoService extends RestFullService<Endereco, Long> {
 
         }
 
-        return super.addOrUpdate(e);
+        return repository.save(e);
     }
 
 }

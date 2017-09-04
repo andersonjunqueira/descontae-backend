@@ -65,15 +65,15 @@ public class Cliente extends EntidadeBase<Long> {
     @Column(name="DATA_ULTIMA_ATUALIZACAO", nullable=false)
     private Date dataAlteracao;
 
-    @ManyToOne(cascade={CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="ID_PESSOA", nullable=false)
     private Pessoa pessoa;
 
-    @ManyToOne(cascade={CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="ID_ENDERECO", nullable=true)
     private Endereco endereco;
 
-    @OneToMany(cascade={CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval=true, mappedBy="cliente")
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="cliente")
     private List<Telefone> telefones;
 
     @Override

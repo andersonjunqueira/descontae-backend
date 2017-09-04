@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ertic.descontae.domain.model.Cliente;
+import br.com.ertic.descontae.domain.model.Telefone;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.ClienteRepository;
 import br.com.ertic.util.infraestructure.dto.Token;
 import br.com.ertic.util.infraestructure.exception.NegocioException;
@@ -31,7 +32,7 @@ public class ClienteService extends RestFullService<Cliente, Long> {
 
     @Override
     @Transactional
-    public Cliente addOrUpdate(Cliente e) throws NegocioException {
+    public Cliente save(Cliente e) throws NegocioException {
 
         if(e.getId() == null) {
             e.setPessoa(pessoaService.findByEmail(token.getUsername()));
@@ -40,16 +41,17 @@ public class ClienteService extends RestFullService<Cliente, Long> {
             e.setPessoa(pessoaService.findOne(e.getPessoa().getId()));
         }
 
-        if(e.getEndereco().getLogradouro() == null || e.getEndereco().getLogradouro().isEmpty())  {
-            if(e.getEndereco().getId() != null) {
-                enderecoService.delete(e.getEndereco().getId());
-            }
-            e.setEndereco(null);
-        } else {
+        if(e.getEndereco() != null && e.getEndereco().getCep() != null)  {
             e.setEndereco(enderecoService.addOrUpdate(e.getEndereco()));
+        } else {
+            e.setEndereco(null);
+        }
+
+        for(Telefone t : e.getTelefones()) {
+            t.setCliente(e);
         }
 
         e.setDataAlteracao(new Date(System.currentTimeMillis()));
-        return super.addOrUpdate(e);
+        return repository.save(e);
     }
 }
