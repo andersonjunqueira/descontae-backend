@@ -53,7 +53,6 @@ create sequence SEQ_OFERTA_UNIDADE;
 create sequence SEQ_PARCEIRO;
 create sequence SEQ_PESSOA_FISICA;
 create sequence SEQ_PLANO;
-create sequence SEQ_REVISTA;
 create sequence SEQ_TELEFONE;
 create sequence SEQ_UNIDADE;
 create sequence SEQ_CATEGORIA;
@@ -209,8 +208,7 @@ create table TB_OFERTA_UNIDADE (
 /*==============================================================*/
 create unique index UK1_OFERTA_UNIDADE on TB_OFERTA_UNIDADE (
 ID_OFERTA,
-ID_UNIDADE,
-ID_REVISTA
+ID_UNIDADE
 );
 
 /*==============================================================*/

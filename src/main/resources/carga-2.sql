@@ -2,7 +2,6 @@ delete from TB_AVALIACAO;
 delete from TB_CONSUMO;
 delete from TB_OFERTA_UNIDADE; 
 delete from TB_OFERTA; 
-delete from TB_REVISTA;
 delete from TB_TELEFONE;
 delete from TB_ASSINATURA; 
 delete from TB_PLANO;  
@@ -59,9 +58,9 @@ insert into tb_cidade(id_cidade, nome, id_uf) values (5, 'Caldas Novas', 52);
 
 -- CATEGORIAS 
 
-insert into tb_categoria(id_categoria, nome) values (nextval('SEQ_CATEGORIA'), 'Alimentação');
-insert into tb_categoria(id_categoria, nome) values (nextval('SEQ_CATEGORIA'), 'Sorvetes');
-insert into tb_categoria(id_categoria, nome) values (nextval('SEQ_CATEGORIA'), 'Food Truck');
+insert into tb_categoria(id_categoria, nome) values (1, 'Alimentação');
+insert into tb_categoria(id_categoria, nome) values (2, 'Sorvetes');
+insert into tb_categoria(id_categoria, nome) values (3, 'Food Truck');
 
 -- TIPO PESSOA 
 
@@ -69,9 +68,6 @@ insert into tb_tipo_pessoa(id_tipo_pessoa, nome) values (1, 'Administrador');
 insert into tb_tipo_pessoa(id_tipo_pessoa, nome) values (2, 'Parceiro');
 insert into tb_tipo_pessoa(id_tipo_pessoa, nome) values (3, 'Cliente');
 insert into tb_tipo_pessoa(id_tipo_pessoa, nome) values (4, 'Usuario');
-
-insert into tb_revista(id_revista, edicao, descricao, inicio_vigencia, fim_vigencia, pdf, imagem)
-values(nextval('SEQ_REVISTA'), 'JUN/2017', 'REVISTA DE JUN/2017', to_date('01/06/2017', 'DD/MM/YYYY'), to_date('30/07/2017', 'DD/MM/YYYY'), '', '');
 
 insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
 values(nextval('SEQ_MARCA_FRANQUIA'), 'Hamburgueria do Cheff', 'http://descontae.com.br/img/logos/245_thumb.jpg', 'http://descontae.com.br/img/logos/245_thumb.jpg', 'http://descontae.com.br/img/logos/245_thumb.jpg');
@@ -94,8 +90,8 @@ values(nextval('SEQ_UNIDADE'), 'Hamburgueria do Cheff', (select max(id_parceiro)
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
 values(nextval('SEQ_OFERTA'), '15% de desconto na conta final.', '', '', 0, 0.15, (select max(id_pessoa) from tb_pessoa_fisica), 'A');
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista));
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade));
 
 
 
@@ -121,8 +117,8 @@ values(nextval('SEQ_UNIDADE'), 'Crepe Voyage', (select max(id_parceiro) from tb_
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
 values(nextval('SEQ_OFERTA'), 'Na compra de um Crepe ganhe uma bebida ou 25% de desconto na conta final.', '', '', 0, 0.25, (select max(id_pessoa) from tb_pessoa_fisica), 'A'); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 
 
@@ -148,8 +144,8 @@ values(nextval('SEQ_UNIDADE'), 'El Perro Negro', (select max(id_parceiro) from t
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
 values(nextval('SEQ_OFERTA'), '20% de desconto em qualquer Hot Dog do cardápio.', '', '', 0, 0.20, (select max(id_pessoa) from tb_pessoa_fisica), 'A'); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 
 
@@ -176,8 +172,8 @@ values(nextval('SEQ_UNIDADE'), 'Chef na Rua', (select max(id_parceiro) from tb_p
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
 values(nextval('SEQ_OFERTA'), 'Escolha um entre todos os produtos do cardápio e ganhe 20% de desconto: Risotos, Massas e Pizzas.', '', '', 0, 0.20, (select max(id_pessoa) from tb_pessoa_fisica), 'A'); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 
 
@@ -204,8 +200,8 @@ values(nextval('SEQ_UNIDADE'), 'Burger House', (select max(id_parceiro) from tb_
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
 values(nextval('SEQ_OFERTA'), 'Na compra de qualquer hambúrguer a batata rústica acompanhado de um molho é grátis.', '', '', 8, 0.0, (select max(id_pessoa) from tb_pessoa_fisica), 'A'); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 
 
@@ -231,8 +227,8 @@ values(nextval('SEQ_UNIDADE'), 'Speed Hot Dog', (select max(id_parceiro) from tb
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
 values(nextval('SEQ_OFERTA'), '20% de desconto no HotDog ao molho. Direito ao Self-Service de 17 ingredientes e 7 molhos.', '', '', 8, 0.0, (select max(id_pessoa) from tb_pessoa_fisica), 'A'); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 
 
@@ -257,8 +253,8 @@ values(nextval('SEQ_UNIDADE'), 'Master Truck', (select max(id_parceiro) from tb_
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
 values(nextval('SEQ_OFERTA'), 'File Au Poivre de R$28 por R$24 ou Master Clásico (R$22) + Batata (R$5) por R$24.', '', '', 8, 0.0, (select max(id_pessoa) from tb_pessoa_fisica), 'A'); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 
 
@@ -284,8 +280,8 @@ values(nextval('SEQ_UNIDADE'), 'Samurai Truck', (select max(id_parceiro) from tb
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
 values(nextval('SEQ_OFERTA'), 'Na compra de qualquer item do cardápio o segundo do mesmo item sai com 30% de desconto. *não é válido para bebidas.', '', '', 8, 0.0, (select max(id_pessoa) from tb_pessoa_fisica), 'A'); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 
 
@@ -311,8 +307,8 @@ values(nextval('SEQ_UNIDADE'), 'Stadt Beer Truck', (select max(id_parceiro) from
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
 values(nextval('SEQ_OFERTA'), 'Desconto no Chopp Pilsen Grande de R$13 por R$10 ou desconto no Chopp Pilsen Pequeno de R$10 por R$8.', '', '', 8, 0.0, (select max(id_pessoa) from tb_pessoa_fisica), 'A'); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 
 
@@ -339,8 +335,8 @@ values(nextval('SEQ_UNIDADE'), 'Burger King 706/7N', (select max(id_parceiro) fr
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
 values(nextval('SEQ_OFERTA'), 'Combo Whopper com 20% de desconto: de R$23,90 por R$18,90 ou Combo Whopper Furioso com 5 reais de desconto: de R$26,90 por R$21,90.', '', '', 8, 0.0, (select max(id_pessoa) from tb_pessoa_fisica), 'A'); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 insert into tb_endereco(id_endereco, cep, logradouro, complemento, numero, bairro, id_cidade, loc_latitude, loc_longitude) 
 values(nextval('SEQ_ENDERECO'), '70000000', 'SIG Quadra 06', '2380, Ed. Office 3000 Loja', '15', 'Sudoeste', 1, null, null);  
@@ -348,8 +344,8 @@ values(nextval('SEQ_ENDERECO'), '70000000', 'SIG Quadra 06', '2380, Ed. Office 3
 insert into tb_unidade(id_unidade, nome, id_parceiro, inicio_expediente, fim_expediente, id_endereco)  
 values(nextval('SEQ_UNIDADE'), 'Burger King Sudoeste', (select max(id_parceiro) from tb_parceiro), null, null, (select max(id_endereco) from tb_endereco)); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 insert into tb_endereco(id_endereco, cep, logradouro, complemento, numero, bairro, id_cidade, loc_latitude, loc_longitude) 
 values(nextval('SEQ_ENDERECO'), '75690000', 'Logradouro', 'Complemento', 'Núm', 'Caldas Novas', 5, null, null);  
@@ -357,8 +353,8 @@ values(nextval('SEQ_ENDERECO'), '75690000', 'Logradouro', 'Complemento', 'Núm',
 insert into tb_unidade(id_unidade, nome, id_parceiro, inicio_expediente, fim_expediente, id_endereco)  
 values(nextval('SEQ_UNIDADE'), 'Burger King Caldas Novas', (select max(id_parceiro) from tb_parceiro), null, null, (select max(id_endereco) from tb_endereco)); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 
 
@@ -384,8 +380,8 @@ values(nextval('SEQ_UNIDADE'), 'SUBWAY Deck Norte', (select max(id_parceiro) fro
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
 values(nextval('SEQ_OFERTA'), 'Compre um combo de 15cm da linha Exclusivo e ganhe um sanduiche subway de 15cm do mesmo sabor.', '', '', 8, 0.0, (select max(id_pessoa) from tb_pessoa_fisica), 'A'); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 
 
@@ -412,8 +408,8 @@ values(nextval('SEQ_UNIDADE'), 'Bendito Suco', (select max(id_parceiro) from tb_
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
 values(nextval('SEQ_OFERTA'), 'Na compra de 1 wrap Ganhe um suco pedal nortuno ou um Bendito Suco de 450ml.', '', '', 8, 0.0, (select max(id_pessoa) from tb_pessoa_fisica), 'A'); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 
 
@@ -439,8 +435,8 @@ values(nextval('SEQ_UNIDADE'), 'Chiquinho Sorvetes', (select max(id_parceiro) fr
 insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
 values(nextval('SEQ_OFERTA'), 'Shake Mix de R$12 por R$10', 'Exceto sabores de café.', '', 8, 0.0, (select max(id_pessoa) from tb_pessoa_fisica), 'A'); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 
 
@@ -467,205 +463,9 @@ insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto
 values(nextval('SEQ_OFERTA'), '10% de desconto em todos os produtos do cardápio. Todo pedido vira combo, ou seja, ganhe um refrigerante lata 350ml.', 
 'Promoção exclusiva para pedidos através do telefone: (61) 3034 - 5969 ou pelo site www.sushidelivery.com.br *Informar que é cliente Descontaê via telefone ou no campo observações do pedido pelo site.', '', 8, 0.0, (select max(id_pessoa) from tb_pessoa_fisica), 'A'); 
 
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade), (select max(id_revista) from tb_revista)); 
+insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade)
+values(nextval('SEQ_OFERTA_UNIDADE'), (select max(id_oferta) from tb_oferta), (select max(id_unidade) from tb_unidade)); 
 
 
 update tb_endereco set loc_latitude = -15.769257, loc_longitude = -47.890767;
 update tb_unidade set inicio_expediente = '08:00', fim_expediente = '18:00';
-
-
-/*
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Doux Brigaderia', 'http://descontae.com.br/img/logos/22_thumb.jpg', 'http://descontae.com.br/img/logos/22_thumb.jpg', 'http://descontae.com.br/img/logos/22_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Açaí Pump', 'http://descontae.com.br/img/logos/4_thumb.jpg', 'http://descontae.com.br/img/logos/4_thumb.jpg', 'http://descontae.com.br/img/logos/4_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Treviso Galeteria', 'http://descontae.com.br/img/logos/39_thumb.jpg', 'http://descontae.com.br/img/logos/39_thumb.jpg', 'http://descontae.com.br/img/logos/39_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Kabanas Bar e Restaurante', 'http://descontae.com.br/img/logos/28_thumb.jpg', 'http://descontae.com.br/img/logos/28_thumb.jpg', 'http://descontae.com.br/img/logos/28_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Chão de Estrelas Restaurante', 'http://descontae.com.br/img/logos/29_thumb.jpg', 'http://descontae.com.br/img/logos/29_thumb.jpg', 'http://descontae.com.br/img/logos/29_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Merkadão Paulista ', 'http://descontae.com.br/img/logos/27_thumb.jpg', 'http://descontae.com.br/img/logos/27_thumb.jpg', 'http://descontae.com.br/img/logos/27_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Crepe de Paris', '', '', '' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Zimbrus', '', '', '' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'D.O.C Vinhos', 'http://descontae.com.br/img/logos/19_thumb.jpg', 'http://descontae.com.br/img/logos/19_thumb.jpg', 'http://descontae.com.br/img/logos/19_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'La Eskina', 'http://descontae.com.br/img/logos/26_thumb.jpg', 'http://descontae.com.br/img/logos/26_thumb.jpg', 'http://descontae.com.br/img/logos/26_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Sao Paulo Restaurante e Pizzaria', '', '', '' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Moagem Cozinha e Bar', 'http://descontae.com.br/img/logos/33_thumb.jpg', 'http://descontae.com.br/img/logos/33_thumb.jpg', 'http://descontae.com.br/img/logos/33_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'TNT FitFood', 'http://descontae.com.br/img/logos/196_thumb.jpg', 'http://descontae.com.br/img/logos/196_thumb.jpg', 'http://descontae.com.br/img/logos/196_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Abençoado Bar ', 'http://descontae.com.br/img/logos/235_thumb.jpg', 'http://descontae.com.br/img/logos/235_thumb.jpg', 'http://descontae.com.br/img/logos/235_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Bamboa Cozinha e Bar', 'http://descontae.com.br/img/logos/236_thumb.jpg', 'http://descontae.com.br/img/logos/236_thumb.jpg', 'http://descontae.com.br/img/logos/236_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Tchê Garoto', 'http://descontae.com.br/img/logos/197_thumb.jpg', 'http://descontae.com.br/img/logos/197_thumb.jpg', 'http://descontae.com.br/img/logos/197_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Quiosque da Jô', 'http://descontae.com.br/img/logos/44_thumb.jpg', 'http://descontae.com.br/img/logos/44_thumb.jpg', 'http://descontae.com.br/img/logos/44_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Laap Restaurante Argentino', 'http://descontae.com.br/img/logos/21_thumb.jpg', 'http://descontae.com.br/img/logos/21_thumb.jpg', 'http://descontae.com.br/img/logos/21_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Bangalô Galeteria', 'http://descontae.com.br/img/logos/41_thumb.jpg', 'http://descontae.com.br/img/logos/41_thumb.jpg', 'http://descontae.com.br/img/logos/41_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Apache Hamburgueria', 'http://descontae.com.br/img/logos/190_thumb.jpg', 'http://descontae.com.br/img/logos/190_thumb.jpg', 'http://descontae.com.br/img/logos/190_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'O Tal do Picadinho', 'http://descontae.com.br/img/logos/195_thumb.jpg', 'http://descontae.com.br/img/logos/195_thumb.jpg', 'http://descontae.com.br/img/logos/195_thumb.jpg' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Piratas Bar', '', '', '' 
-from tb_marca_franquia;
-
-insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) 
-values(nextval('SEQ_MARCA_FRANQUIA'), 'Assados e Grelhados', 'http://descontae.com.br/img/logos/16_thumb.jpg', 'http://descontae.com.br/img/logos/16_thumb.jpg', 'http://descontae.com.br/img/logos/16_thumb.jpg' 
-from tb_marca_franquia;
-
-
-*/
-
-
-
-
-
-
-
-
-/*
-
--- REVISTA 
-insert into tb_revista(id_revista, edicao, descricao, inicio_vigencia, fim_vigencia, pdf, imagem)
-values (1, 'JUN/2017', 'REVISTA DE JUN/2017', to_date('01/06/2017', 'DD/MM/YYYY'), to_date('30/07/2017', 'DD/MM/YYYY'), '', '');
-
--- PARCEIRO 1  
-insert into tb_endereco(id_endereco, cep, logradouro, complemento, numero, bairro, id_cidade, loc_latitude, loc_longitude) 
-values (1, '70735110', 'SQN 303 Bloco K', 'Apto', '101', 'Asa Norte', 1, null, null);  
-
-insert into tb_pessoa_fisica(id_pessoa, nome, email, cpf, telefone, facebook, instagram, id_tipo_pessoa, id_endereco, data_cadastro, data_ultima_atualizacao)  
-values(1, 'Parceiro 1', 'nao@teconto.com.br', '12353786243', '6112345678', null, null, 2, 1, '08/06/2017', '08/06/2017');  
-
-insert into tb_parceiro(id_parceiro, nome, nome_fantasia, email, cnpj, id_categoria, id_pessoa, id_marca_franquia, data_cadastro, data_ultima_atualizacao) 
-values(1, 'SUBWAY CNPJ 1', 'SUBWAY', 'nao@teconto.com', '63279427000190', 1, 1, 1, '08/06/2017', '08/06/2017');
-
--- SUBWAY 304N 
-insert into tb_endereco(id_endereco, cep, logradouro, complemento, numero, bairro, id_cidade, loc_latitude, loc_longitude) 
-values (2, '70736520', 'SCN 304 Bloco B', 'Loja', '7', 'Asa Norte', 1, -15.774597, -47.885590);
-
-insert into tb_unidade(id_unidade, nome, id_parceiro, inicio_expediente, fim_expediente, id_endereco)  
-values (1, 'SUBWAY 304N', 1, null, null, 2); 
-
-insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)  
-values (1, 'DESCONTO 10%', 'REGRAS', '', 5.00, 0.1, 1, 'A'); 
-
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values (1, 1, 1, 1);
-
--- SUBWAY 706N 
-insert into tb_endereco(id_endereco, cep, logradouro, complemento, numero, bairro, id_cidade, loc_latitude, loc_longitude) 
-values (3, '70235520', 'SCN 706/707 Bloco F', 'Loja', '36/39', 'Asa Norte', 1, -15.769196, -47.890580);
-
-insert into tb_unidade(id_unidade, nome, id_parceiro, inicio_expediente, fim_expediente, id_endereco)  
-values (2, 'SUBWAY 706N', 1, null, null, 3); 
-
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values (2, 1, 2, 1);
-
--- PARCEIRO 2  
-insert into tb_endereco(id_endereco, cep, logradouro, complemento, numero, bairro, id_cidade, loc_latitude, loc_longitude) 
-values (4, '71505220', 'SHIN QI 03 Conjunto 02', 'Casa', '8', 'Lago Norte', 1, null, null);
-
-insert into tb_pessoa_fisica(id_pessoa, nome, email, cpf, telefone, facebook, instagram, id_tipo_pessoa, id_endereco, data_cadastro, data_ultima_atualizacao)  
-values(2, 'Parceiro 2', 'nao@teconto.com.br', '50561648875', '6198765432', null, null, 2, 2, '08/06/2017', '08/06/2017');  
-
-insert into tb_parceiro(id_parceiro, nome, nome_fantasia, email, cnpj, id_categoria, id_pessoa, id_marca_franquia, data_cadastro, data_ultima_atualizacao) 
-values(2, 'SUBWAY CNPJ 2', 'SUBWAY', 'nao@teconto.com', '94033097000182', 1, 2, 1, '08/06/2017', '08/06/2017');
-
--- SUBWAY 405s 
-insert into tb_endereco(id_endereco, cep, logradouro, complemento, numero, bairro, id_cidade, loc_latitude, loc_longitude) 
-values (5, '70239500', 'SCS 405 Bloco A', 'Loja', '6', 'Asa Sul', 1, -15.814477, -47.889956);  
-
-insert into tb_unidade(id_unidade, nome, id_parceiro, inicio_expediente, fim_expediente, id_endereco)  
-values (3, 'SUBWAY 405S', 2, null, null, 5); 
-
-insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)
-values (2, 'Subway Club por R$5,00', '', '', 5.00, 0.2, 2, 'A');  
-
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values (3, 2, 3, 1);
-
--- PARCEIRO 3  
-insert into tb_endereco(id_endereco, cep, logradouro, complemento, numero, bairro, id_cidade, loc_latitude, loc_longitude) 
-values (6, '71505220', 'SHIN QI 03 Conjunto 02', 'Casa', '2', 'Lago Norte', 1, null, null);
-
-insert into tb_pessoa_fisica(id_pessoa, nome, email, cpf, telefone, facebook, instagram, id_tipo_pessoa, id_endereco, data_cadastro, data_ultima_atualizacao)  
-values(3, 'Parceiro 3', 'nao@teconto.com.br', '82153342880', '6198765432', null, null, 2, 6, '08/06/2017', '08/06/2017');  
-
-insert into tb_parceiro(id_parceiro, nome, nome_fantasia, email, cnpj, id_categoria, id_pessoa, id_marca_franquia, data_cadastro, data_ultima_atualizacao) 
-values(3, 'Chiquinho Sorvetes', 'CHIQUINHO SORVETES', 'nao@teconto.com', '04233588000184', 2, 3, 2, '08/06/2017', '08/06/2017');
-
--- CHIQUINHO 706N  
-insert into tb_endereco(id_endereco, cep, logradouro, complemento, numero, bairro, id_cidade, loc_latitude, loc_longitude) 
-values (7, '70736520', 'SCN 304 Bloco G', 'Loja', '13', 'Asa Norte', 1, -15.769257, -47.890767);
-
-insert into tb_unidade(id_unidade, nome, id_parceiro, inicio_expediente, fim_expediente, id_endereco)  
-values (4, 'CHIQUINHO 304N', 3, null, null, 7);  
-
-insert into tb_oferta(id_oferta, descricao, regras, imagem_site, valor, desconto, id_pessoa, situacao)
-values (3, 'Compre 1 casquinha e leve 2', '', '', 1.00, 0.2, 3, 'A'); 
-
-insert into tb_oferta_unidade(id_oferta_unidade, id_oferta, id_unidade, id_revista)
-values (4, 3, 4, 1);
-
-insert into tb_avaliacao(id_avaliacao, id_pessoa, id_unidade, nota_satisfacao) 
-select p.id_pessoa * 2 + u.id_unidade * 10, p.id_pessoa, u.id_unidade, trunc(random() * 5) 
-  from tb_unidade u,
-tb_pessoa_fisica p  
-left join tb_avaliacao a on p.id_pessoa = a.id_pessoa
-*/
