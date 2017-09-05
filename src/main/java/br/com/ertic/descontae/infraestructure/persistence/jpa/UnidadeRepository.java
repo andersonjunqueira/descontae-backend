@@ -14,7 +14,7 @@ public interface UnidadeRepository extends RepositoryBase<Unidade, Long> {
     @Query(value="SELECT DISTINCT o.unidade FROM OfertaUnidade o WHERE o.oferta.situacao = 'A' AND o.oferta.id = ?1")
     List<Unidade> findAllByOferta(Long idOferta);
 
-    @Query(value="SELECT u FROM Unidade u WHERE u.parceiro.marca.id = ?1")
+    @Query(value="SELECT u FROM Unidade u WHERE u.parceiro.marca.id = ?1 ORDER BY u.parceiro.marca.nome")
     List<Unidade> findAllByMarca(Long idMarca);
 
 }
