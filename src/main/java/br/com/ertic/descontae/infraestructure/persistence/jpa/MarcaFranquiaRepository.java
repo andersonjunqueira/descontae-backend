@@ -43,7 +43,7 @@ public interface MarcaFranquiaRepository extends RepositoryBase<MarcaFranquia, L
     @Query(value=HOME_QUERY)
     List<Object[]> findAllByCidade(Long idCidade);
 
-    @Query(value=HOME_QUERY + " AND (categoria.nome LIKE ?2 OR unidade.nome LIKE ?2) ")
+    @Query(value=HOME_QUERY + " AND (categoria.nome LIKE ?2 OR unidade.nome LIKE ?2 OR parceiro.nomeFantasia LIKE ?2 OR parceiro.nome LIKE ?2) ")
     List<Object[]> findAllByCidade(Long idCidade, String filtro);
 
     @Query(value=
