@@ -45,7 +45,8 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
     @Override
     protected Pessoa save(Pessoa e) throws NegocioException {
 
-        if(e.getId() == null) {
+        boolean novo = (e.getId() == null);
+        if(novo) {
             e.setDataCadastro(new Date(System.currentTimeMillis()));
             e.setIdioma(e.getIdioma() != null ? e.getIdioma() : "pt-BR");
         }
@@ -58,9 +59,18 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
 
         e.setDataAlteracao(e.getDataCadastro());
 
-        keycloakService.createUser(e.getNome(), null, e.getEmail(), e.getSenha());
+        try {
+            Pessoa p = repository.save(e);
 
-        return repository.save(e);
+            if(novo) {
+                keycloakService.createUser(e.getNome(), null, e.getEmail(), e.getSenha());
+            }
+
+            return p;
+
+        } catch(Exception ex) {
+            throw new NegocioException("erro-salvar-pessoa", ex);
+        }
 
     }
 
