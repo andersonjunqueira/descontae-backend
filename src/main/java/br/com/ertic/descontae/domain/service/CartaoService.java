@@ -1,10 +1,14 @@
 package br.com.ertic.descontae.domain.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ertic.descontae.domain.model.Cartao;
+import br.com.ertic.descontae.infraestructure.persistence.jpa.CartaoCustomRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.CartaoRepository;
 import br.com.ertic.util.infraestructure.exception.NegocioException;
 import br.com.ertic.util.infraestructure.service.RestFullService;
@@ -16,8 +20,19 @@ public class CartaoService extends RestFullService<Cartao, Long> {
     private PessoaService pessoaService;
 
     @Autowired
+    private CartaoCustomRepository customRepository;
+
+    @Autowired
     CartaoService(CartaoRepository repository) {
         super(repository);
+    }
+
+    public Page<Object[]> findListaSimples(Map<String, String[]> params) throws NegocioException {
+        String filtro = null;
+        if(params.get("filtro") != null) {
+            filtro = params.get("filtro")[0];
+        }
+        return customRepository.findListaSimples(filtro, getPageRequest(params));
     }
 
     //TODO MÉTODO TEMPORARIO DE REGISTRO DE CARTÃO, NO FUTURO OS CARTÕES SERÃO PRECADASTRADOS E O USUARIO VIRA DO TOKEN

@@ -1,6 +1,9 @@
 package br.com.ertic.descontae.interfaces.web;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +26,27 @@ public class CartoesController extends RestFullEndpoint<Cartao, Long> {
     @Autowired
     public CartoesController(CartaoService service) {
         super(service);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path="/simples")
+    public ResponseEntity<?> getListaSimples(HttpServletRequest request) {
+        try {
+
+            Page<Object[]> saida = ((CartaoService)service).findListaSimples(request.getParameterMap());
+            if(saida == null || saida.getTotalElements() == 0) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                return new ResponseEntity<>(saida, HttpStatus.OK);
+            }
+
+        } catch (NegocioException ex) {
+            Log.error(this.getClass(), ex);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+
+        } catch (Exception ex) {
+            Log.error(this.getClass(), ex);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST, path="/usuario")
