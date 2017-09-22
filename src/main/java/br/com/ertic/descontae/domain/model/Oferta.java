@@ -49,7 +49,7 @@ public class Oferta extends EntidadeBase<Long> {
 
     @Enumerated(EnumType.STRING)
     @Column(name="SITUACAO", nullable=false)
-    private SituacaoOferta situacao;
+    private SituacaoAtivo situacao;
 
     @Column(name="REGRAS", length=MAX_LENGTH_REGRAS, nullable=false)
     private String regras;
@@ -104,11 +104,11 @@ public class Oferta extends EntidadeBase<Long> {
         this.pessoa = pessoa;
     }
 
-    public SituacaoOferta getSituacao() {
+    public SituacaoAtivo getSituacao() {
         return situacao;
     }
 
-    public void setSituacao(SituacaoOferta situacao) {
+    public void setSituacao(SituacaoAtivo situacao) {
         this.situacao = situacao;
     }
 

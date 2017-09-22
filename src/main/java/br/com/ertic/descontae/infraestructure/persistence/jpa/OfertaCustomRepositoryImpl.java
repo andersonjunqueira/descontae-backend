@@ -10,7 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import br.com.ertic.descontae.domain.model.SituacaoOferta;
+import br.com.ertic.descontae.domain.model.SituacaoAtivo;
 
 @Repository
 public class OfertaCustomRepositoryImpl implements OfertaCustomRepository {
@@ -20,7 +20,7 @@ public class OfertaCustomRepositoryImpl implements OfertaCustomRepository {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Page<Object[]> findListaSimples(String texto, SituacaoOferta situacao, Pageable pageable) {
+    public Page<Object[]> findListaSimples(String texto, SituacaoAtivo situacao, Pageable pageable) {
 
         StringBuilder hqlWhere = new StringBuilder();
 

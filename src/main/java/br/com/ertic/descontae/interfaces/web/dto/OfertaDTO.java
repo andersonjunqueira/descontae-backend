@@ -3,7 +3,7 @@ package br.com.ertic.descontae.interfaces.web.dto;
 import java.util.List;
 
 import br.com.ertic.descontae.domain.model.Pessoa;
-import br.com.ertic.descontae.domain.model.SituacaoOferta;
+import br.com.ertic.descontae.domain.model.SituacaoAtivo;
 
 public class OfertaDTO {
 
@@ -13,7 +13,7 @@ public class OfertaDTO {
     private Double valor;
     private Double desconto;
     private Pessoa pessoa;
-    private SituacaoOferta situacao;
+    private SituacaoAtivo situacao;
     private String regras;
 
     private List<OfertaUnidadeDTO> unidades;
@@ -83,11 +83,11 @@ public class OfertaDTO {
         this.pessoa = pessoa;
     }
 
-    public SituacaoOferta getSituacao() {
+    public SituacaoAtivo getSituacao() {
         return situacao;
     }
 
-    public void setSituacao(SituacaoOferta situacao) {
+    public void setSituacao(SituacaoAtivo situacao) {
         this.situacao = situacao;
     }
 

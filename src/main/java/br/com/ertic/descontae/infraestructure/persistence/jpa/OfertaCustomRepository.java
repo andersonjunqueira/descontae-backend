@@ -3,10 +3,10 @@ package br.com.ertic.descontae.infraestructure.persistence.jpa;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import br.com.ertic.descontae.domain.model.SituacaoOferta;
+import br.com.ertic.descontae.domain.model.SituacaoAtivo;
 
 public interface OfertaCustomRepository {
 
-    Page<Object[]> findListaSimples(String texto, SituacaoOferta situacao, Pageable pageable);
+    Page<Object[]> findListaSimples(String texto, SituacaoAtivo situacao, Pageable pageable);
 
 }

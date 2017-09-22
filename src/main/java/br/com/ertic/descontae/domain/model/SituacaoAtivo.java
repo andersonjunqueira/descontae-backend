@@ -1,6 +1,6 @@
 package br.com.ertic.descontae.domain.model;
 
-public enum SituacaoPlano {
+public enum SituacaoAtivo {
 
     A ("A", "Ativo"),
     I ("I", "Inativo");
@@ -8,7 +8,7 @@ public enum SituacaoPlano {
     private String sigla;
     private String nome;
 
-    private SituacaoPlano (String sigla, String nome) {
+    private SituacaoAtivo (String sigla, String nome) {
         this.sigla = sigla;
         this.nome = nome;
     }

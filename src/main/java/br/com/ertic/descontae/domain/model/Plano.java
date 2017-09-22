@@ -42,7 +42,7 @@ public class Plano extends EntidadeBase<Long> {
 
     @Enumerated(EnumType.STRING)
     @Column(name="SITUACAO", nullable=false)
-    private SituacaoPlano situacao;
+    private SituacaoAtivo situacao;
 
     @Override
     public Long getId() {
@@ -78,11 +78,11 @@ public class Plano extends EntidadeBase<Long> {
         this.valor = valor;
     }
 
-    public SituacaoPlano getSituacao() {
+    public SituacaoAtivo getSituacao() {
         return situacao;
     }
 
-    public void setSituacao(SituacaoPlano situacao) {
+    public void setSituacao(SituacaoAtivo situacao) {
         this.situacao = situacao;
     }
 

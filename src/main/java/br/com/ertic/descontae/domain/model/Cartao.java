@@ -2,6 +2,8 @@ package br.com.ertic.descontae.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,7 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import br.com.ertic.descontae.domain.model.serializer.SituacaoAtivoDeserializer;
+import br.com.ertic.descontae.domain.model.serializer.SituacaoAtivoSerializer;
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
 @Entity
@@ -30,12 +38,21 @@ public class Cartao extends EntidadeBase<Long> {
     private String codigo;
 
     @ManyToOne
-    @JoinColumn(name="ID_PESSOA", nullable=true)
-    private Pessoa pessoa;
+    @JoinColumn(name="ID_ASSINATURA", nullable=true)
+    private Assinatura assinatura;
 
     @ManyToOne
     @JoinColumn(name="ID_CLIENTE", nullable=true)
     private Cliente cliente;
+
+    @JsonSerialize(using=SituacaoAtivoSerializer.class)
+    @JsonDeserialize(using=SituacaoAtivoDeserializer.class)
+    @Enumerated(EnumType.STRING)
+    @Column(name="ATIVO", nullable=true)
+    private SituacaoAtivo ativo;
+
+    @Transient
+    private String codigoFinal;
 
     @Override
     public Long getId() {
@@ -55,20 +72,36 @@ public class Cartao extends EntidadeBase<Long> {
         this.codigo = codigo;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
-
     public Cliente getCliente() {
         return cliente;
     }
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public SituacaoAtivo getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(SituacaoAtivo ativo) {
+        this.ativo = ativo;
+    }
+
+    public String getCodigoFinal() {
+        return codigoFinal;
+    }
+
+    public void setCodigoFinal(String codigoFinal) {
+        this.codigoFinal = codigoFinal;
+    }
+
+    public Assinatura getAssinatura() {
+        return assinatura;
+    }
+
+    public void setAssinatura(Assinatura assinatura) {
+        this.assinatura = assinatura;
     }
 
 

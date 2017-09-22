@@ -35,6 +35,17 @@ public class CartaoService extends RestFullService<Cartao, Long> {
         return customRepository.findListaSimples(filtro, getPageRequest(params));
     }
 
+    @Override
+    public Cartao add(Cartao e) throws NegocioException {
+
+        Cartao c = ((CartaoRepository)repository).findByCodigo(e.getCodigo());
+        if(c != null) {
+            throw new NegocioException("cartao-ja-registrado");
+        }
+
+        return super.add(e);
+    }
+
     //TODO MÉTODO TEMPORARIO DE REGISTRO DE CARTÃO, NO FUTURO OS CARTÕES SERÃO PRECADASTRADOS E O USUARIO VIRA DO TOKEN
     @Transactional
     public Cartao associarCartao(Cartao cartao) throws NegocioException {
@@ -45,7 +56,7 @@ public class CartaoService extends RestFullService<Cartao, Long> {
 
             Cartao c = new Cartao();
             c.setCodigo(cartao.getCodigo());
-            c.setPessoa(pessoaService.findByEmail(cartao.getPessoa().getEmail()));
+//            c.setPessoa(pessoaService.findByEmail(cartao.getPessoa().getEmail()));
             return super.save(c);
 
         } else {

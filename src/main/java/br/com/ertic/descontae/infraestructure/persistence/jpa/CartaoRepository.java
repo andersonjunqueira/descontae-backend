@@ -12,7 +12,7 @@ public interface CartaoRepository extends RepositoryBase<Cartao, Long> {
     Cartao findByCodigo(String codigo);
 
     //TODO COLOCAR VERIFICACAO DE ASSINATURA PARA VALIDAR O CARTAO
-    @Query(value="SELECT c FROM Cartao c WHERE c.pessoa.email = ?1")
+    @Query(value="SELECT c FROM Cartao c LEFT JOIN c.assinatura a WHERE a.pessoa.email = ?1 AND c.ativo = 'S'")
     Cartao findAtivoByUsuario(String email);
 
 }

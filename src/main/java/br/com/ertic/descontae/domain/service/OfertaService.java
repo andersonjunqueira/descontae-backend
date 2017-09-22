@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ertic.descontae.domain.model.Oferta;
 import br.com.ertic.descontae.domain.model.OfertaUnidade;
-import br.com.ertic.descontae.domain.model.SituacaoOferta;
+import br.com.ertic.descontae.domain.model.SituacaoAtivo;
 import br.com.ertic.descontae.domain.model.Unidade;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.OfertaCustomRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.OfertaRepository;
@@ -47,12 +47,12 @@ public class OfertaService extends RestFullService<Oferta, Long> {
 
     public Page<Object[]> findListaSimples(Map<String, String[]> params) throws NegocioException {
 
-        SituacaoOferta situacao = null;
+        SituacaoAtivo situacao = null;
         if(params.get("situacao") != null) {
             if(params.get("situacao")[0].equals("A")) {
-                situacao = SituacaoOferta.A;
+                situacao = SituacaoAtivo.A;
             } else if(params.get("situacao")[0].equals("I")) {
-                situacao = SituacaoOferta.I;
+                situacao = SituacaoAtivo.I;
             }
         }
 

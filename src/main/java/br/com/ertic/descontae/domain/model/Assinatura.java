@@ -27,16 +27,11 @@ public class Assinatura extends EntidadeBase<Long> {
 
     private static final long serialVersionUID = 943756204957144990L;
 
-    public static final int MAX_LENGTH_CODIGO_CARTAO = 30;
-
     @Id
     @Column(name="ID_ASSINATURA")
     @SequenceGenerator(name="SEQ_ASSINATURA", sequenceName="SEQ_ASSINATURA", allocationSize=1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_ASSINATURA")
     private Long id;
-
-    @Column(name="CODIGO_CARTAO", length=MAX_LENGTH_CODIGO_CARTAO, nullable=false)
-    private String codigoCartao;
 
     @JsonSerialize(using=DataSerializer.class)
     @JsonDeserialize(using=DataDeserializer.class)
@@ -51,12 +46,12 @@ public class Assinatura extends EntidadeBase<Long> {
     private Date fimVigencia;
 
     @ManyToOne
-    @JoinColumn(name="ID_CARTAO", nullable=false)
-    private Cartao cartao;
-
-    @ManyToOne
     @JoinColumn(name="ID_PLANO", nullable=false)
     private Plano plano;
+
+    @ManyToOne
+    @JoinColumn(name="ID_PESSOA", nullable=false)
+    private Pessoa pessoa;
 
     @Override
     public Long getId() {
@@ -66,14 +61,6 @@ public class Assinatura extends EntidadeBase<Long> {
     @Override
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getCodigoCartao() {
-        return codigoCartao;
-    }
-
-    public void setCodigoCartao(String codigoCartao) {
-        this.codigoCartao = codigoCartao;
     }
 
     public Date getInicioVigencia() {
@@ -100,13 +87,12 @@ public class Assinatura extends EntidadeBase<Long> {
         this.plano = plano;
     }
 
-    public Cartao getCartao() {
-        return cartao;
+    public Pessoa getPessoa() {
+        return pessoa;
     }
 
-    public void setCartao(Cartao cartao) {
-        this.cartao = cartao;
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
-
 
 }

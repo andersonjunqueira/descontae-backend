@@ -64,7 +64,7 @@ create table TB_ASSINATURA (
    ID_ASSINATURA        INT8                 not null,
    ID_PLANO             INT8                 not null,
    ID_CARTAO            INT8                 null,
-   CODIGO_CARTAO        VARCHAR(30)          not null,
+   ID_PESSOA            INT8                 not null,
    INICIO_VIGENCIA      DATE                 not null,
    FIM_VIGENCIA         DATE                 null,
    constraint PK_TB_ASSINATURA primary key (ID_ASSINATURA)
@@ -89,8 +89,8 @@ create table TB_AVALIACAO (
 create table TB_CARTAO (
    ID_CARTAO            INT8                 not null,
    ID_CLIENTE           INT8                 null,
-   ID_PESSOA            INT8                 null,
    CODIGO               VARCHAR(50)          not null,
+   ATIVO                VARCHAR(1)           not null,
    constraint PK_TB_CARTAO primary key (ID_CARTAO)
 );
 
@@ -313,11 +313,6 @@ alter table TB_ASSINATURA
       references TB_PLANO (ID_PLANO)
       on delete restrict on update restrict;
 
-alter table TB_ASSINATURA
-   add constraint FK_TB_ASSIN_REFERENCE_TB_CARTA foreign key (ID_CARTAO)
-      references TB_CARTAO (ID_CARTAO)
-      on delete restrict on update restrict;
-
 alter table TB_AVALIACAO
    add constraint FK_TB_AVALI_REFERENCE_TB_PESSO foreign key (ID_PESSOA)
       references TB_PESSOA_FISICA (ID_PESSOA)
@@ -331,11 +326,6 @@ alter table TB_AVALIACAO
 alter table TB_CARTAO
    add constraint FK_TB_CARTA_REFERENCE_TB_CLIEN foreign key (ID_CLIENTE)
       references TB_CLIENTE (ID_CLIENTE)
-      on delete restrict on update restrict;
-
-alter table TB_CARTAO
-   add constraint FK_TB_CARTA_REFERENCE_TB_PESSO foreign key (ID_PESSOA)
-      references TB_PESSOA_FISICA (ID_PESSOA)
       on delete restrict on update restrict;
 
 alter table TB_CIDADE
