@@ -1,5 +1,6 @@
 package br.com.ertic.descontae.domain.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -26,24 +27,22 @@ public class Cartao extends EntidadeBase<Long> {
 
     private static final long serialVersionUID = -3434603686449588839L;
 
-    public static final int MAX_LENGTH_CODIGO = 50;
-
     @Id
     @Column(name="ID_CARTAO")
     @SequenceGenerator(name="SEQ_CARTAO", sequenceName="SEQ_CARTAO", allocationSize=1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_CARTAO")
     private Long id;
 
-    @Column(name="CODIGO", length=MAX_LENGTH_CODIGO, nullable=false)
-    private String codigo;
+    @Column(name="CODIGO", nullable=false)
+    private Long codigo;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="ID_ASSINATURA", nullable=true)
     private Assinatura assinatura;
 
     @ManyToOne
-    @JoinColumn(name="ID_CLIENTE", nullable=true)
-    private Cliente cliente;
+    @JoinColumn(name="ID_PESSOA", nullable=true)
+    private Pessoa pessoa;
 
     @JsonSerialize(using=SituacaoAtivoSerializer.class)
     @JsonDeserialize(using=SituacaoAtivoDeserializer.class)
@@ -52,7 +51,7 @@ public class Cartao extends EntidadeBase<Long> {
     private SituacaoAtivo ativo;
 
     @Transient
-    private String codigoFinal;
+    private Long codigoFinal;
 
     @Override
     public Long getId() {
@@ -64,20 +63,12 @@ public class Cartao extends EntidadeBase<Long> {
         this.id = id;
     }
 
-    public String getCodigo() {
+    public Long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(Long codigo) {
         this.codigo = codigo;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
     }
 
     public SituacaoAtivo getAtivo() {
@@ -88,11 +79,11 @@ public class Cartao extends EntidadeBase<Long> {
         this.ativo = ativo;
     }
 
-    public String getCodigoFinal() {
+    public Long getCodigoFinal() {
         return codigoFinal;
     }
 
-    public void setCodigoFinal(String codigoFinal) {
+    public void setCodigoFinal(Long codigoFinal) {
         this.codigoFinal = codigoFinal;
     }
 
@@ -102,6 +93,14 @@ public class Cartao extends EntidadeBase<Long> {
 
     public void setAssinatura(Assinatura assinatura) {
         this.assinatura = assinatura;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
 

@@ -35,7 +35,7 @@ public class DataDeserializer extends JsonDeserializer<Date> {
 
     protected static SimpleDateFormat getParser() {
         if(sdf == null) {
-            sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf = new SimpleDateFormat("dd/MM/yyyy");
         }
         return sdf;
     }

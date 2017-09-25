@@ -50,7 +50,11 @@ public class Assinatura extends EntidadeBase<Long> {
     private Plano plano;
 
     @ManyToOne
-    @JoinColumn(name="ID_PESSOA", nullable=false)
+    @JoinColumn(name="ID_CLIENTE", nullable=true)
+    private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name="ID_PESSOA", nullable=true)
     private Pessoa pessoa;
 
     @Override
@@ -93,6 +97,14 @@ public class Assinatura extends EntidadeBase<Long> {
 
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
 }
