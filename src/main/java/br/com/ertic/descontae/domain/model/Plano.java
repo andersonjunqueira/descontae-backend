@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import br.com.ertic.descontae.domain.model.serializer.DecimalSerializer;
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
 @Entity
@@ -34,6 +37,7 @@ public class Plano extends EntidadeBase<Long> {
     @Column(name="DESCRICAO", length=MAX_LENGTH_DESCRICAO, nullable=true)
     private String descricao;
 
+    @JsonSerialize(using=DecimalSerializer.class)
     @Column(name="VALOR", nullable=false)
     private Double valor;
 

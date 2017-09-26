@@ -10,10 +10,13 @@ import br.com.ertic.util.infraestructure.jpa.RepositoryBase;
 public interface CartaoRepository extends RepositoryBase<Cartao, Long> {
 
     @Query(value="SELECT c.id FROM Cartao c WHERE c.codigo = ?1")
-    Long findByCodigo(Long codigo);
+    Long findIdByCodigo(Long codigo);
+
+    @Query(value="SELECT c FROM Cartao c WHERE c.codigo = ?1")
+    Cartao findOneByCodigo(Long codigo);
 
     //TODO COLOCAR VERIFICACAO DE ASSINATURA PARA VALIDAR O CARTAO
-    @Query(value="SELECT c FROM Cartao c LEFT JOIN c.assinatura a WHERE a.pessoa.email = ?1 AND c.ativo = 'S'")
+    @Query(value="SELECT c FROM Cartao c LEFT JOIN c.assinatura a WHERE c.pessoa.email = ?1 AND c.ativo = 'A'")
     Cartao findAtivoByUsuario(String email);
 
 }

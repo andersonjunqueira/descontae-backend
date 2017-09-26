@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ertic.descontae.domain.model.Cartao;
 import br.com.ertic.descontae.domain.service.CartaoService;
+import br.com.ertic.util.infraestructure.dto.Token;
 import br.com.ertic.util.infraestructure.exception.NegocioException;
 import br.com.ertic.util.infraestructure.log.Log;
 import br.com.ertic.util.infraestructure.web.RestFullEndpoint;
@@ -22,6 +23,9 @@ import br.com.ertic.util.infraestructure.web.RestFullEndpoint;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/cartoes")
 public class CartoesController extends RestFullEndpoint<Cartao, Long> {
+
+    @Autowired
+    private Token token;
 
     @Autowired
     public CartoesController(CartaoService service) {
@@ -53,8 +57,12 @@ public class CartoesController extends RestFullEndpoint<Cartao, Long> {
     public ResponseEntity<?> add(@RequestBody Cartao input) {
         try {
 
-           Cartao entity = ((CartaoService)service).associarCartao(input);
-           return new ResponseEntity<>(entity, HttpStatus.OK);
+            if(input.getCodigo() == null) {
+                return new ResponseEntity<>("codigo-invalido", HttpStatus.BAD_REQUEST);
+            }
+
+           ((CartaoService)service).associarCartao(input.getCodigo(), token.getUsername());
+           return new ResponseEntity<>(HttpStatus.OK);
 
        } catch (NegocioException ex) {
            Log.error(this.getClass(), ex);

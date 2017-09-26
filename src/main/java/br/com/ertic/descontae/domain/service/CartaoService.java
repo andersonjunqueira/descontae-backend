@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ertic.descontae.domain.model.Assinatura;
 import br.com.ertic.descontae.domain.model.Cartao;
+import br.com.ertic.descontae.domain.model.Pessoa;
 import br.com.ertic.descontae.domain.model.SituacaoAtivo;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.CartaoCustomRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.CartaoRepository;
@@ -54,7 +55,7 @@ public class CartaoService extends RestFullService<Cartao, Long> {
             // CARTÃO UNICO
             // APENAS PARA NOVOS CARTÕES
             if(e.getId() == null) {
-                Long c = ((CartaoRepository)repository).findByCodigo(e.getCodigo());
+                Long c = ((CartaoRepository)repository).findIdByCodigo(e.getCodigo());
                 if(c != null) {
                     throw new NegocioException("cartao-ja-registrado");
                 }
@@ -65,7 +66,7 @@ public class CartaoService extends RestFullService<Cartao, Long> {
             // FAIXA
             for(long i = codigoInicial; i <= codigoFinal; i++) {
                 e.setCodigo(i);
-                Long c = ((CartaoRepository)repository).findByCodigo(e.getCodigo());
+                Long c = ((CartaoRepository)repository).findIdByCodigo(e.getCodigo());
                 if(c != null) {
                     throw new NegocioException("cartao-ja-registrado");
                 }
@@ -133,22 +134,42 @@ public class CartaoService extends RestFullService<Cartao, Long> {
 
     }
 
-    //TODO MÉTODO TEMPORARIO DE REGISTRO DE CARTÃO, NO FUTURO OS CARTÕES SERÃO PRECADASTRADOS E O USUARIO VIRA DO TOKEN
     @Transactional
-    public Cartao associarCartao(Cartao cartao) throws NegocioException {
+    public void associarCartao(Long codigoCartao, String emailUsuario) throws NegocioException {
 
-        Long id = ((CartaoRepository)repository).findByCodigo(cartao.getCodigo());
-
-        if(id == null) {
-
-            Cartao c = new Cartao();
-            c.setCodigo(cartao.getCodigo());
-//            c.setPessoa(pessoaService.findByEmail(cartao.getPessoa().getEmail()));
-            return super.save(c);
-
-        } else {
-            throw new NegocioException("cartao-ja-registrado");
+        Pessoa p = pessoaService.findByEmail(emailUsuario);
+        if(p == null) {
+            throw new NegocioException("pessoa-nao-existe");
         }
+
+        if(!p.getEmail().equals(emailUsuario)) {
+            throw new NegocioException("nao-permitido-registrar-alheio");
+        }
+
+        Cartao cAtivo = ((CartaoRepository)repository).findAtivoByUsuario(emailUsuario);
+        if(cAtivo != null) {
+            throw new NegocioException("usuario-possui-cartao-ativo");
+        }
+
+        Cartao c = ((CartaoRepository)repository).findOneByCodigo(codigoCartao);
+        if(c == null) {
+            throw new NegocioException("cartao-nao-existe");
+        }
+
+        if(c.getPessoa() != null) {
+
+            if(!c.getPessoa().getId().equals(p.getId())) {
+                throw new NegocioException("cartao-associado-outro-usuario");
+            } else {
+                throw new NegocioException("cartao-ja-associado-mesmo-usuario");
+            }
+
+        }
+
+        c.setPessoa(p);
+        c.setAtivo(SituacaoAtivo.A);
+        repository.save(c);
+
     }
 
     public Cartao findAtivoPorUsuario(String email) throws NegocioException {
