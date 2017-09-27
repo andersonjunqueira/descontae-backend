@@ -17,9 +17,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import br.com.ertic.descontae.domain.model.serializer.TimeDeserializer;
+import br.com.ertic.descontae.domain.model.serializer.TimeSerializer;
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
 @Entity
@@ -30,6 +33,7 @@ public class Unidade extends EntidadeBase<Long> {
 
     public static final String SEQUENCE = "SEQ_UNIDADE";
     public static final int MAX_LENGTH_NOME = 50;
+    public static final int MAX_LENGTH_SENHA_VALIDACAO = 50;
     public static final int MAX_LENGTH_SOBRE = 1000;
 
     @Id
@@ -44,18 +48,23 @@ public class Unidade extends EntidadeBase<Long> {
     @Column(name="SOBRE", length=MAX_LENGTH_SOBRE, nullable=true)
     private String sobre;
 
+    @Column(name="SENHA_VALIDACAO", length=MAX_LENGTH_SENHA_VALIDACAO, nullable=true)
+    private String senhaValidacao;
+
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name="ID_PARCEIRO", nullable=false)
     private Parceiro parceiro;
 
+    @JsonSerialize(using=TimeSerializer.class)
+    @JsonDeserialize(using=TimeDeserializer.class)
     @Temporal(TemporalType.TIME)
-    @JsonFormat(pattern="hh:mm")
     @Column(name="INICIO_EXPEDIENTE", nullable=true)
     private Date inicioExpediente;
 
+    @JsonSerialize(using=TimeSerializer.class)
+    @JsonDeserialize(using=TimeDeserializer.class)
     @Temporal(TemporalType.TIME)
-    @JsonFormat(pattern="hh:mm")
     @Column(name="FIM_EXPEDIENTE", nullable=true)
     private Date fimExpediente;
 
@@ -152,6 +161,14 @@ public class Unidade extends EntidadeBase<Long> {
 
     public void setParceiro(Parceiro parceiro) {
         this.parceiro = parceiro;
+    }
+
+    public String getSenhaValidacao() {
+        return senhaValidacao;
+    }
+
+    public void setSenhaValidacao(String senhaValidacao) {
+        this.senhaValidacao = senhaValidacao;
     }
 
 }

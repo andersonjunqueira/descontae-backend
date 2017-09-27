@@ -33,7 +33,7 @@ public class EnderecoService extends RestFullService<Endereco, Long> {
             CepDTO cep = cepService.find(e.getCep());
 
             if(cep == null) {
-                throw new NegocioException("CEP inexistente");
+                throw new NegocioException("cep-inexistente");
             }
 
             e.setLogradouro(cep.getLogradouro());

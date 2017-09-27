@@ -38,7 +38,7 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
 
     @Override
     @Transactional
-    public Parceiro addOrUpdate(Parceiro parceiro) throws NegocioException {
+    public Parceiro save(Parceiro parceiro) throws NegocioException {
 
         if(parceiro.getId() == null) {
             parceiro.setPessoa(pessoaService.findByEmail(token.getUsername()));
@@ -82,6 +82,6 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
 
         }
 
-        return super.addOrUpdate(parceiro);
+        return super.save(parceiro);
     }
 }

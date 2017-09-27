@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 
 import br.com.ertic.util.infraestructure.log.Log;
 
-public class DataDeserializer extends JsonDeserializer<Date> {
+public class TimeDeserializer extends JsonDeserializer<Date> {
 
     private static SimpleDateFormat sdf;
 
@@ -24,7 +24,7 @@ public class DataDeserializer extends JsonDeserializer<Date> {
         final String value = p.getText();
         if(value != null) {
             try {
-                return DataDeserializer.getParser().parse(value);
+                return TimeDeserializer.getParser().parse(value);
             } catch (ParseException ex) {
                 Log.error(this.getClass(), "Erro processamento de data: " + value, ex);
                 return null;
@@ -36,7 +36,7 @@ public class DataDeserializer extends JsonDeserializer<Date> {
 
     protected static DateFormat getParser() {
         if(sdf == null) {
-            sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf = new SimpleDateFormat("HH:mm");
         }
         return sdf;
     }
