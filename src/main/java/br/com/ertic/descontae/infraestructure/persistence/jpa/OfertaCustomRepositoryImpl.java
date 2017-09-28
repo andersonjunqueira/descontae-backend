@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import br.com.ertic.descontae.domain.model.Consumo;
 import br.com.ertic.descontae.domain.model.SituacaoAtivo;
 
 @Repository
@@ -76,6 +77,26 @@ public class OfertaCustomRepositoryImpl implements OfertaCustomRepository {
         q.setMaxResults(pageable.getPageSize());
 
         return new PageImpl<>(q.getResultList(), pageable, total);
+
+    }
+
+    @Override
+    public Consumo findUltimoConsumo(long idOferta, long idPessoa) {
+
+        StringBuilder hql = new StringBuilder()
+            .append("SELECT c ")
+            .append("  FROM Consumo c ")
+            .append("       JOIN c.oferta o ")
+            .append("       JOIN c.assinatura a ")
+            .append(" WHERE o.id = :idOferta AND a.pessoa.id = :idPessoa ")
+            .append(" ORDER BY c.data DESC ");
+
+        Query q = em.createQuery(hql.toString());
+        q.setParameter("idOferta", idOferta);
+        q.setParameter("idPessoa", idPessoa);
+        q.setMaxResults(1);
+
+        return (Consumo)q.getSingleResult();
 
     }
 

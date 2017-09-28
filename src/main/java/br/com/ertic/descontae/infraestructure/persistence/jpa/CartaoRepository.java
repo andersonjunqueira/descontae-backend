@@ -16,7 +16,13 @@ public interface CartaoRepository extends RepositoryBase<Cartao, Long> {
     Cartao findOneByCodigo(Long codigo);
 
     //TODO COLOCAR VERIFICACAO DE ASSINATURA PARA VALIDAR O CARTAO
-    @Query(value="SELECT c FROM Cartao c LEFT JOIN c.assinatura a WHERE c.pessoa.email = ?1 AND c.ativo = 'A'")
+    @Query(value=
+        "SELECT c " +
+        "  FROM Cartao c " +
+        "       LEFT JOIN c.assinatura a " +
+        " WHERE c.pessoa.email = ?1 " +
+        "   AND c.ativo = 'A' " +
+        "   AND CURRENT_TIMESTAMP BETWEEN a.inicioVigencia AND a.fimVigencia")
     Cartao findAtivoByUsuario(String email);
 
 }

@@ -14,4 +14,7 @@ public interface OfertaUnidadeRepository extends RepositoryBase<OfertaUnidade, L
     @Query(value="SELECT ou FROM OfertaUnidade ou WHERE ou.oferta.id = ?1")
     List<OfertaUnidade> findAllByOferta(Long idOferta);
 
+    @Query(value="SELECT ou FROM OfertaUnidade ou WHERE ou.oferta.id = ?1 AND ou.unidade.id = ?2")
+    OfertaUnidade findByOfertaUnidade(Long idOferta, Long idUnidade);
+
 }

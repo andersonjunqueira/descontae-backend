@@ -38,8 +38,8 @@ public class Consumo extends EntidadeBase<Long> {
     private Assinatura assinatura;
 
     @ManyToOne
-    @JoinColumn(name="ID_OFERTA", nullable=false)
-    private Oferta oferta;
+    @JoinColumn(name="ID_OFERTA_UNIDADE", nullable=false)
+    private OfertaUnidade ofertaUnidade;
 
     @JsonSerialize(using=DataSerializer.class)
     @JsonDeserialize(using=DataDeserializer.class)
@@ -65,19 +65,19 @@ public class Consumo extends EntidadeBase<Long> {
         this.assinatura = assinatura;
     }
 
-    public Oferta getOferta() {
-        return oferta;
-    }
-
-    public void setOferta(Oferta oferta) {
-        this.oferta = oferta;
-    }
-
     public Date getData() {
         return data;
     }
 
     public void setData(Date data) {
         this.data = data;
+    }
+
+    public OfertaUnidade getOfertaUnidade() {
+        return ofertaUnidade;
+    }
+
+    public void setOfertaUnidade(OfertaUnidade ofertaUnidade) {
+        this.ofertaUnidade = ofertaUnidade;
     }
 }

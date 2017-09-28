@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import br.com.ertic.descontae.domain.model.Assinatura;
 import br.com.ertic.descontae.domain.model.Cartao;
 import br.com.ertic.descontae.domain.model.Pessoa;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.PessoaRepository;
@@ -85,6 +86,10 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
         }
 
         return total > 0;
+    }
+
+    public Assinatura findAssinaturaVigente(String email) throws NegocioException {
+        return ((PessoaRepository)repository).findAssinaturaVigente(email);
     }
 
 }
