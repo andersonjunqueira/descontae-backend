@@ -75,8 +75,9 @@ public class ConsumoService extends RestFullService<Consumo, Long> {
             }
         }
 
-        Consumo uc = ofertaCustom.findUltimoConsumo(o.getId(), p.getId());
-        if(uc != null && uc.getData().getTime() < (agora.getTime() - 1000*60*60*24)) {
+        Consumo uc = ofertaCustom.findUltimoConsumo(o.getOferta().getId(), p.getId());
+        Date limite = new Date(agora.getTime() - 1000*60*60*24); 
+        if(uc != null && uc.getData().after(limite)) {
             throw new NegocioException("oferta-utilizada-24h");
         }
 

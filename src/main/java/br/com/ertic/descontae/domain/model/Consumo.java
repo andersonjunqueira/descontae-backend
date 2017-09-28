@@ -17,8 +17,8 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import br.com.ertic.descontae.domain.model.serializer.DataDeserializer;
-import br.com.ertic.descontae.domain.model.serializer.DataSerializer;
+import br.com.ertic.descontae.domain.model.serializer.DataHoraDeserializer;
+import br.com.ertic.descontae.domain.model.serializer.DataHoraSerializer;
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
 
 @Entity
@@ -41,9 +41,9 @@ public class Consumo extends EntidadeBase<Long> {
     @JoinColumn(name="ID_OFERTA_UNIDADE", nullable=false)
     private OfertaUnidade ofertaUnidade;
 
-    @JsonSerialize(using=DataSerializer.class)
-    @JsonDeserialize(using=DataDeserializer.class)
-    @Temporal(TemporalType.DATE)
+    @JsonSerialize(using=DataHoraSerializer.class)
+    @JsonDeserialize(using=DataHoraDeserializer.class)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name="DATA_CONSUMO", nullable=false)
     private Date data;
 

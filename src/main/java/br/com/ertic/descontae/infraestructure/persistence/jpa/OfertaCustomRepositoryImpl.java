@@ -91,8 +91,11 @@ public class OfertaCustomRepositoryImpl implements OfertaCustomRepository {
             .append("  FROM Consumo c ")
             .append("       JOIN c.ofertaUnidade ou ")
             .append("       JOIN ou.oferta o ")
-            .append("       JOIN c.assinatura a ")
-            .append(" WHERE o.id = :idOferta AND a.pessoa.id = :idPessoa ")
+            .append("       JOIN c.assinatura a, ")
+            .append("       Cartao cr ")
+            .append(" WHERE cr.assinatura = c.assinatura ")
+            .append("   AND o.id = :idOferta ")
+            .append("   AND cr.pessoa.id = :idPessoa ")
             .append(" ORDER BY c.data DESC ");
 
         Query q = em.createQuery(hql.toString());

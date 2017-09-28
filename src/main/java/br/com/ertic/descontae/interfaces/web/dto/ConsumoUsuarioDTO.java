@@ -2,21 +2,25 @@ package br.com.ertic.descontae.interfaces.web.dto;
 
 import java.util.Date;
 
+import br.com.ertic.descontae.domain.model.serializer.DataHoraDeserializer;
+
 public class ConsumoUsuarioDTO {
 
     private String parceiro;
     private String unidade;
     private String oferta;
-    private Date data;
+    private Date dataOriginal;
+    private String data;
 
     public ConsumoUsuarioDTO() {}
 
-    public ConsumoUsuarioDTO(String parceiro, String unidade, String oferta, Date data) {
+    public ConsumoUsuarioDTO(String parceiro, String unidade, String oferta, Date dataOriginal) {
         super();
         this.parceiro = parceiro;
         this.unidade = unidade;
         this.oferta = oferta;
-        this.data = data;
+        this.dataOriginal = dataOriginal;
+        this.data = DataHoraDeserializer.getParser().format(dataOriginal);
     }
 
     public String getParceiro() {
@@ -43,11 +47,11 @@ public class ConsumoUsuarioDTO {
         this.oferta = oferta;
     }
 
-    public Date getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(String data) {
         this.data = data;
     }
 

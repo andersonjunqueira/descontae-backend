@@ -42,8 +42,10 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
         em = matching().withMatcher("email", matcher -> matcher.ignoreCase());
         pessoa = getRepository().findOne(Example.of(pessoa, em));
 
-        Cartao c = cartaoService.findAtivoPorUsuario(email);
-        pessoa.setCartaoAtivo(c != null);
+        if(pessoa != null) {
+            Cartao c = cartaoService.findAtivoPorUsuario(email);
+            pessoa.setCartaoAtivo(c != null);
+        }
 
         return pessoa;
     }
