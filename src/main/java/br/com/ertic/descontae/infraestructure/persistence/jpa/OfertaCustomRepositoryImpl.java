@@ -1,6 +1,7 @@
 package br.com.ertic.descontae.infraestructure.persistence.jpa;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -8,11 +9,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.cdi.Eager;
 import org.springframework.stereotype.Repository;
 
 import br.com.ertic.descontae.domain.model.Consumo;
 import br.com.ertic.descontae.domain.model.SituacaoAtivo;
 
+@Eager
 @Repository
 public class OfertaCustomRepositoryImpl implements OfertaCustomRepository {
 
@@ -86,7 +89,8 @@ public class OfertaCustomRepositoryImpl implements OfertaCustomRepository {
         StringBuilder hql = new StringBuilder()
             .append("SELECT c ")
             .append("  FROM Consumo c ")
-            .append("       JOIN c.oferta o ")
+            .append("       JOIN c.ofertaUnidade ou ")
+            .append("       JOIN ou.oferta o ")
             .append("       JOIN c.assinatura a ")
             .append(" WHERE o.id = :idOferta AND a.pessoa.id = :idPessoa ")
             .append(" ORDER BY c.data DESC ");
@@ -96,7 +100,11 @@ public class OfertaCustomRepositoryImpl implements OfertaCustomRepository {
         q.setParameter("idPessoa", idPessoa);
         q.setMaxResults(1);
 
-        return (Consumo)q.getSingleResult();
+        try {
+            return (Consumo)q.getSingleResult();
+        } catch(NoResultException ex) {
+            return null;
+        }
 
     }
 

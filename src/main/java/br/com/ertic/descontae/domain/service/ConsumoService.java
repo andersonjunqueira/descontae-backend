@@ -70,13 +70,13 @@ public class ConsumoService extends RestFullService<Consumo, Long> {
         if(a == null) {
             throw new NegocioException("assinatura-nao-encontrada");
         } else {
-            if( !(agora.getTime() <= a.getInicioVigencia().getTime() && agora.getTime() >= a.getFimVigencia().getTime()) ) {
+            if( !(agora.getTime() >= a.getInicioVigencia().getTime() && agora.getTime() <= a.getFimVigencia().getTime()) ) {
                 throw new NegocioException("assinatura-fora-prazo");
             }
         }
 
         Consumo uc = ofertaCustom.findUltimoConsumo(o.getId(), p.getId());
-        if(uc.getData().getTime() < (agora.getTime() - 1000*60*60*24)) {
+        if(uc != null && uc.getData().getTime() < (agora.getTime() - 1000*60*60*24)) {
             throw new NegocioException("oferta-utilizada-24h");
         }
 
