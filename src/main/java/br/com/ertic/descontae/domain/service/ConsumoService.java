@@ -89,7 +89,8 @@ public class ConsumoService extends RestFullService<Consumo, Long> {
 
     }
 
-    public List<ConsumoUsuarioDTO> findConsumosUsuario(Long id) throws NegocioException {
-        return consumoCustom.findConsumosUsuario(id);
+    public List<ConsumoUsuarioDTO> findConsumosUsuario(String email) throws NegocioException {
+        Pessoa p = pessoaService.findByEmail(email);
+        return consumoCustom.findConsumosUsuario(p.getId());
     }
 }

@@ -1,9 +1,12 @@
 package br.com.ertic.descontae.domain.service;
 
+import static org.springframework.data.domain.ExampleMatcher.matching;
+
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import br.com.ertic.descontae.domain.model.Assinatura;
@@ -35,7 +38,9 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
 
         Pessoa pessoa = new Pessoa();
         pessoa.setEmail(email);
-        pessoa = getRepository().findOne(Example.of(pessoa));
+        ExampleMatcher em = matching();
+        em = matching().withMatcher("email", matcher -> matcher.ignoreCase());
+        pessoa = getRepository().findOne(Example.of(pessoa, em));
 
         Cartao c = cartaoService.findAtivoPorUsuario(email);
         pessoa.setCartaoAtivo(c != null);
@@ -45,6 +50,11 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
 
     @Override
     protected Pessoa save(Pessoa e) throws NegocioException {
+
+        Pessoa p = findByEmail(e.getEmail());
+        if(p != null) {
+            throw new NegocioException("email-ja-registrado");
+        }
 
         boolean novo = (e.getId() == null);
         if(novo) {
@@ -61,7 +71,7 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
         e.setDataAlteracao(e.getDataCadastro());
 
         try {
-            Pessoa p = repository.save(e);
+            p = repository.save(e);
 
             if(novo) {
                 keycloakService.createUser(e.getNome(), null, e.getEmail(), e.getSenha());

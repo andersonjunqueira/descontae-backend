@@ -16,6 +16,7 @@ import br.com.ertic.descontae.domain.model.Pessoa;
 import br.com.ertic.descontae.domain.service.ConsumoService;
 import br.com.ertic.descontae.domain.service.PessoaService;
 import br.com.ertic.descontae.interfaces.web.dto.ConsumoUsuarioDTO;
+import br.com.ertic.util.infraestructure.dto.Token;
 import br.com.ertic.util.infraestructure.exception.NegocioException;
 import br.com.ertic.util.infraestructure.log.Log;
 import br.com.ertic.util.infraestructure.web.RestFullEndpoint;
@@ -24,6 +25,9 @@ import br.com.ertic.util.infraestructure.web.RestFullEndpoint;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/pessoas")
 public class PessoasController extends RestFullEndpoint<Pessoa, Long> {
+
+    @Autowired
+    private Token token;
 
     @Autowired
     private ConsumoService consumoService;
@@ -69,11 +73,11 @@ public class PessoasController extends RestFullEndpoint<Pessoa, Long> {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path="/{id}/consumos")
+    @RequestMapping(method = RequestMethod.GET, path="/consumos")
     public ResponseEntity<?> findConsumosUsuario(@PathVariable Long id) {
         try {
 
-            List<ConsumoUsuarioDTO> saida = consumoService.findConsumosUsuario(id);
+            List<ConsumoUsuarioDTO> saida = consumoService.findConsumosUsuario(token.getUsername());
             if(saida == null || saida.size() == 0) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
