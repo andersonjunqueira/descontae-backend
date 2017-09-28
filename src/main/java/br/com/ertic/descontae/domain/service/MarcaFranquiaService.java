@@ -1,5 +1,6 @@
 package br.com.ertic.descontae.domain.service;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ertic.descontae.domain.model.MarcaFranquia;
+import br.com.ertic.descontae.domain.model.serializer.TimeDeserializer;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.ImagemUnidadeRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.MarcaFranquiaRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.OfertaRepository;
@@ -37,13 +39,13 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
 
     public List<HomeParceiroDTO> findFranquiasByCidade(Long idCidade, String filtro, Double lat, Double lon) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        DateFormat sdf = TimeDeserializer.getParser();
 
         TimeCount tc2 =  TimeCount.start(this.getClass(), "Consulta franquias/cidade");
 
         List<Object[]> result = null;
         if(filtro != null) {
-            String f = filtro + "%";
+            String f = filtro.toLowerCase() + "%";
             result = ((MarcaFranquiaRepository)getRepository()).findAllByCidade(idCidade, f);
         } else {
             result = ((MarcaFranquiaRepository)getRepository()).findAllByCidade(idCidade);
