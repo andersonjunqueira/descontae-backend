@@ -13,7 +13,9 @@ import br.com.ertic.descontae.domain.model.Assinatura;
 import br.com.ertic.descontae.domain.model.Cartao;
 import br.com.ertic.descontae.domain.model.Pessoa;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.PessoaRepository;
+import br.com.ertic.util.infraestructure.dto.Token;
 import br.com.ertic.util.infraestructure.exception.NegocioException;
+import br.com.ertic.util.infraestructure.security.PasswordGenerator;
 import br.com.ertic.util.infraestructure.service.KeycloakService;
 import br.com.ertic.util.infraestructure.service.RestFullService;
 
@@ -28,6 +30,9 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
 
     @Autowired
     private CartaoService cartaoService;
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     PessoaService(PessoaRepository repository) {
@@ -50,13 +55,34 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
         return pessoa;
     }
 
+    public Pessoa findByCPF(String cpf) throws NegocioException {
+
+        Pessoa pessoa = new Pessoa();
+        pessoa.setCpf(cpf);
+        pessoa = getRepository().findOne(Example.of(pessoa));
+
+        return pessoa;
+    }
+
     @Override
-    protected Pessoa save(Pessoa e) throws NegocioException {
+    public Pessoa add(Pessoa e) throws NegocioException {
 
         Pessoa p = findByEmail(e.getEmail());
         if(p != null) {
             throw new NegocioException("email-ja-registrado");
         }
+
+        p = findByCPF(e.getCpf());
+        if(p != null) {
+            throw new NegocioException("cpf-ja-registrado");
+        }
+
+        return super.add(e);
+
+    }
+
+    @Override
+    protected Pessoa save(Pessoa e) throws NegocioException {
 
         boolean novo = (e.getId() == null);
         if(novo) {
@@ -73,7 +99,7 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
         e.setDataAlteracao(e.getDataCadastro());
 
         try {
-            p = repository.save(e);
+            Pessoa p = repository.save(e);
 
             if(novo) {
                 keycloakService.createUser(e.getNome(), null, e.getEmail(), e.getSenha());
@@ -104,4 +130,22 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
         return ((PessoaRepository)repository).findAssinaturaVigente(email);
     }
 
+    public void alterarSenha(Token token) throws NegocioException {
+
+        try {
+
+            Pessoa p = findByEmail(token.getUsername());
+            if(p != null) {
+                throw new NegocioException("email-nao-encontrado");
+            }
+
+            String novaSenha = PasswordGenerator.generate(8);
+            keycloakService.defineUserPassword(token.getUserId(), novaSenha);
+            emailService.enviarAlteracaoSenha(token.getName(), token.getUsername(), novaSenha);
+
+        } catch(Exception ex) {
+            throw new NegocioException("erro-salvar-pessoa", ex);
+        }
+
+    }
 }

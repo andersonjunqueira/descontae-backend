@@ -37,24 +37,33 @@ public class Application {
     @Scope(scopeName = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
     public Token getToken() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-
         String token = request.getHeader("Authorization");
         if(token != null) {
-            token = token.replaceAll("Bearer ", "");
-            String[] parts = token.split("\\.");
-            if (parts.length < 2 || parts.length > 3) {
-            } else {
-                byte[] bytes = Base64.getDecoder().decode(parts[1]);
-                token = new String(bytes);
-            }
+            return readToken(token);
+        }
+        return null;
+    }
 
-            token = token.substring(token.indexOf("preferred_username")+21);
-            token = token.substring(0, token.indexOf("\""));
+    public static Token readToken(String accessToken) {
 
-            return new Token(token);
+        String token = accessToken.replaceAll("Bearer ", "");
+        String[] parts = token.split("\\.");
+        if (parts.length < 2 || parts.length > 3) {
+        } else {
+            byte[] bytes = Base64.getDecoder().decode(parts[1]);
+            token = new String(bytes);
         }
 
-        return null;
+        String id = token.substring(token.indexOf("\"sub\":\"")+7);
+        id = id.substring(0, id.indexOf("\""));
+
+        String name = token.substring(token.indexOf("\"name\":\"")+8);
+        name = name.substring(0, name.indexOf("\""));
+
+        String ntoken = token.substring(token.indexOf("preferred_username")+21);
+        ntoken = ntoken.substring(0, ntoken.indexOf("\""));
+
+        return new Token(ntoken, id, name);
     }
 
     @Bean

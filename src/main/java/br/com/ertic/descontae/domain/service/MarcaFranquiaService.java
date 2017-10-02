@@ -88,6 +88,8 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
 
                     if(item.getDistanciaKM() == null) {
                         item.setDistanciaKM(distance);
+                        item.setDistanciaStr(distance.toString().substring(0, distance.toString().indexOf(".")+2) + " km");
+
                         item.setIdUnidade((Long)r[0]);
                         if(r[15] != null) {
                             item.setHoraAbrir(sdf.format((Date)r[15]));
@@ -96,6 +98,7 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
 
                     } else if(distance < item.getDistanciaKM()) {
                         item.setDistanciaKM(distance);
+                        item.setDistanciaStr(distance.toString().substring(0, distance.toString().indexOf(".")+2) + " km");
                         item.setIdUnidade((Long)r[0]);
                         if(r[15] != null) {
                             item.setHoraAbrir(sdf.format((Date)r[15]));

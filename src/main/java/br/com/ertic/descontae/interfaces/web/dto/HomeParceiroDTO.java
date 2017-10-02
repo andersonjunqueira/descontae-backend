@@ -5,6 +5,7 @@ public class HomeParceiroDTO {
     private Long idMarca;
     private String marca;
     private Double distanciaKM;
+    private String distanciaStr;
     private String imagem;
     private Long idUnidade;
     private String categoria;
@@ -73,6 +74,14 @@ public class HomeParceiroDTO {
 
     public void setHoraFechar(String horaFechar) {
         this.horaFechar = horaFechar;
+    }
+
+    public String getDistanciaStr() {
+        return distanciaStr;
+    }
+
+    public void setDistanciaStr(String distanciaStr) {
+        this.distanciaStr = distanciaStr;
     }
 
 }

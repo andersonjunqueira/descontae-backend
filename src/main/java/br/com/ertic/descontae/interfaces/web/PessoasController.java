@@ -2,6 +2,8 @@ package br.com.ertic.descontae.interfaces.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.ertic.descontae.Application;
 import br.com.ertic.descontae.domain.model.Pessoa;
 import br.com.ertic.descontae.domain.service.ConsumoService;
 import br.com.ertic.descontae.domain.service.PessoaService;
@@ -81,6 +84,30 @@ public class PessoasController extends RestFullEndpoint<Pessoa, Long> {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
                 return new ResponseEntity<>(saida, HttpStatus.OK);
+            }
+
+        } catch (NegocioException ex) {
+            Log.error(this.getClass(), ex);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+
+        } catch (Exception ex) {
+            Log.error(this.getClass(), ex);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path="/novaSenha")
+    public ResponseEntity<?> reenvioSenha(HttpServletRequest request) {
+        try {
+
+            String accessToken = request.getHeader("Authorization");
+            Token token = Application.readToken(accessToken);
+
+            if(token != null) {
+                ((PessoaService)service).alterarSenha(token);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("token-invalido", HttpStatus.UNPROCESSABLE_ENTITY);
             }
 
         } catch (NegocioException ex) {
