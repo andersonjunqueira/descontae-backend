@@ -22,7 +22,7 @@ public class DataHoraDeserializer extends JsonDeserializer<Date> {
         throws IOException, JsonProcessingException {
 
         final String value = p.getText();
-        if(value != null) {
+        if(value != null && value.length() > 0) {
             try {
                 return DataHoraDeserializer.getParser().parse(value);
             } catch (ParseException ex) {
