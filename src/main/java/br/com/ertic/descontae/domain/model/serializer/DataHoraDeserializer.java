@@ -36,7 +36,7 @@ public class DataHoraDeserializer extends JsonDeserializer<Date> {
 
     public static DateFormat getParser() {
         if(sdf == null) {
-            sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         }
         return sdf;
     }

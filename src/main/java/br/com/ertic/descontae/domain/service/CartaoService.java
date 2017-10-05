@@ -88,7 +88,7 @@ public class CartaoService extends RestFullService<Cartao, Long> {
             nc.setAtivo(faixa ? SituacaoAtivo.I : e.getAtivo());
             nc.setPessoa(e.getPessoa());
 
-            if(e.getPessoa() != null) {
+            if(e.getPessoa() != null && e.getAtivo() == SituacaoAtivo.A) {
                 Cartao ca = findAtivoPorUsuario(e.getPessoa().getEmail());
                 if(ca != null) {
                     throw new NegocioException("usuario-possui-cartao-ativo");
