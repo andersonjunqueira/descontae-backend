@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Component;
 
@@ -28,18 +29,23 @@ public class JSONFilter implements Filter {
         String queryString = request.getQueryString();
 
         StringBuilder msg = new StringBuilder()
-            .append("\n\n[REQUEST] ")
+            .append("\n\n=== REQUEST ===\n")
             .append(wrapper.getMethod())
-            .append(" PARA: ")
+            .append(" => ")
             .append(request.getRequestURL().toString())
             .append(queryString != null ? "?" + queryString : "")
-            .append("\n")
+            .append("\n\nPAYLOAD =>\n")
             .append(new String(payload))
             .append("\n");
-
         Log.debug(JSONFilter.class,  msg.toString());
 
         chain.doFilter(wrapper, res);
+
+        msg = new StringBuilder()
+            .append("\n\n=== RESPONSE ===\n")
+            .append(((HttpServletResponse)res).getStatus());
+        Log.debug(JSONFilter.class,  msg.toString());
+
     }
 
     @Override
