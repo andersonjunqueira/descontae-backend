@@ -15,7 +15,6 @@ public interface CartaoRepository extends RepositoryBase<Cartao, Long> {
     @Query(value="SELECT c FROM Cartao c WHERE c.codigo = ?1")
     Cartao findOneByCodigo(Long codigo);
 
-    //TODO COLOCAR VERIFICACAO DE ASSINATURA PARA VALIDAR O CARTAO
     @Query(value=
         "SELECT c " +
         "  FROM Cartao c " +

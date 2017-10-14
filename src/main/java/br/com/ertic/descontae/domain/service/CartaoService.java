@@ -34,10 +34,9 @@ public class CartaoService extends RestFullService<Cartao, Long> {
     }
 
     public Page<Object[]> findListaSimples(Map<String, String[]> params) throws NegocioException {
-        //TODO IMPLEMENTAR PESQUISA POR NOME DO USUARIO DO CLIENTE OU DO CODIGO DO CARTAO
         String filtro = null;
-        if(params.get("filtro") != null) {
-            filtro = params.get("filtro")[0];
+        if(params.get("nome") != null) {
+            filtro = params.get("nome")[0];
         }
         return customRepository.findListaSimples(filtro, getPageRequest(params));
     }

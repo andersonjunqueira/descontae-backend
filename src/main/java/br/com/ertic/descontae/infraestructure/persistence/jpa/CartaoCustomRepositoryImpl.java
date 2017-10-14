@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -21,24 +22,38 @@ public class CartaoCustomRepositoryImpl implements CartaoCustomRepository {
     public Page<Object[]> findListaSimples(String filtro, Pageable pageable) {
 
         StringBuilder hqlWhere = new StringBuilder();
+        StringBuilder hqlOrder = new StringBuilder();
 
         if(filtro != null) {
-            hqlWhere.append(" c.codigo = :filtro OR p.nome LIKE :filtroLike");
+            hqlWhere.append(" CAST(c.codigo as text) = :filtro OR CAST(p.cpf as text) = :filtro OR LOWER(p.nome) LIKE :filtroLike OR LOWER(cl.nome) LIKE :filtroLike ");
         }
 
         StringBuilder hqlCount = new StringBuilder()
             .append("SELECT COUNT(*) ")
             .append("  FROM Cartao c ")
-            .append("       LEFT JOIN c.pessoa p ");
+            .append("       LEFT JOIN c.pessoa p ")
+            .append("       LEFT JOIN c.assinatura a ")
+            .append("       LEFT JOIN a.cliente cl ");
 
         StringBuilder hql = new StringBuilder()
-            .append("SELECT c.id, c.codigo, p.nome ")
+            .append("SELECT c.id, c.codigo, p.nome, p.cpf, coalesce(cl.nome, p.nome), c.ativo ")
             .append("  FROM Cartao c ")
-            .append("       LEFT JOIN c.pessoa p ");
+            .append("       LEFT JOIN c.pessoa p ")
+            .append("       LEFT JOIN c.assinatura a ")
+            .append("       LEFT JOIN a.cliente cl ");
 
         if(hqlWhere.length() > 0) {
             hql.append(" WHERE ").append(hqlWhere.toString());
             hqlCount.append(" WHERE ").append(hqlWhere.toString());
+        }
+
+        if(pageable != null && pageable.getSort() != null) {
+            hql.append(" ORDER BY ");
+            for(Order o : pageable.getSort()) {
+                hqlOrder.append(hqlOrder.length() > 0 ? ", " : "");
+                hqlOrder.append(o.getProperty()).append(" ").append(o.getDirection().name());
+            }
+            hql.append(hqlOrder.toString());
         }
 
         Query q = em.createQuery(hql.toString());
@@ -46,9 +61,9 @@ public class CartaoCustomRepositoryImpl implements CartaoCustomRepository {
 
         if(filtro != null) {
             q.setParameter("filtro", filtro);
-            q.setParameter("filtroLike", filtro + "%");
+            q.setParameter("filtroLike", (filtro + "%").toLowerCase());
             qc.setParameter("filtro", filtro);
-            qc.setParameter("filtroLike", filtro + "%");
+            qc.setParameter("filtroLike", (filtro + "%").toLowerCase());
         }
 
         if (pageable == null) {
@@ -56,11 +71,7 @@ public class CartaoCustomRepositoryImpl implements CartaoCustomRepository {
         }
 
         Long total = (Long)qc.getSingleResult();
-        int paginas = total.intValue() / pageable.getPageSize();
-        paginas += (total.intValue() % pageable.getPageSize() > 0 ? 1 : 0);
-
         int start = pageable.getPageSize() * pageable.getPageNumber();
-
         q.setFirstResult(start);
         q.setMaxResults(pageable.getPageSize());
 
