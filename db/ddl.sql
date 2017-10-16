@@ -1,28 +1,3 @@
-CREATE DATABASE descontae;
-CREATE USER descontaeusr WITH PASSWORD 'descontaeusr';
-GRANT CONNECT ON DATABASE descontae TO descontaeusr;
-ALTER USER descontaeusr WITH SUPERUSER;
-
-drop table TB_AVALIACAO;
-drop table TB_CONSUMO;
-drop table TB_OFERTA_UNIDADE;
-drop table TB_OFERTA;
-drop table TB_TELEFONE;
-drop table TB_ASSINATURA;
-drop table TB_PLANO;
-drop table TB_CARTAO;
-drop table TB_CLIENTE;
-drop table TB_IMAGEM;
-drop table TB_UNIDADE;
-drop table TB_PARCEIRO;
-drop table TB_PESSOA_FISICA;
-drop table TB_ENDERECO;
-drop table TB_CATEGORIA;
-drop table TB_CIDADE;
-drop table TB_MARCA_FRANQUIA;
-drop table TB_TIPO_PESSOA;
-drop table TB_UF;
-
 drop sequence SEQ_ASSINATURA;
 drop sequence SEQ_AVALIACAO;
 drop sequence SEQ_CARTAO;
@@ -57,6 +32,26 @@ create sequence SEQ_TELEFONE;
 create sequence SEQ_UNIDADE;
 create sequence SEQ_CATEGORIA;
 
+drop table TB_AVALIACAO;
+drop table TB_CONSUMO;
+drop table TB_OFERTA_UNIDADE;
+drop table TB_OFERTA;
+drop table TB_TELEFONE;
+drop table TB_ASSINATURA;
+drop table TB_PLANO;
+drop table TB_CARTAO;
+drop table TB_CLIENTE;
+drop table TB_IMAGEM;
+drop table TB_UNIDADE;
+drop table TB_PARCEIRO;
+drop table TB_PESSOA_FISICA;
+drop table TB_ENDERECO;
+drop table TB_CATEGORIA;
+drop table TB_CIDADE;
+drop table TB_MARCA_FRANQUIA;
+drop table TB_TIPO_PESSOA;
+drop table TB_UF;
+
 /*==============================================================*/
 /* Table: TB_ASSINATURA                                         */
 /*==============================================================*/
@@ -64,12 +59,12 @@ create table TB_ASSINATURA (
    ID_ASSINATURA        INT8                 not null,
    ID_PLANO             INT8                 not null,
    ID_CARTAO            INT8                 null,
-   ID_PESSOA            INT8                 not null,
+   ID_PESSOA            INT8                 null,
+   ID_CLIENTE           INT8                 null,
    INICIO_VIGENCIA      DATE                 not null,
    FIM_VIGENCIA         DATE                 null,
    constraint PK_TB_ASSINATURA primary key (ID_ASSINATURA)
 );
-
 /*==============================================================*/
 /* Table: TB_AVALIACAO                                          */
 /*==============================================================*/
@@ -88,7 +83,8 @@ create table TB_AVALIACAO (
 /*==============================================================*/
 create table TB_CARTAO (
    ID_CARTAO            INT8                 not null,
-   ID_CLIENTE           INT8                 null,
+   ID_PESSOA            INT8                 null,
+   ID_ASSINATURA        INT8                 null,
    CODIGO               VARCHAR(50)          not null,
    ATIVO                VARCHAR(1)           not null,
    constraint PK_TB_CARTAO primary key (ID_CARTAO)
@@ -302,6 +298,7 @@ create table TB_UNIDADE (
    ID_ENDERECO          INT8                 not null,
    ID_PARCEIRO          INT8                 not null,
    NOME                 VARCHAR(50)          not null,
+   SENHA_VALIDACAO      VARCHAR(50)          not null,
    SOBRE                VARCHAR(1000)        null,
    INICIO_EXPEDIENTE    TIME                 null,
    FIM_EXPEDIENTE       TIME                 null,
@@ -311,6 +308,16 @@ create table TB_UNIDADE (
 alter table TB_ASSINATURA
    add constraint FK_TB_ASSIN_REFERENCE_TB_PLANO foreign key (ID_PLANO)
       references TB_PLANO (ID_PLANO)
+      on delete restrict on update restrict;
+
+alter table TB_ASSINATURA
+   add constraint FK_TB_ASSIN_REFERENCE_TB_CLIENT foreign key (ID_CLIENTE)
+      references TB_CLIENTE (ID_CLIENTE)
+      on delete restrict on update restrict;
+
+alter table TB_ASSINATURA
+   add constraint FK_TB_ASSIN_REFERENCE_TB_PESSOA foreign key (ID_PESSOA)
+      references TB_PESSOA_FISICA (ID_PESSOA)
       on delete restrict on update restrict;
 
 alter table TB_AVALIACAO
@@ -324,9 +331,14 @@ alter table TB_AVALIACAO
       on delete restrict on update restrict;
 
 alter table TB_CARTAO
-   add constraint FK_TB_CARTA_REFERENCE_TB_CLIEN foreign key (ID_CLIENTE)
-      references TB_CLIENTE (ID_CLIENTE)
+   add constraint FK_TB_CARTA_REFERENCE_TB_PESSO foreign key (ID_PESSOA)
+      references TB_PESSOA_FISICA (ID_PESSOA)
       on delete restrict on update restrict;
+      
+alter table TB_CARTAO
+   add constraint FK_TB_CARTA_REFERENCE_TB_ASSIN foreign key (ID_ASSINATURA)
+      references TB_ASSINATURA (ID_ASSINATURA)
+      on delete restrict on update restrict;      
 
 alter table TB_CIDADE
    add constraint FK_TB_CIDAD_REFERENCE_TB_UF foreign key (ID_UF)
