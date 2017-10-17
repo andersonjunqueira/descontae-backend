@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.ertic.descontae.domain.model.MarcaFranquia;
 import br.com.ertic.descontae.domain.model.serializer.TimeDeserializer;
+import br.com.ertic.descontae.infraestructure.persistence.jpa.FranquiasCustomRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.ImagemUnidadeRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.MarcaFranquiaRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.OfertaRepository;
@@ -27,6 +28,9 @@ import br.com.ertic.util.infraestructure.service.RestFullService;
 public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> {
 
     @Autowired
+    private FranquiasCustomRepository franquiasCustomRepo;
+
+    @Autowired
     public MarcaFranquiaService(MarcaFranquiaRepository repository) {
         super(repository);
     }
@@ -37,18 +41,26 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
     @Autowired
     private OfertaRepository ofertaRepository;
 
-    public List<HomeParceiroDTO> findFranquiasByCidade(Long idCidade, String filtro, Double lat, Double lon) {
+    public List<HomeParceiroDTO> findFranquiasByCidade(Long idCidade, String filtro, Double lat, Double lon, String[] categorias) {
 
         DateFormat sdf = TimeDeserializer.getParser();
 
         TimeCount tc2 =  TimeCount.start(this.getClass(), "Consulta franquias/cidade");
 
+        List<Long> idCats = null;
+        if(categorias != null) {
+            idCats = new ArrayList<>();
+            for(int i = 0; i < categorias.length; i++) {
+                idCats.add(new Long(categorias[i]));
+            }
+        }
+
         List<Object[]> result = null;
         if(filtro != null) {
             String f = filtro.toLowerCase() + "%";
-            result = ((MarcaFranquiaRepository)getRepository()).findAllByCidade(idCidade, f);
+            result = franquiasCustomRepo.findAllByCidade(idCidade, f, idCats);
         } else {
-            result = ((MarcaFranquiaRepository)getRepository()).findAllByCidade(idCidade);
+            result = franquiasCustomRepo.findAllByCidade(idCidade, idCats);
         }
 
         tc2.end();
