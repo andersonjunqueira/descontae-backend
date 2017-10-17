@@ -15,23 +15,6 @@ drop sequence SEQ_TELEFONE;
 drop sequence SEQ_UNIDADE;
 drop sequence SEQ_CATEGORIA;
 
-create sequence SEQ_ASSINATURA;
-create sequence SEQ_AVALIACAO;
-create sequence SEQ_CARTAO;
-create sequence SEQ_CLIENTE;
-create sequence SEQ_CONSUMO;
-create sequence SEQ_ENDERECO;
-create sequence SEQ_IMAGEM;
-create sequence SEQ_MARCA_FRANQUIA;
-create sequence SEQ_OFERTA;
-create sequence SEQ_OFERTA_UNIDADE;
-create sequence SEQ_PARCEIRO;
-create sequence SEQ_PESSOA_FISICA;
-create sequence SEQ_PLANO;
-create sequence SEQ_TELEFONE;
-create sequence SEQ_UNIDADE;
-create sequence SEQ_CATEGORIA;
-
 drop table TB_AVALIACAO;
 drop table TB_CONSUMO;
 drop table TB_OFERTA_UNIDADE;
@@ -51,6 +34,23 @@ drop table TB_CIDADE;
 drop table TB_MARCA_FRANQUIA;
 drop table TB_TIPO_PESSOA;
 drop table TB_UF;
+
+create sequence SEQ_ASSINATURA;
+create sequence SEQ_AVALIACAO;
+create sequence SEQ_CARTAO;
+create sequence SEQ_CLIENTE;
+create sequence SEQ_CONSUMO;
+create sequence SEQ_ENDERECO;
+create sequence SEQ_IMAGEM;
+create sequence SEQ_MARCA_FRANQUIA;
+create sequence SEQ_OFERTA;
+create sequence SEQ_OFERTA_UNIDADE;
+create sequence SEQ_PARCEIRO;
+create sequence SEQ_PESSOA_FISICA;
+create sequence SEQ_PLANO;
+create sequence SEQ_TELEFONE;
+create sequence SEQ_UNIDADE;
+create sequence SEQ_CATEGORIA;
 
 /*==============================================================*/
 /* Table: TB_ASSINATURA                                         */
