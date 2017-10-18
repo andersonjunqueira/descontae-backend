@@ -11,6 +11,7 @@ public class HomeParceiroDTO {
     private String categoria;
     private String horaAbrir;
     private String horaFechar;
+    private String desconto;
 
     public String getMarca() {
         return marca;
@@ -82,6 +83,14 @@ public class HomeParceiroDTO {
 
     public void setDistanciaStr(String distanciaStr) {
         this.distanciaStr = distanciaStr;
+    }
+
+    public String getDesconto() {
+        return desconto;
+    }
+
+    public void setDesconto(String desconto) {
+        this.desconto = desconto;
     }
 
 }

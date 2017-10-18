@@ -1,6 +1,7 @@
 package br.com.ertic.descontae.domain.service;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,9 +14,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.ertic.descontae.domain.model.MarcaFranquia;
 import br.com.ertic.descontae.domain.model.serializer.TimeDeserializer;
-import br.com.ertic.descontae.infraestructure.persistence.jpa.MarcaFranquiasCustomRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.ImagemUnidadeRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.MarcaFranquiaRepository;
+import br.com.ertic.descontae.infraestructure.persistence.jpa.MarcaFranquiasCustomRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.OfertaRepository;
 import br.com.ertic.descontae.interfaces.web.dto.HomeDetalheDTO;
 import br.com.ertic.descontae.interfaces.web.dto.HomeParceiroDTO;
@@ -44,6 +45,7 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
     public List<HomeParceiroDTO> findFranquiasByCidade(Long idCidade, String filtro, Double lat, Double lon, String[] categorias) {
 
         DateFormat sdf = TimeDeserializer.getParser();
+        NumberFormat nf = NumberFormat.getPercentInstance();
 
         TimeCount tc2 =  TimeCount.start(this.getClass(), "Consulta franquias/cidade");
 
@@ -66,6 +68,7 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
         tc2.end();
 
         List<HomeParceiroDTO> franquias = new ArrayList<>();
+        Double maiorDesconto = null;
 
         if(result != null) {
             HomeParceiroDTO item = null;
@@ -75,6 +78,8 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
 
                 boolean novaFranquia = !r[1].equals(idMarca);
                 if(novaFranquia) {
+                    maiorDesconto = null;
+
                     item = new HomeParceiroDTO();
                     franquias.add(item);
                     idMarca = (Long)r[1];
@@ -91,6 +96,17 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
                     }
 
                 }
+
+                if(r[17] != null) {
+                    Double desconto = (Double)r[17];
+                    if(maiorDesconto == null) {
+                        maiorDesconto = desconto;
+                    } else {
+                        maiorDesconto = desconto > maiorDesconto ? desconto : maiorDesconto;
+                    }
+                }
+
+                item.setDesconto(maiorDesconto == null || maiorDesconto == 0D ? null : nf.format(maiorDesconto));
 
                 if(lat != null && lon != null && r[10] != null) {
                     Double distance = GeoUtils.geoDistanceInKm(lat, lon, (Double)r[10], (Double)r[11]);

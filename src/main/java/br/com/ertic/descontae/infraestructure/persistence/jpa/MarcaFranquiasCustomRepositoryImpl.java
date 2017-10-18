@@ -28,8 +28,9 @@ public class MarcaFranquiasCustomRepositoryImpl implements MarcaFranquiasCustomR
         "       endereco.cep, " +
         "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro, " +
         "       unidade.inicioExpediente, " +
-        "       unidade.fimExpediente " +
-        "       FROM OfertaUnidade ofertaunidade " +
+        "       unidade.fimExpediente, " +
+        "       oferta.desconto " +
+        "  FROM OfertaUnidade ofertaunidade " +
         "       JOIN ofertaunidade.oferta oferta " +
         "       JOIN ofertaunidade.unidade unidade " +
         "       JOIN unidade.endereco endereco, " +
