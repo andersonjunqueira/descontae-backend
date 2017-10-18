@@ -9,7 +9,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class FranquiasCustomRepositoryImpl implements FranquiasCustomRepository {
+public class MarcaFranquiasCustomRepositoryImpl implements MarcaFranquiasCustomRepository {
 
     private String HOME_QUERY =
         "SELECT unidade.id, " +

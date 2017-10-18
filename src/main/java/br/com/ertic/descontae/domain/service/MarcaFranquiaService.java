@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.ertic.descontae.domain.model.MarcaFranquia;
 import br.com.ertic.descontae.domain.model.serializer.TimeDeserializer;
-import br.com.ertic.descontae.infraestructure.persistence.jpa.FranquiasCustomRepository;
+import br.com.ertic.descontae.infraestructure.persistence.jpa.MarcaFranquiasCustomRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.ImagemUnidadeRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.MarcaFranquiaRepository;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.OfertaRepository;
@@ -28,7 +28,7 @@ import br.com.ertic.util.infraestructure.service.RestFullService;
 public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> {
 
     @Autowired
-    private FranquiasCustomRepository franquiasCustomRepo;
+    private MarcaFranquiasCustomRepository franquiasCustomRepo;
 
     @Autowired
     public MarcaFranquiaService(MarcaFranquiaRepository repository) {

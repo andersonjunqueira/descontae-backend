@@ -110,11 +110,9 @@ public class OfertaService extends RestFullService<Oferta, Long> {
     public Oferta saveDTO(OfertaDTO dto) throws NegocioException {
 
         Oferta o = null;
-        List<OfertaUnidade> ous = null;
 
         if(dto.getId() != null) {
             o = repository.findOne(dto.getId());
-            ous = ofertaUnidadeRepository.findAllByOferta(dto.getId());
         } else {
             o = new Oferta();
             o.setPessoa(pessoaService.findByEmail(token.getUsername()));
@@ -128,18 +126,51 @@ public class OfertaService extends RestFullService<Oferta, Long> {
         o.setSituacao(dto.getSituacao());
         o = repository.save(o);
 
-        if(ous != null && !ous.isEmpty()) {
-            ofertaUnidadeRepository.delete(ous);
+        List<OfertaUnidade> ous = ofertaUnidadeRepository.findAllByOferta(dto.getId());
+        List<OfertaUnidade> toDel = new ArrayList<>();
+
+        // APAGANDO AQUELAS QUE EXISTEM NO BANCO, MAS NÃO FORAM ENVIADAS PELO FRONTEND
+        for(OfertaUnidade ou : ous) {
+            boolean encontrado = false;
+            for(OfertaUnidadeDTO udto : dto.getUnidades()) {
+                if(ou.getId().equals(udto.getId())) {
+                    encontrado = true;
+                    break;
+                }
+            }
+            // SE NÃO ENCONTRAR NO FRONT = APAGAR
+            if(!encontrado) {
+                toDel.add(ou);
+            }
         }
 
         for(OfertaUnidadeDTO udto : dto.getUnidades()) {
-            if(udto.isSelecionada()) {
+
+            OfertaUnidade item = null;
+            for(OfertaUnidade ou : ous) {
+                if(ou.getUnidade().getId().equals(udto.getId())) {
+                    item = ou;
+                    break;
+                }
+            }
+
+            // OFERTAUNIDADE ENCONTRADA, SE NÃO ESTÁ MARCADA = APAGAR
+            if(item != null && !udto.isSelecionada()) {
+                toDel.add(item);
+
+            // OFERTA UNIDADE NÃO ENCONTRADA, SE ESTÁ SELECIONADA = INCLUIR
+            } else if(item == null && udto.isSelecionada()) {
                 OfertaUnidade ou = new OfertaUnidade();
                 ou.setOferta(o);
                 ou.setUnidade(new Unidade());
                 ou.getUnidade().setId(udto.getId());
                 ofertaUnidadeRepository.save(ou);
             }
+
+        }
+
+        if(toDel != null && !ous.isEmpty()) {
+            ofertaUnidadeRepository.delete(toDel);
         }
 
         return o;
