@@ -131,7 +131,8 @@ create table TB_CLIENTE (
 create table TB_CONSUMO (
    ID_CONSUMO           INT8                 not null,
    ID_ASSINATURA        INT8                 not null,
-   ID_OFERTA_UNIDADE    INT8                 not null,
+   ID_OFERTA            INT8                 not null,
+   ID_UNIDADE           INT8                 not null,
    DATA_CONSUMO         TIMESTAMP            not null,
    constraint PK_TB_CONSUMO primary key (ID_CONSUMO)
 );
@@ -356,18 +357,18 @@ alter table TB_CLIENTE
       on delete restrict on update restrict;
 
 alter table TB_CONSUMO
-   add constraint FK_TB_CONSU_REFERENCE_TB_OFERT foreign key (ID_OFERTA_UNIDADE)
-      references TB_OFERTA_UNIDADE (ID_OFERTA_UNIDADE)
-      on delete restrict on update restrict;
-
-alter table TB_CONSUMO
    add constraint FK_TB_CONSU_REFERENCE_TB_ASSINA foreign key (ID_ASSINATURA)
       references TB_ASSINATURA (ID_ASSINATURA)
       on delete restrict on update restrict;
 
 alter table TB_CONSUMO
-   add constraint FK_TB_CONSU_REFERENCE_TB_ASSIN foreign key (ID_ASSINATURA)
-      references TB_ASSINATURA (ID_ASSINATURA)
+   add constraint FK_TB_CONSU_REFERENCE_TB_OFERTA foreign key (ID_OFERTA)
+      references TB_OFERTA (ID_OFERTA)
+      on delete restrict on update restrict;
+
+alter table TB_CONSUMO
+   add constraint FK_TB_CONSU_REFERENCE_TB_UNID foreign key (ID_UNIDADE)
+      references TB_UNIDADE (ID_UNIDADE)
       on delete restrict on update restrict;
 
 alter table TB_ENDERECO
