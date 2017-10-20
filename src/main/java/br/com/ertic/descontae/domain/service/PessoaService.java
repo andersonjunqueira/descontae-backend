@@ -130,7 +130,7 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
             return saida;
 
         } catch(Exception ex) {
-            throw new NegocioException("erro-salvar-pessoa", ex);
+            throw new NegocioException(ex.getMessage(), ex);
         }
 
     }
@@ -166,7 +166,7 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
             emailService.enviarAlteracaoSenha(token.getName(), token.getUsername(), novaSenha);
 
         } catch(Exception ex) {
-            throw new NegocioException("erro-salvar-pessoa", ex);
+            throw new NegocioException(ex.getMessage(), ex);
         }
 
     }
