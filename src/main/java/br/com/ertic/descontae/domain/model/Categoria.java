@@ -2,6 +2,8 @@ package br.com.ertic.descontae.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,10 +11,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
+import br.com.ertic.util.infraestructure.domain.model.ExclusaoLogica;
+import br.com.ertic.util.infraestructure.domain.model.SimNao;
 
 @Entity
 @Table(name = "TB_CATEGORIA")
-public class Categoria extends EntidadeBase<Long> {
+public class Categoria extends EntidadeBase<Long> implements ExclusaoLogica {
 
     private static final long serialVersionUID = -7014779158394975596L;
 
@@ -26,7 +30,11 @@ public class Categoria extends EntidadeBase<Long> {
 
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)
     private String nome;
-
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name="EXCLUIDO", length=MAX_LENGTH_EXCLUIDO, nullable=false)
+    protected SimNao excluido;
+    
     @Override
     public Long getId() {
         return id;
@@ -45,5 +53,11 @@ public class Categoria extends EntidadeBase<Long> {
         this.nome = nome;
     }
 
+    public SimNao getExcluido() {
+        return excluido;
+    }
 
+    public void setExcluido(SimNao excluido) {
+        this.excluido = excluido;
+    }
 }

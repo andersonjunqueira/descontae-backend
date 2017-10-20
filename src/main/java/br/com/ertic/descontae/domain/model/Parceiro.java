@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,10 +25,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import br.com.ertic.descontae.domain.model.serializer.DataDeserializer;
 import br.com.ertic.descontae.domain.model.serializer.DataSerializer;
 import br.com.ertic.util.infraestructure.domain.model.EntidadeBase;
+import br.com.ertic.util.infraestructure.domain.model.ExclusaoLogica;
+import br.com.ertic.util.infraestructure.domain.model.SimNao;
 
 @Entity
 @Table(name = "TB_PARCEIRO")
-public class Parceiro extends EntidadeBase<Long> {
+public class Parceiro extends EntidadeBase<Long> implements ExclusaoLogica {
 
     private static final long serialVersionUID = 239405336985899452L;
 
@@ -84,6 +88,10 @@ public class Parceiro extends EntidadeBase<Long> {
     @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="parceiro")
     private List<Telefone> telefones;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name="EXCLUIDO", length=MAX_LENGTH_EXCLUIDO, nullable=false)
+    protected SimNao excluido;
+    
     @Override
     public Long getId() {
         return id;
@@ -182,4 +190,11 @@ public class Parceiro extends EntidadeBase<Long> {
         this.telefones = telefones;
     }
 
+    public SimNao getExcluido() {
+        return excluido;
+    }
+
+    public void setExcluido(SimNao excluido) {
+        this.excluido = excluido;
+    }
 }
