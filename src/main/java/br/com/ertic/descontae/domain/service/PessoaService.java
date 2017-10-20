@@ -2,7 +2,9 @@ package br.com.ertic.descontae.domain.service;
 
 import static org.springframework.data.domain.ExampleMatcher.matching;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -12,7 +14,10 @@ import org.springframework.stereotype.Service;
 import br.com.ertic.descontae.domain.model.Assinatura;
 import br.com.ertic.descontae.domain.model.Cartao;
 import br.com.ertic.descontae.domain.model.Pessoa;
+import br.com.ertic.descontae.domain.model.Telefone;
 import br.com.ertic.descontae.infraestructure.persistence.jpa.PessoaRepository;
+import br.com.ertic.descontae.infraestructure.persistence.jpa.TelefoneRepository;
+import br.com.ertic.descontae.infraestructure.persistence.jpa.TipoPessoaRepository;
 import br.com.ertic.util.infraestructure.dto.Token;
 import br.com.ertic.util.infraestructure.exception.NegocioException;
 import br.com.ertic.util.infraestructure.security.PasswordGenerator;
@@ -33,6 +38,12 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private TipoPessoaRepository tpRepo;
+
+    @Autowired
+    private TelefoneRepository telRepo;
 
     @Autowired
     PessoaService(PessoaRepository repository) {
@@ -88,6 +99,8 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
         Date agora = new Date(System.currentTimeMillis());
 
         try {
+            e.setTipoPessoa(tpRepo.findOne(e.getTipoPessoa().getId()));
+
             e.setDataAlteracao(agora);
             if(e.getEndereco() != null && e.getEndereco().getCep() != null)  {
                 e.setEndereco(enderecoService.addOrUpdate(e.getEndereco()));
@@ -101,7 +114,20 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
                 keycloakService.createUser(e.getNome(), null, e.getEmail(), e.getSenha());
             }
 
-            return repository.save(e);
+            List<Telefone> ts = new ArrayList<>();
+            ts.addAll(e.getTelefones());
+            e.getTelefones().clear();
+
+            Pessoa saida = repository.save(e);
+
+            for(Telefone t : ts) {
+                Telefone nt = new Telefone();
+                nt.setPessoa(saida);
+                nt.setNumero(t.getNumero());
+                telRepo.save(nt);
+            }
+
+            return saida;
 
         } catch(Exception ex) {
             throw new NegocioException("erro-salvar-pessoa", ex);

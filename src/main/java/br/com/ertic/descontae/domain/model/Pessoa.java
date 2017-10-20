@@ -38,7 +38,6 @@ public class Pessoa extends EntidadeBase<Long> {
     public static final int MAX_LENGTH_CPF = 11;
     public static final int MAX_LENGTH_INSTAGRAM = 50;
     public static final int MAX_LENGTH_FACEBOOK = 50;
-    public static final int MAX_LENGTH_TELEFONE = 15;
     public static final int MAX_LENGTH_NOME = 100;
     public static final int MAX_LENGTH_EMAIL = 100;
     public static final int MAX_LENGTH_IDIOMA = 5;
@@ -58,9 +57,6 @@ public class Pessoa extends EntidadeBase<Long> {
 
     @Column(name="CPF", length=MAX_LENGTH_CPF, nullable=true)
     private String cpf;
-
-    @Column(name="TELEFONE", length=MAX_LENGTH_TELEFONE, nullable=true)
-    private String telefone;
 
     @Column(name="FACEBOOK", length=MAX_LENGTH_FACEBOOK, nullable=true)
     private String facebook;
@@ -95,7 +91,7 @@ public class Pessoa extends EntidadeBase<Long> {
     @Column(name="SEXO", length=MAX_LENGTH_SEXO, nullable=false)
     private Sexo sexo;
 
-    @OneToMany(mappedBy="pessoa")
+    @OneToMany(mappedBy="pessoa", cascade=CascadeType.PERSIST, orphanRemoval=true)
     private List<Telefone> telefones;
 
     @ManyToOne
@@ -144,14 +140,6 @@ public class Pessoa extends EntidadeBase<Long> {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
     }
 
     public String getFacebook() {

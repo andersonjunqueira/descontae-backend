@@ -119,4 +119,5 @@ public class PessoasController extends RestFullEndpoint<Pessoa, Long> {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }
