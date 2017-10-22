@@ -133,7 +133,7 @@ public class OfertaService extends RestFullService<Oferta, Long> {
         for(OfertaUnidade ou : ous) {
             boolean encontrado = false;
             for(OfertaUnidadeDTO udto : dto.getUnidades()) {
-                if(ou.getId().equals(udto.getId())) {
+                if(ou.getUnidade().getId().equals(udto.getId())) {
                     encontrado = true;
                     break;
                 }

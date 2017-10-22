@@ -8,48 +8,37 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import br.com.ertic.descontae.domain.model.MarcaFranquia;
+
 @Repository
 public class MarcaFranquiasCustomRepositoryImpl implements MarcaFranquiasCustomRepository {
-
-    private String HOME_QUERY =
-        "SELECT unidade.id, " +
-        "       marca.id, " +
-        "       marca.nome, " +
-        "       marca.logomarca, " +
-        "       marca.imagemFundoApp, " +
-        "       categoria.nome, " +
-        "       oferta.descricao, " +
-        "       oferta.regras, " +
-        "       oferta.valor, " +
-        "       oferta.desconto, " +
-        "       endereco.latitude, " +
-        "       endereco.longitude, " +
-        "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro || ', ' || endereco.cidade.nome || ' - ' || endereco.cidade.estado.sigla, " +
-        "       endereco.cep, " +
-        "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro, " +
-        "       unidade.inicioExpediente, " +
-        "       unidade.fimExpediente, " +
-        "       oferta.desconto " +
-        "  FROM OfertaUnidade ofertaunidade " +
-        "       JOIN ofertaunidade.oferta oferta " +
-        "       JOIN ofertaunidade.unidade unidade " +
-        "       JOIN unidade.endereco endereco, " +
-        "       Parceiro parceiro " +
-        "       JOIN parceiro.marca marca " +
-        "       JOIN parceiro.categoria categoria " +
-        " WHERE endereco.cidade.id = :idCidade " +
-        "   AND parceiro = unidade.parceiro " +
-        "   AND oferta.situacao = 'A' ";
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
-    public List<Object[]> findAllByCidade(Long idCidade, List<Long> categorias) {
+    public List<MarcaFranquia> findAllMarcasOfertasAtivas(Long idCidade, String filtro, List<Long> categorias) {
 
-        StringBuilder hql = new StringBuilder(HOME_QUERY);
+        StringBuilder hql = new StringBuilder()
+            .append("SELECT DISTINCT marca ")
+            .append("  FROM OfertaUnidade ofertaunidade ")
+            .append("       JOIN ofertaunidade.oferta oferta ")
+            .append("       JOIN ofertaunidade.unidade unidade ")
+            .append("       JOIN unidade.endereco endereco, ")
+            .append("       Parceiro parceiro ")
+            .append("       JOIN parceiro.marca marca ")
+            .append("       JOIN parceiro.categoria categoria ")
+            .append(" WHERE parceiro = unidade.parceiro ")
+            .append("   AND parceiro.excluido = 'N' ")
+            .append("   AND oferta.situacao = 'A' ")
+            .append("   AND endereco.cidade.id = :idCidade ");
+
         if(categorias != null) {
             hql.append(" AND categoria.id in :catz ");
+        }
+
+        if(filtro != null) {
+            hql.append(" AND (LOWER(categoria.nome) LIKE :filtro OR LOWER(unidade.nome) LIKE :filtro OR LOWER(parceiro.nomeFantasia) LIKE :filtro OR LOWER(parceiro.nome) LIKE :filtro) ");
         }
 
         Query q = em.createQuery(hql.toString());
@@ -57,6 +46,10 @@ public class MarcaFranquiasCustomRepositoryImpl implements MarcaFranquiasCustomR
 
         if(categorias != null) {
             q.setParameter("catz",  categorias);
+        }
+
+        if(filtro != null) {
+            q.setParameter("filtro", filtro);
         }
 
         return q.getResultList();
@@ -64,28 +57,43 @@ public class MarcaFranquiasCustomRepositoryImpl implements MarcaFranquiasCustomR
     }
 
     @Override
-    public List<Object[]> findAllByCidade(Long idCidade, String filtro, List<Long> categorias) {
+    public List<Object[]> findUnidadesByCidadeEMarca(Long idCidade, Long idMarca) {
 
-        StringBuilder hql = new StringBuilder(HOME_QUERY);
-
-        if(filtro != null) {
-            hql.append(" AND (LOWER(categoria.nome) LIKE :filtro OR LOWER(unidade.nome) LIKE :filtro OR LOWER(parceiro.nomeFantasia) LIKE :filtro OR LOWER(parceiro.nome) LIKE :filtro) ");
-        }
-
-        if(categorias != null) {
-            hql.append(" AND categoria.id in :catz ");
-        }
+        StringBuilder hql = new StringBuilder()
+            .append("SELECT DISTINCT unidade.id, ")
+            .append("       marca.id, ")
+            .append("       marca.nome, ")
+            .append("       marca.logomarca, ")
+            .append("       marca.imagemFundoApp, ")
+            .append("       categoria.nome, ")
+            .append("       oferta.descricao, ")
+            .append("       oferta.regras, ")
+            .append("       oferta.valor, ")
+            .append("       oferta.desconto, ")
+            .append("       endereco.latitude, ")
+            .append("       endereco.longitude, ")
+            .append("       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro || ', ' || endereco.cidade.nome || ' - ' || endereco.cidade.estado.sigla, ")
+            .append("       endereco.cep, ")
+            .append("       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro, ")
+            .append("       unidade.inicioExpediente, ")
+            .append("       unidade.fimExpediente, ")
+            .append("       oferta.desconto ")
+            .append("  FROM OfertaUnidade ofertaunidade ")
+            .append("       JOIN ofertaunidade.oferta oferta ")
+            .append("       JOIN ofertaunidade.unidade unidade ")
+            .append("       JOIN unidade.endereco endereco, ")
+            .append("       Parceiro parceiro ")
+            .append("       JOIN parceiro.marca marca ")
+            .append("       JOIN parceiro.categoria categoria ")
+            .append(" WHERE parceiro = unidade.parceiro ")
+            .append("   AND parceiro.excluido = 'N' ")
+            .append("   AND oferta.situacao = 'A' ")
+            .append("   AND endereco.cidade.id = :idCidade ")
+            .append("   AND marca.id = :idMarca ");
 
         Query q = em.createQuery(hql.toString());
         q.setParameter("idCidade",  idCidade);
-
-        if(filtro != null) {
-            q.setParameter("filtro", filtro);
-        }
-
-        if(categorias != null) {
-            q.setParameter("catz",  categorias);
-        }
+        q.setParameter("idMarca",  idMarca);
 
         return q.getResultList();
 

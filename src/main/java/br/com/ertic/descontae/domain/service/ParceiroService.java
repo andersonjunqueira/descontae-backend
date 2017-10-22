@@ -84,4 +84,14 @@ public class ParceiroService extends RestFullService<Parceiro, Long> {
 
         return super.save(parceiro);
     }
+
+    @Override
+    public void delete(Long id) throws NegocioException {
+        long totalEmUso = ((ParceiroRepository)repository).findTotalEmUso(id);
+        if(totalEmUso == 0) {
+            super.delete(id);
+        } else {
+            throw new NegocioException("registro-em-uso");
+        }
+    }
 }

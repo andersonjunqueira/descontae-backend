@@ -4,8 +4,8 @@ public class HomeParceiroDTO {
 
     private Long idMarca;
     private String marca;
-    private Double distanciaKM;
-    private String distanciaStr;
+    private String distanciaKM;
+    private Double distancia;
     private String imagem;
     private Long idUnidade;
     private String categoria;
@@ -21,11 +21,11 @@ public class HomeParceiroDTO {
         this.marca = marca;
     }
 
-    public Double getDistanciaKM() {
+    public String getDistanciaKM() {
         return distanciaKM;
     }
 
-    public void setDistanciaKM(Double distanciaKM) {
+    public void setDistanciaKM(String distanciaKM) {
         this.distanciaKM = distanciaKM;
     }
 
@@ -77,20 +77,20 @@ public class HomeParceiroDTO {
         this.horaFechar = horaFechar;
     }
 
-    public String getDistanciaStr() {
-        return distanciaStr;
-    }
-
-    public void setDistanciaStr(String distanciaStr) {
-        this.distanciaStr = distanciaStr;
-    }
-
     public String getDesconto() {
         return desconto;
     }
 
     public void setDesconto(String desconto) {
         this.desconto = desconto;
+    }
+
+    public Double getDistancia() {
+        return distancia;
+    }
+
+    public void setDistancia(Double distancia) {
+        this.distancia = distancia;
     }
 
 }

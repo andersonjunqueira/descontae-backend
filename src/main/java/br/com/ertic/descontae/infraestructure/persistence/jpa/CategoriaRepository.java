@@ -11,7 +11,9 @@ public interface CategoriaRepository extends RepositoryBase<Categoria, Long> {
 
     @Query(value=
         "SELECT COUNT(*) " +
-        "FROM Parceiro p " +
-        "WHERE p.excluido = 'N' AND p.categoria.id = ?1 ")
+        "  FROM Unidade u " +
+        "       INNER JOIN u.parceiro p, " +
+        "       OfertaUnidade ou " +
+        " WHERE ou.unidade = u AND p.excluido = 'N' ")
     Long findTotalEmUso(Long idCategoria);
 }

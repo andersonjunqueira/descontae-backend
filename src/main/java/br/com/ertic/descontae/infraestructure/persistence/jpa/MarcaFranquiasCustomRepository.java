@@ -2,9 +2,11 @@ package br.com.ertic.descontae.infraestructure.persistence.jpa;
 
 import java.util.List;
 
+import br.com.ertic.descontae.domain.model.MarcaFranquia;
+
 public interface MarcaFranquiasCustomRepository {
 
-    List<Object[]> findAllByCidade(Long idCidade, List<Long> categorias);
-    List<Object[]> findAllByCidade(Long idCidade, String filtro, List<Long> categorias);
+    List<MarcaFranquia> findAllMarcasOfertasAtivas(Long idCidade, String filtro, List<Long> categorias);
+    List<Object[]> findUnidadesByCidadeEMarca(Long idCidade, Long idMarca);
 
 }

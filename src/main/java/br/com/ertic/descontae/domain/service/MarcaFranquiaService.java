@@ -43,12 +43,12 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
     private OfertaRepository ofertaRepository;
 
     public List<HomeParceiroDTO> findFranquiasByCidade(Long idCidade, String filtro, Double lat, Double lon, String[] categorias) {
+        TimeCount tc =  TimeCount.start(this.getClass(), "Consulta HOME");
 
         DateFormat sdf = TimeDeserializer.getParser();
-        NumberFormat nf = NumberFormat.getPercentInstance();
+        NumberFormat nf = NumberFormat.getIntegerInstance();
 
-        TimeCount tc2 =  TimeCount.start(this.getClass(), "Consulta franquias/cidade");
-
+        // SEPARANDO OS IDS DAS CATEGORIAS PARA O FILTRO
         List<Long> idCats = null;
         if(categorias != null) {
             idCats = new ArrayList<>();
@@ -57,93 +57,87 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
             }
         }
 
-        List<Object[]> result = null;
+        // PESQUISANDO AS FRANQUIAS DE ACORDO COM O FILTRO
+        List<MarcaFranquia> marcas = null;
         if(filtro != null) {
             String f = filtro.toLowerCase() + "%";
-            result = franquiasCustomRepo.findAllByCidade(idCidade, f, idCats);
+            marcas = franquiasCustomRepo.findAllMarcasOfertasAtivas(idCidade, f, idCats);
         } else {
-            result = franquiasCustomRepo.findAllByCidade(idCidade, idCats);
+            marcas = franquiasCustomRepo.findAllMarcasOfertasAtivas(idCidade, null, idCats);
         }
-
-        tc2.end();
 
         List<HomeParceiroDTO> franquias = new ArrayList<>();
-        Double maiorDesconto = null;
+        for(MarcaFranquia m : marcas) {
 
-        if(result != null) {
-            HomeParceiroDTO item = null;
-            Long idMarca = null;
+            HomeParceiroDTO dto = null;
+            Double maiorDesconto = null;
+            Double menorDistancia = null;
 
-            for(Object[] r : result) {
+            // PESQUISANDO AS UNIDADES E COMPLEMENTANDO AS INFORMAÇÕES DA HOME
+            List<Object[]> result = franquiasCustomRepo.findUnidadesByCidadeEMarca(idCidade, m.getId());
+            if(result != null) {
 
-                boolean novaFranquia = !r[1].equals(idMarca);
-                if(novaFranquia) {
-                    maiorDesconto = null;
-
-                    item = new HomeParceiroDTO();
-                    franquias.add(item);
-                    idMarca = (Long)r[1];
-
-                    item.setIdMarca(idMarca);
-                    item.setMarca((String)r[2]);
-                    item.setImagem((String)r[3]);
-                    item.setCategoria((String)r[5]);
-
-                    item.setIdUnidade((Long)r[0]);
-                    if(r[15] != null) {
-                        item.setHoraAbrir(sdf.format((Date)r[15]));
-                        item.setHoraFechar(sdf.format((Date)r[16]));
-                    }
-
-                }
-
-                if(r[17] != null) {
-                    Double desconto = (Double)r[17];
-                    if(maiorDesconto == null) {
-                        maiorDesconto = desconto;
-                    } else {
-                        maiorDesconto = desconto > maiorDesconto ? desconto : maiorDesconto;
-                    }
-                }
-
-                item.setDesconto(maiorDesconto == null || maiorDesconto == 0D ? null : nf.format(maiorDesconto));
-
-                if(lat != null && lon != null && r[10] != null) {
-                    Double distance = GeoUtils.geoDistanceInKm(lat, lon, (Double)r[10], (Double)r[11]);
-                    String d = distance.toString();
-                    d = d.substring(0, d.indexOf(".") + 3);
-                    distance = Double.parseDouble(d);
-
-                    if(item.getDistanciaKM() == null) {
-                        item.setDistanciaKM(distance);
-                        item.setDistanciaStr(distance.toString().substring(0, distance.toString().indexOf(".")+2) + " km");
-
-                        item.setIdUnidade((Long)r[0]);
+                for(Object[] r : result) {
+                    if(dto == null) { // NOVA MARCA
+                        dto = new HomeParceiroDTO();
+                        dto.setIdMarca(m.getId());
+                        dto.setMarca(m.getNome());
+                        dto.setImagem(m.getLogomarca());
+                        dto.setCategoria((String)r[5]);
+                        dto.setIdUnidade((Long)r[0]);
                         if(r[15] != null) {
-                            item.setHoraAbrir(sdf.format((Date)r[15]));
-                            item.setHoraFechar(sdf.format((Date)r[16]));
+                            dto.setHoraAbrir(sdf.format((Date)r[15]));
+                            dto.setHoraFechar(sdf.format((Date)r[16]));
                         }
+                    }
 
-                    } else if(distance < item.getDistanciaKM()) {
-                        item.setDistanciaKM(distance);
-                        item.setDistanciaStr(distance.toString().substring(0, distance.toString().indexOf(".")+2) + " km");
-                        item.setIdUnidade((Long)r[0]);
-                        if(r[15] != null) {
-                            item.setHoraAbrir(sdf.format((Date)r[15]));
-                            item.setHoraFechar(sdf.format((Date)r[16]));
+                    // IDENTIFICANDO O MAIOR DESCONTO
+                    if(r[17] != null) {
+                        Double desconto = (Double)r[17];
+                        if(maiorDesconto == null) {
+                            maiorDesconto = desconto;
+                        } else {
+                            maiorDesconto = desconto > maiorDesconto ? desconto : maiorDesconto;
+                        }
+                    }
+
+                    // IDENTIFICANDO A MENOR DISTANCIA
+                    if(lat != null && lon != null && r[10] != null) {
+                        Double distance = GeoUtils.geoDistanceInKm(lat, lon, (Double)r[10], (Double)r[11]);
+                        String d = distance.toString();
+                        d = d.substring(0, d.indexOf(".") + 3);
+                        distance = Double.parseDouble(d);
+                        if(menorDistancia == null) {
+                            menorDistancia = distance;
+                        } else {
+                            menorDistancia = distance < menorDistancia ? distance : menorDistancia;
                         }
                     }
                 }
             }
+
+            if(menorDistancia != null) {
+                dto.setDistancia(menorDistancia);
+                dto.setDistanciaKM(menorDistancia.toString().substring(0, menorDistancia.toString().indexOf(".")+2) + " km");
+            }
+            dto.setDesconto( (maiorDesconto != null && maiorDesconto > 0D) ? nf.format(maiorDesconto) : null);
+            franquias.add(dto);
+
         }
 
-        Collections.sort(franquias, new Comparator<HomeParceiroDTO>() {
-            @Override
-            public int compare(HomeParceiroDTO o1, HomeParceiroDTO o2) {
-                return o1.getMarca() == null ? 0 : o1.getMarca().compareTo(o2.getMarca());
-            }
-        });
+        if(franquias.size() > 0) {
+            Collections.sort(franquias, new Comparator<HomeParceiroDTO>() {
+                @Override
+                public int compare(HomeParceiroDTO o1, HomeParceiroDTO o2) {
+                    if(o1.getDistancia() != null && o2.getDistancia() != null) {
+                        return o1.getDistancia().compareTo(o2.getDistancia());
+                    }
+                    return 0;
+                }
+            });
+        }
 
+        tc.end();
         return franquias;
     }
 
