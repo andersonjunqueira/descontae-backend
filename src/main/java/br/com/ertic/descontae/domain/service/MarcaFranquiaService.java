@@ -43,7 +43,7 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
     private OfertaRepository ofertaRepository;
 
     public List<HomeParceiroDTO> findFranquiasByCidade(Long idCidade, String filtro, Double lat, Double lon, String[] categorias) {
-        TimeCount tc =  TimeCount.start(this.getClass(), "Consulta HOME");
+        TimeCount tc =  TimeCount.start(this.getClass(), "[Consulta HOME]");
 
         DateFormat sdf = TimeDeserializer.getParser();
         NumberFormat nf = NumberFormat.getIntegerInstance();
@@ -58,31 +58,37 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
         }
 
         // PESQUISANDO AS FRANQUIAS DE ACORDO COM O FILTRO
-        List<MarcaFranquia> marcas = null;
+        List<Long> marcas = null;
+        String f = null;
         if(filtro != null) {
-            String f = filtro.toLowerCase() + "%";
-            marcas = franquiasCustomRepo.findAllMarcasOfertasAtivas(idCidade, f, idCats);
-        } else {
-            marcas = franquiasCustomRepo.findAllMarcasOfertasAtivas(idCidade, null, idCats);
+            f = filtro.toLowerCase() + "%";
         }
+        
+        TimeCount tc1 =  TimeCount.start(this.getClass(), "[Consulta HOME] MARCAS");
+        marcas = franquiasCustomRepo.findAllMarcasComOfertasAtivas(idCidade, f, idCats);
+        tc1.end();
 
+        tc1 =  TimeCount.start(this.getClass(), "[Consulta HOME] PROCESSAMENTO UNIDADES");
         List<HomeParceiroDTO> franquias = new ArrayList<>();
-        for(MarcaFranquia m : marcas) {
+        for(Long m : marcas) {
 
             HomeParceiroDTO dto = null;
             Double maiorDesconto = null;
             Double menorDistancia = null;
 
             // PESQUISANDO AS UNIDADES E COMPLEMENTANDO AS INFORMAÇÕES DA HOME
-            List<Object[]> result = franquiasCustomRepo.findUnidadesByCidadeEMarca(idCidade, m.getId());
+            TimeCount tc2 =  TimeCount.start(this.getClass(), "[Consulta HOME] UNIDADES");
+            List<Object[]> result = franquiasCustomRepo.findUnidadesByCidadeEMarca(idCidade, m);
+            tc2.end();
+            
             if(result != null) {
 
                 for(Object[] r : result) {
                     if(dto == null) { // NOVA MARCA
                         dto = new HomeParceiroDTO();
-                        dto.setIdMarca(m.getId());
-                        dto.setMarca(m.getNome());
-                        dto.setImagem(m.getLogomarca());
+                        dto.setIdMarca(m);
+                        dto.setMarca((String)r[2]);
+                        dto.setImagem((String)r[3]);
                         dto.setCategoria((String)r[5]);
                         dto.setIdUnidade((Long)r[0]);
                         if(r[15] != null) {
@@ -120,11 +126,14 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
                 dto.setDistancia(menorDistancia);
                 dto.setDistanciaKM(menorDistancia.toString().substring(0, menorDistancia.toString().indexOf(".")+2) + " km");
             }
+
             dto.setDesconto( (maiorDesconto != null && maiorDesconto > 0D) ? nf.format(maiorDesconto) : null);
             franquias.add(dto);
 
         }
+        tc1.end();
 
+        tc1 =  TimeCount.start(this.getClass(), "[Consulta HOME] ORDENACAO");
         if(franquias.size() > 0) {
             Collections.sort(franquias, new Comparator<HomeParceiroDTO>() {
                 @Override
@@ -136,6 +145,7 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
                 }
             });
         }
+        tc1.end();
 
         tc.end();
         return franquias;

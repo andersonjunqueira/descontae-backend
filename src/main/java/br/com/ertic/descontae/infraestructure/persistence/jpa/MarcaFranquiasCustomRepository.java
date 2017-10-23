@@ -6,7 +6,7 @@ import br.com.ertic.descontae.domain.model.MarcaFranquia;
 
 public interface MarcaFranquiasCustomRepository {
 
-    List<MarcaFranquia> findAllMarcasOfertasAtivas(Long idCidade, String filtro, List<Long> categorias);
+    List<Long> findAllMarcasComOfertasAtivas(Long idCidade, String filtro, List<Long> categorias);
     List<Object[]> findUnidadesByCidadeEMarca(Long idCidade, Long idMarca);
 
 }

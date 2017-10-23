@@ -17,10 +17,11 @@ public class MarcaFranquiasCustomRepositoryImpl implements MarcaFranquiasCustomR
     private EntityManager em;
 
     @Override
-    public List<MarcaFranquia> findAllMarcasOfertasAtivas(Long idCidade, String filtro, List<Long> categorias) {
+    @SuppressWarnings("unchecked")
+    public List<Long> findAllMarcasComOfertasAtivas(Long idCidade, String filtro, List<Long> categorias) {
 
         StringBuilder hql = new StringBuilder()
-            .append("SELECT DISTINCT marca ")
+            .append("SELECT DISTINCT marca.id ")
             .append("  FROM OfertaUnidade ofertaunidade ")
             .append("       JOIN ofertaunidade.oferta oferta ")
             .append("       JOIN ofertaunidade.unidade unidade ")
@@ -52,11 +53,12 @@ public class MarcaFranquiasCustomRepositoryImpl implements MarcaFranquiasCustomR
             q.setParameter("filtro", filtro);
         }
 
-        return q.getResultList();
+        return (List<Long>)q.getResultList();
 
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Object[]> findUnidadesByCidadeEMarca(Long idCidade, Long idMarca) {
 
         StringBuilder hql = new StringBuilder()
