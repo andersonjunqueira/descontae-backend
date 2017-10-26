@@ -115,8 +115,11 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
             }
 
             List<Telefone> ts = new ArrayList<>();
-            ts.addAll(e.getTelefones());
-            e.getTelefones().clear();
+
+            if(e.getTelefones() != null) {
+                ts.addAll(e.getTelefones());
+                e.getTelefones().clear();
+            }
 
             Pessoa saida = repository.save(e);
 
