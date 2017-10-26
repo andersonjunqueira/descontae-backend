@@ -22,10 +22,11 @@ public class ConsumoCustomRepositoryImpl implements ConsumoCustomRepository {
 
         StringBuilder hql = new StringBuilder()
             .append("SELECT new br.com.ertic.descontae.interfaces.web.dto.ConsumoUsuarioDTO(")
-            .append("       ou.unidade.parceiro.marca.nome, ou.unidade.nome, ou.oferta.descricao, c.data) ")
+            .append("       u.parceiro.marca.nome, u.nome, o.descricao, c.data) ")
             .append("  FROM Consumo c ")
             .append("       INNER JOIN c.assinatura a ")
-            .append("       INNER JOIN c.ofertaUnidade ou, ")
+            .append("       INNER JOIN c.oferta o ")
+            .append("       INNER JOIN c.unidade u, ")
             .append("       Cartao cr ")
             .append(" WHERE cr.assinatura = a ")
             .append("   AND cr.pessoa.id = :id ")

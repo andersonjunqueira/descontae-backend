@@ -43,7 +43,7 @@ public class Consumo extends EntidadeBase<Long> {
 
     @ManyToOne
     @JoinColumn(name="ID_UNIDADE", nullable=false)
-    private Unidade Unidade;
+    private Unidade unidade;
 
     @JsonSerialize(using=DataHoraSerializer.class)
     @JsonDeserialize(using=DataHoraDeserializer.class)
@@ -78,11 +78,11 @@ public class Consumo extends EntidadeBase<Long> {
     }
 
     public Unidade getUnidade() {
-        return Unidade;
+        return unidade;
     }
 
     public void setUnidade(Unidade unidade) {
-        Unidade = unidade;
+        this.unidade = unidade;
     }
 
     public Oferta getOferta() {
