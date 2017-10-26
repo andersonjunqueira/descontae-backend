@@ -22,7 +22,7 @@ public interface MarcaFranquiaRepository extends RepositoryBase<MarcaFranquia, L
         "       endereco.longitude, " +
         "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro || ', ' || endereco.cidade.nome || ' - ' || endereco.cidade.estado.sigla, " +
         "       endereco.cep, " +
-        "       endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro, " +
+        "       unidade.nome, " + //endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro, " +
         "       unidade.sobre,  " +
         "       (SELECT COUNT(*) FROM Avaliacao a WHERE a.curtiu = 1 AND a.unidade = unidade), " +
         "       (SELECT COUNT(*) FROM Avaliacao a WHERE a.curtiu = -1 AND a.unidade = unidade), " +
@@ -43,18 +43,18 @@ public interface MarcaFranquiaRepository extends RepositoryBase<MarcaFranquia, L
 
     @Query(value=
         "SELECT unidade.id, " +
-        "    endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro " +
-        "FROM Unidade unidade " +
-        "    JOIN unidade.endereco endereco, " +
-        "    Parceiro parceiro  " +
-        "    JOIN parceiro.marca marca " +
-        "    JOIN parceiro.categoria categoria " +
-        "WHERE marca.id = ?1 " +
-        "  AND endereco.cidade.id = ?2 " +
-        "  AND parceiro = unidade.parceiro  " +
-        "  AND unidade.id in (SELECT ou.unidade.id " +
-        "                       FROM OfertaUnidade ou " +
-        "                      WHERE ou.oferta.situacao = 'A') ")
+        "       unidade.nome " + //endereco.logradouro || ' ' || endereco.complemento || ' ' || endereco.numero || ', ' || endereco.bairro, " +
+        "  FROM Unidade unidade " +
+        "       JOIN unidade.endereco endereco, " +
+        "       Parceiro parceiro  " +
+        "       JOIN parceiro.marca marca " +
+        "       JOIN parceiro.categoria categoria " +
+        " WHERE marca.id = ?1 " +
+        "   AND endereco.cidade.id = ?2 " +
+        "   AND parceiro = unidade.parceiro  " +
+        "   AND unidade.id in (SELECT ou.unidade.id " +
+        "                        FROM OfertaUnidade ou " +
+        "                       WHERE ou.oferta.situacao = 'A') ")
     List<Object[]> findOutrasUnidades(Long idMarca, Long idCidade);
 
 }
