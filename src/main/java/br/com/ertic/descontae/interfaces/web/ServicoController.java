@@ -14,8 +14,8 @@ public class ServicoController {
 
     @RequestMapping(value="/ativo", method = RequestMethod.GET)
     public ResponseEntity<?> ativo() {
-        //return ResponseEntity.ok().build();
-        return ResponseEntity.status(HttpStatus.SC_UNPROCESSABLE_ENTITY).build();
+        return ResponseEntity.status(HttpStatus.SC_OK).build();
+        //return ResponseEntity.status(HttpStatus.SC_UNPROCESSABLE_ENTITY).build();
     }
 
 }
