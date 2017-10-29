@@ -19,4 +19,4 @@ COPY ${BINARY_FILE} /opt/bin/java.jar
 EXPOSE 8000
 
 # INICIAR SERVICO 
-ENTRYPOINT java -jar -Dspring.profiles.active=${ENVIRONMENT} /opt/bin/java.jar >> /dev/null
+ENTRYPOINT java -jar -Dspring.profiles.active=${ENVIRONMENT} /opt/bin/java.jar
