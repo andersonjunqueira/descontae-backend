@@ -2,7 +2,7 @@ FROM ubuntu
 MAINTAINER Anderson Junqueira (anderson.junqueira@gmail.com)
 
 ARG BINARY_FILE
-ARG ENVIRONMENT
+ENV ENVIRONMENT=prod
 
 RUN apt-get update 
 RUN apt-get install -y openjdk-8-jdk curl
@@ -19,4 +19,4 @@ COPY ${BINARY_FILE} /opt/bin/java.jar
 EXPOSE 8000
 
 # INICIAR SERVICO 
-ENTRYPOINT java -jar -Dspring.profiles.active=${ENVIRONMENT} /opt/bin/java.jar
+ENTRYPOINT java -jar -Dspring.profiles.active=$ENVIRONMENT /opt/bin/java.jar
