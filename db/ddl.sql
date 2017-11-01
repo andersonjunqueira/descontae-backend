@@ -58,7 +58,6 @@ create sequence SEQ_CATEGORIA;
 create table TB_ASSINATURA (
    ID_ASSINATURA        INT8                 not null,
    ID_PLANO             INT8                 not null,
-   ID_CARTAO            INT8                 null,
    ID_PESSOA            INT8                 null,
    ID_CLIENTE           INT8                 null,
    INICIO_VIGENCIA      DATE                 not null,
@@ -96,6 +95,7 @@ create table TB_CARTAO (
 create table TB_CATEGORIA (
    ID_CATEGORIA         INT8                 not null,
    NOME                 VARCHAR(30)          not null,
+   EXCLUIDO             VARCHAR(1)           not null DEFAULT 'N',
    constraint PK_TB_CATEGORIA primary key (ID_CATEGORIA)
 );
 
@@ -222,6 +222,7 @@ create table TB_PARCEIRO (
    EMAIL                VARCHAR(100)         null,
    DATA_CADASTRO        date                 not null,
    DATA_ULTIMA_ATUALIZACAO date                 not null,
+   EXCLUIDO             VARCHAR(1)           not null DEFAULT 'N',
    constraint PK_TB_PARCEIRO primary key (ID_PARCEIRO)
 );
 
