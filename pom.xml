@@ -94,13 +94,6 @@
 
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>jboss</id>
-            <url>https://repository.jboss.org</url>
-        </repository>
-    </repositories>
-
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
@@ -110,6 +103,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <connection>scm:git:https://gitlab.com/iwstech/descontae/descontae-backend.git</connection>
+        <developerConnection>scm:git:https://gitlab.com/iwstech/descontae/descontae-backend.git</developerConnection>
+    </scm>
 
     <distributionManagement>
         <repository>
@@ -123,12 +121,6 @@
             <uniqueVersion>true</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
-
-    <scm>
-        <connection>scm:git:https://gitlab.com/iwstech/descontae/descontae-backend.git</connection>
-        <developerConnection>scm:git:https://gitlab.com/iwstech/descontae/descontae-backend.git</developerConnection>
-    </scm>
-
 
 </project>
 
