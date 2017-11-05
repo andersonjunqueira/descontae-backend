@@ -101,6 +101,18 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <!-- -B gitflow:release-start gitflow:release-finish  -->
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>1.7.0</version>
+                <configuration>
+                    <commitMessages>
+                        <releaseStartMessage>iniciando a release</releaseStartMessage>
+                        <releaseFinishMessage>fechando a release</releaseFinishMessage>
+                    </commitMessages>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
