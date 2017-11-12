@@ -134,5 +134,15 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <repositories>
+        <repository>
+            <id>iwstech-m2</id>
+            <url>http://nexus.iwstech.com.br/repository/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>iwstech-m2</id>
+            <url>http://nexus.iwstech.com.br/repository/maven-snapshots/</url>
+        </repository>
+    </repositories>
 </project>
 
