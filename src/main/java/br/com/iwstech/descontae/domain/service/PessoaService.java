@@ -15,6 +15,7 @@ import br.com.iwstech.descontae.domain.model.Assinatura;
 import br.com.iwstech.descontae.domain.model.Cartao;
 import br.com.iwstech.descontae.domain.model.Pessoa;
 import br.com.iwstech.descontae.domain.model.Telefone;
+import br.com.iwstech.descontae.domain.model.TipoPessoa;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.PessoaRepository;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.TelefoneRepository;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.TipoPessoaRepository;
@@ -67,12 +68,13 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
     }
 
     public Pessoa findByCPF(String cpf) throws NegocioException {
-
-        Pessoa pessoa = new Pessoa();
-        pessoa.setCpf(cpf);
-        pessoa = getRepository().findOne(Example.of(pessoa));
-
-        return pessoa;
+        if(cpf != null && cpf.length() == 0) {
+            Pessoa pessoa = new Pessoa();
+            pessoa.setCpf(cpf);
+            pessoa = getRepository().findOne(Example.of(pessoa));
+            return pessoa;
+        }
+        return null;
     }
 
     @Override
@@ -99,6 +101,10 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
         Date agora = new Date(System.currentTimeMillis());
 
         try {
+            if(e.getTipoPessoa() == null) {
+                e.setTipoPessoa(TipoPessoa.TIPO_USUARIO);
+            }
+
             e.setTipoPessoa(tpRepo.findOne(e.getTipoPessoa().getId()));
 
             e.setDataAlteracao(agora);
