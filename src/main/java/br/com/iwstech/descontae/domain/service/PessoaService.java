@@ -140,7 +140,7 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
 
     public boolean verificar(String cpf, String email) {
         Long total = 0L;
-        if(cpf != null) {
+        if(cpf != null && cpf.length() > 0) {
             total += ((PessoaRepository)repository).verificarCPFDuplicado(cpf);
         }
 
