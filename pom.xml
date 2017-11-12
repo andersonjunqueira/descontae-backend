@@ -136,11 +136,11 @@
 
     <repositories>
         <repository>
-            <id>iwstech-m2</id>
+            <id>iwstech-releases</id>
             <url>http://nexus.iwstech.com.br/repository/maven-releases/</url>
         </repository>
         <repository>
-            <id>iwstech-m2</id>
+            <id>iwstech-snapshots</id>
             <url>http://nexus.iwstech.com.br/repository/maven-snapshots/</url>
         </repository>
     </repositories>
