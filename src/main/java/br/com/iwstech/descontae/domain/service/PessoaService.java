@@ -117,7 +117,10 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
             if(novo) {
                 e.setDataCadastro(agora);
                 e.setIdioma(e.getIdioma() != null ? e.getIdioma() : "pt-BR");
-                keycloakService.createUser(e.getNome(), null, e.getEmail(), e.getSenha());
+
+
+
+                keycloakService.createUser(e.getNome(), "Last", e.getEmail(), e.getSenha());
             }
 
             List<Telefone> ts = new ArrayList<>();

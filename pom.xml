@@ -25,7 +25,7 @@
         <springboot-utils.version>0.0.2-SNAPSHOT</springboot-utils.version>
         <springboot.version>1.5.2.RELEASE</springboot.version>
         <testng.version>6.8.13</testng.version>
-        <keycloak.version>3.1.0.Final</keycloak.version>
+        <keycloak.version>3.3.0.Final</keycloak.version>
     </properties>
 
     <dependencies>
