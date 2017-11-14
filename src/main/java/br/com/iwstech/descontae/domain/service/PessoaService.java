@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import br.com.iwstech.descontae.domain.model.Assinatura;
 import br.com.iwstech.descontae.domain.model.Cartao;
@@ -85,9 +86,11 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
             throw new NegocioException("email-ja-registrado");
         }
 
-        p = findByCPF(e.getCpf());
-        if(p != null) {
-            throw new NegocioException("cpf-ja-registrado");
+        if(!StringUtils.isEmpty(e.getCpf())) {
+            p = findByCPF(e.getCpf());
+            if(p != null) {
+                throw new NegocioException("cpf-ja-registrado");
+            }
         }
 
         return super.add(e);
