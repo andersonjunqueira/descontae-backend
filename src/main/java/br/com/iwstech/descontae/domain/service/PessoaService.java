@@ -97,6 +97,7 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
     @Override
     protected Pessoa save(Pessoa e) throws NegocioException {
 
+        boolean emailPassword = false;
         boolean novo = (e.getId() == null);
         Date agora = new Date(System.currentTimeMillis());
 
@@ -118,9 +119,12 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
                 e.setDataCadastro(agora);
                 e.setIdioma(e.getIdioma() != null ? e.getIdioma() : "pt-BR");
 
+                if(e.getSenha() == null) {
+                    e.setSenha(PasswordGenerator.generate(8));
+                    emailPassword = true;
+                }
 
-
-                keycloakService.createUser(e.getNome(), "Last", e.getEmail(), e.getSenha());
+                keycloakService.createUser(e.getNome(), " ", e.getEmail(), e.getSenha());
             }
 
             List<Telefone> ts = new ArrayList<>();
@@ -138,6 +142,10 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
                 nt.setNumero(t.getNumero());
                 telRepo.save(nt);
             }
+
+            //TODO ENVIAR EMAIL DA SENHA
+//            e.getEmail();
+//            e.getSenha();
 
             return saida;
 
@@ -181,5 +189,12 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
             throw new NegocioException(ex.getMessage(), ex);
         }
 
+    }
+
+    @Override
+    public void delete(Long id) throws NegocioException {
+        // TODO não pode apagar pessoa relacionada a cliente ou parceiro
+        // TODO remover o endereço primeiro
+        throw new NegocioException("metodo-nao-disponivel");
     }
 }
