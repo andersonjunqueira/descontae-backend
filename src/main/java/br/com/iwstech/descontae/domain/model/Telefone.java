@@ -51,6 +51,12 @@ public class Telefone extends EntidadeBase<Long> {
     @Column(name="NUMERO", nullable=false)
     private String numero;
 
+    public Telefone() {}
+
+    public Telefone(String numero) {
+        this.numero = numero;
+    }
+
     @Override
     public Long getId() {
         return id;

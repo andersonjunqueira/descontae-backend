@@ -11,25 +11,25 @@
         <property name="hibernate.connection.password">descontaeusr</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 
-        <mapping class="br.com.ertic.descontae.domain.model.Assinatura"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Avaliacao"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Cartao"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Categoria"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Cidade"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Cliente"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Consumo"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Parceiro"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Endereco"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Estado"/>
-        <mapping class="br.com.ertic.descontae.domain.model.MarcaFranquia"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Oferta"/>
-        <mapping class="br.com.ertic.descontae.domain.model.OfertaUnidade"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Pessoa"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Plano"/>
-        <mapping class="br.com.ertic.descontae.domain.model.TipoPessoa"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Unidade"/>
-        <mapping class="br.com.ertic.descontae.domain.model.ImagemUnidade"/>
-        <mapping class="br.com.ertic.descontae.domain.model.Telefone"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Assinatura"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Avaliacao"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Cartao"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Categoria"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Cidade"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Cliente"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Consumo"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Parceiro"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Endereco"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Estado"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.MarcaFranquia"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Oferta"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.OfertaUnidade"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Pessoa"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Plano"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.TipoPessoa"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Unidade"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.ImagemUnidade"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Telefone"/>
 
     </session-factory>
 </hibernate-configuration>

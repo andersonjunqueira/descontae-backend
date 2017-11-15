@@ -108,6 +108,9 @@ public class Pessoa extends EntidadeBase<Long> {
     @Transient
     private boolean cartaoAtivo;
 
+    @Transient
+    private String telefone;
+
     @Override
     public Long getId() {
         return id;
@@ -236,6 +239,14 @@ public class Pessoa extends EntidadeBase<Long> {
 
     public void setSexo(Sexo sexo) {
         this.sexo = sexo;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
 }

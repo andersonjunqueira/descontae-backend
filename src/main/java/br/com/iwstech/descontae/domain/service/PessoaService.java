@@ -5,6 +5,7 @@ import static org.springframework.data.domain.ExampleMatcher.matching;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -135,6 +136,17 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
             if(e.getTelefones() != null) {
                 ts.addAll(e.getTelefones());
                 e.getTelefones().clear();
+            }
+
+            // IF INCLUIDO PARA MANTER A COMPATIBILIDADE DA ENTIDADE RECEBENDO
+            // UM CAMPO TELEFONE E NÃO UM ARRAY
+            if(e.getTelefone() != null) {
+                List<Telefone> tels = ts.stream()
+                    .filter(tel -> tel.getNumero().equals(e.getTelefone()))
+                    .collect(Collectors.toList());
+                if(tels.size() == 0) {
+                    ts.add(new Telefone(e.getTelefone()));
+                }
             }
 
             Pessoa saida = repository.save(e);
