@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.iwstech.descontae.domain.model.Cliente;
+import br.com.iwstech.descontae.domain.model.Pessoa;
 import br.com.iwstech.descontae.domain.model.Telefone;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.ClienteRepository;
 import br.com.iwstech.util.infraestructure.dto.Token;
@@ -53,5 +54,14 @@ public class ClienteService extends RestFullService<Cliente, Long> {
 
         e.setDataAlteracao(new Date(System.currentTimeMillis()));
         return repository.save(e);
+    }
+
+    public Cliente findOneByPessoa(Token token) throws NegocioException {
+        try {
+            Pessoa p = pessoaService.findByEmail(token.getUsername());
+            return ((ClienteRepository)repository).findOneByPessoa(p.getId());
+        } catch(Exception ex) {
+            throw new NegocioException(ex.getMessage(), ex);
+        }
     }
 }

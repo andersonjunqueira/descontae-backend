@@ -13,11 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.iwstech.descontae.domain.model.MarcaFranquia;
+import br.com.iwstech.descontae.domain.model.Telefone;
+import br.com.iwstech.descontae.domain.model.Unidade;
 import br.com.iwstech.descontae.domain.model.serializer.TimeDeserializer;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.ImagemUnidadeRepository;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.MarcaFranquiaRepository;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.MarcaFranquiasCustomRepository;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.OfertaRepository;
+import br.com.iwstech.descontae.infraestructure.persistence.jpa.TelefoneRepository;
 import br.com.iwstech.descontae.interfaces.web.dto.HomeDetalheDTO;
 import br.com.iwstech.descontae.interfaces.web.dto.HomeParceiroDTO;
 import br.com.iwstech.descontae.interfaces.web.dto.HomeUnidadeDTO;
@@ -32,15 +35,18 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
     private MarcaFranquiasCustomRepository franquiasCustomRepo;
 
     @Autowired
-    public MarcaFranquiaService(MarcaFranquiaRepository repository) {
-        super(repository);
-    }
-
-    @Autowired
     private ImagemUnidadeRepository imgRepository;
 
     @Autowired
     private OfertaRepository ofertaRepository;
+
+    @Autowired
+    private TelefoneRepository telefoneRepository;
+
+    @Autowired
+    public MarcaFranquiaService(MarcaFranquiaRepository repository) {
+        super(repository);
+    }
 
     public List<HomeParceiroDTO> findFranquiasByCidade(Long idCidade, String filtro, Double lat, Double lon, String[] categorias) {
         TimeCount tc =  TimeCount.start(this.getClass(), "[Consulta HOME]");
@@ -63,7 +69,7 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
         if(filtro != null) {
             f = filtro.toLowerCase() + "%";
         }
-        
+
         TimeCount tc1 =  TimeCount.start(this.getClass(), "[Consulta HOME] MARCAS");
         marcas = franquiasCustomRepo.findAllMarcasComOfertasAtivas(idCidade, f, idCats);
         tc1.end();
@@ -80,7 +86,7 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
             TimeCount tc2 =  TimeCount.start(this.getClass(), "[Consulta HOME] UNIDADES");
             List<Object[]> result = franquiasCustomRepo.findUnidadesByCidadeEMarca(idCidade, m);
             tc2.end();
-            
+
             if(result != null) {
 
                 for(Object[] r : result) {
@@ -177,6 +183,11 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
                 detalhe.setEndereco((String)unidades[8]);
                 detalhe.setEnderecoResumido((String)unidades[10]);
                 detalhe.setSobre((String)unidades[11]);
+
+                List<Telefone> telefones = telefoneRepository.findByUnidade(new Unidade(detalhe.getIdUnidade()));
+                if(telefones != null && telefones.size() > 0) {
+                    detalhe.setTelefone(telefones.get(0).getNumero());
+                }
 
                 Long curtidas = (Long)unidades[12];
                 curtidas = curtidas == null ? 0 : curtidas;

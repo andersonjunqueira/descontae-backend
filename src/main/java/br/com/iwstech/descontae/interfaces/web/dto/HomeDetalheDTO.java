@@ -23,6 +23,7 @@ public class HomeDetalheDTO {
     private String horaFechar;
     private Double curtidas;
     private Double descurtidas;
+    private String telefone;
 
     private List<Oferta> ofertas;
     private List<ImagemUnidade> imagensProduto;
@@ -178,6 +179,14 @@ public class HomeDetalheDTO {
 
     public void setOfertas(List<Oferta> ofertas) {
         this.ofertas = ofertas;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
 

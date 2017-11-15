@@ -81,6 +81,12 @@ public class Unidade extends EntidadeBase<Long> {
     @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="unidade")
     private List<Telefone> telefones;
 
+    public Unidade() {}
+
+    public Unidade(Long id) {
+        this.id = id;
+    }
+
     @Override
     public Long getId() {
         return id;
