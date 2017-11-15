@@ -18,6 +18,7 @@ import br.com.iwstech.descontae.infraestructure.persistence.jpa.OfertaCustomRepo
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.OfertaUnidadeRepository;
 import br.com.iwstech.descontae.interfaces.web.dto.ConsumoDTO;
 import br.com.iwstech.descontae.interfaces.web.dto.ConsumoUsuarioDTO;
+import br.com.iwstech.descontae.interfaces.web.dto.DashboardConsumosDTO;
 import br.com.iwstech.util.infraestructure.exception.NegocioException;
 import br.com.iwstech.util.infraestructure.service.RestFullService;
 
@@ -93,6 +94,26 @@ public class ConsumoService extends RestFullService<Consumo, Long> {
 
     public List<ConsumoUsuarioDTO> findConsumosUsuario(String email) throws NegocioException {
         Pessoa p = pessoaService.findByEmail(email);
-        return consumoCustom.findConsumosUsuario(p.getId());
+        return consumoCustom.findByUsuario(p.getId());
     }
+
+    public DashboardConsumosDTO getDashboard(Long idCliente, Long idCidade, Date dataInicio, Date dataFim) throws NegocioException {
+
+        try {
+            DashboardConsumosDTO dto = new DashboardConsumosDTO();
+
+            dto.setCartoesAtivos(consumoCustom.findCartoesAtivos(idCliente));
+            dto.setTotais(consumoCustom.findTotais(idCliente, dataInicio, dataFim));
+
+            dto.setTotaisByCategoria(consumoCustom.findTotaisByCategoria(idCliente, idCidade, dataInicio, dataFim));
+            dto.setTotaisByBairro(consumoCustom.findTotaisByBairro(idCliente, idCidade, dataInicio, dataFim));
+            dto.setTotaisByCidade(consumoCustom.findTotaisByCidade(idCliente, dataInicio, dataFim));
+            return dto;
+
+        } catch(Exception ex) {
+            throw new NegocioException(ex.getMessage(), ex);
+        }
+
+    }
+
 }
