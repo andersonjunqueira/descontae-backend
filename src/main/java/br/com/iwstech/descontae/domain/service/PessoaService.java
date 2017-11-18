@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -82,28 +83,54 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
     @Override
     public Pessoa add(Pessoa e) throws NegocioException {
 
-        Pessoa p = findByEmail(e.getEmail());
-        if(p != null) {
-            throw new NegocioException("email-ja-registrado");
-        }
-
+        // VERIFICANDO SE O CPF JÁ EXISTE
         if(!StringUtils.isEmpty(e.getCpf())) {
-            p = findByCPF(e.getCpf());
+            Pessoa p = findByCPF(e.getCpf());
             if(p != null) {
                 throw new NegocioException("cpf-ja-registrado");
             }
         }
 
-        return super.add(e);
+        // VERIFICANDO SE O EMAIL JÁ ESTÁ REGISTRADO NO BANCO
+        Pessoa dbu = findByEmail(e.getEmail());
 
+        // VERIFICANDO SE O EMAIL JÁ EXISTE NO KEYCLOAK
+        UserRepresentation kcu = keycloakService.findUserByEmail(e.getEmail());
+
+        boolean db = dbu != null;
+        boolean kc = kcu != null;
+
+        if(db && kc) { // ENCONTRADO NO BANCO E NO KC = ERRO
+            // ERRO JÁ REGISTRADO
+            throw new NegocioException("email-ja-registrado");
+        }
+
+        if(!kc) {
+            boolean emailPassword = false;
+            if(StringUtils.isEmpty(e.getSenha())) {
+                e.setSenha(PasswordGenerator.generate(8));
+                emailPassword = true;
+            }
+
+            keycloakService.createUser(e.getNome(), " ", e.getEmail(), e.getSenha());
+
+            if(emailPassword) {
+                //TODO ENVIAR EMAIL DA SENHA
+                //e.getEmail(), e.getSenha();
+            }
+        }
+
+        if(!db) {
+            e.setDataCadastro(new Date(System.currentTimeMillis()));
+            e.setIdioma(e.getIdioma() != null ? e.getIdioma() : "pt-BR");
+            return super.add(e);
+        } else {
+            return dbu;
+        }
     }
 
     @Override
     protected Pessoa save(Pessoa e) throws NegocioException {
-
-        boolean emailPassword = false;
-        boolean novo = (e.getId() == null);
-        Date agora = new Date(System.currentTimeMillis());
 
         try {
             if(e.getTipoPessoa() == null) {
@@ -112,23 +139,11 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
 
             e.setTipoPessoa(tpRepo.findOne(e.getTipoPessoa().getId()));
 
-            e.setDataAlteracao(agora);
+            e.setDataAlteracao(new Date(System.currentTimeMillis()));
             if(e.getEndereco() != null && e.getEndereco().getCep() != null)  {
                 e.setEndereco(enderecoService.addOrUpdate(e.getEndereco()));
             } else {
                 e.setEndereco(null);
-            }
-
-            if(novo) {
-                e.setDataCadastro(agora);
-                e.setIdioma(e.getIdioma() != null ? e.getIdioma() : "pt-BR");
-
-                if(e.getSenha() == null) {
-                    e.setSenha(PasswordGenerator.generate(8));
-                    emailPassword = true;
-                }
-
-                keycloakService.createUser(e.getNome(), " ", e.getEmail(), e.getSenha());
             }
 
             List<Telefone> ts = new ArrayList<>();
@@ -157,10 +172,6 @@ public class PessoaService extends RestFullService<Pessoa, Long> {
                 nt.setNumero(t.getNumero());
                 telRepo.save(nt);
             }
-
-            //TODO ENVIAR EMAIL DA SENHA
-//            e.getEmail();
-//            e.getSenha();
 
             return saida;
 

@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.com.iwstech.descontae.domain.model.serializer.DecimalSerializer;
 import br.com.iwstech.util.infraestructure.domain.model.EntidadeBase;
+import br.com.iwstech.util.infraestructure.domain.model.SimNao;
 
 @Entity
 @Table(name = "TB_PLANO")
@@ -47,6 +48,10 @@ public class Plano extends EntidadeBase<Long> {
     @Enumerated(EnumType.STRING)
     @Column(name="SITUACAO", nullable=false)
     private SituacaoAtivo situacao;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="MOSTRA_APP", nullable=true)
+    private SimNao mostraApp;
 
     @Override
     public Long getId() {
@@ -96,6 +101,14 @@ public class Plano extends EntidadeBase<Long> {
 
     public void setImagem(String imagem) {
         this.imagem = imagem;
+    }
+
+    public SimNao getMostraApp() {
+        return mostraApp;
+    }
+
+    public void setMostraApp(SimNao mostraApp) {
+        this.mostraApp = mostraApp;
     }
 
 

@@ -257,6 +257,7 @@ create table TB_PLANO (
    VALOR                FLOAT8               not null,
    SITUACAO             VARCHAR(1)           not null,
    IMAGEM               TEXT                 not null,
+   MOSTRA_APP           VARCHAR(1)           null default 'N',
    constraint PK_TB_PLANO primary key (ID_PLANO)
 );
 
