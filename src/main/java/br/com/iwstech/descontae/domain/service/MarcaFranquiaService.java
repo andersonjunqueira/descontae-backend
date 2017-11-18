@@ -94,7 +94,7 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
                         dto = new HomeParceiroDTO();
                         dto.setIdMarca(m);
                         dto.setMarca((String)r[2]);
-//                        dto.setImagem((String)r[3]);
+                        dto.setImagem((String)r[3]);
                         dto.setCategoria((String)r[5]);
                         dto.setIdUnidade((Long)r[0]);
                         if(r[15] != null) {
