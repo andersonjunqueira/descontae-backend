@@ -4,11 +4,20 @@ public class DashboardChaveValorDTO {
 
     private String nome;
     private Long total;
+    private String percentual;
 
-    public DashboardChaveValorDTO() {}
+    public DashboardChaveValorDTO() {
+    }
+
     public DashboardChaveValorDTO(String nome, Long total) {
         setNome(nome);
         setTotal(total);
+    }
+
+    public DashboardChaveValorDTO(String nome, Long total, String percentual) {
+        setNome(nome);
+        setTotal(total);
+        setPercentual(percentual);
     }
 
     public String getNome() {
@@ -27,4 +36,13 @@ public class DashboardChaveValorDTO {
         this.total = total;
     }
 
+    public String getPercentual() {
+        return percentual;
+    }
+
+    public void setPercentual(String percentual) {
+        this.percentual = percentual;
+    }
+
 }
+//

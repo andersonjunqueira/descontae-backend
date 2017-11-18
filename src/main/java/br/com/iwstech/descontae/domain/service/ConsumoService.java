@@ -1,12 +1,17 @@
 package br.com.iwstech.descontae.domain.service;
 
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.iwstech.descontae.domain.model.Assinatura;
+import br.com.iwstech.descontae.domain.model.Cidade;
 import br.com.iwstech.descontae.domain.model.Consumo;
 import br.com.iwstech.descontae.domain.model.OfertaUnidade;
 import br.com.iwstech.descontae.domain.model.Pessoa;
@@ -30,6 +35,12 @@ public class ConsumoService extends RestFullService<Consumo, Long> {
 
     @Autowired
     private PessoaService pessoaService;
+
+    @Autowired
+    private ClienteService clienteService;
+
+    @Autowired
+    private CidadeService cidadeService;
 
     @Autowired
     private OfertaUnidadeRepository ofertaUnidadeRepository;
@@ -78,8 +89,7 @@ public class ConsumoService extends RestFullService<Consumo, Long> {
 
         Consumo uc = ofertaCustom.findUltimoConsumo(o.getOferta().getId(), p.getId());
         Date limite = new Date(agora.getTime() - 1000*60*60*24);
-        if(uc != null && uc.getData().after(limite)) {
-            throw new NegocioException("oferta-utilizada-24h");
+        if(uc != null && uc.getData().after(limite)) {            throw new NegocioException("oferta-utilizada-24h");
         }
 
         Consumo c = new Consumo();
@@ -97,17 +107,100 @@ public class ConsumoService extends RestFullService<Consumo, Long> {
         return consumoCustom.findByUsuario(p.getId());
     }
 
-    public DashboardConsumosDTO getDashboard(Long idCliente, Long idCidade, Date dataInicio, Date dataFim) throws NegocioException {
+    public DashboardConsumosDTO getDashboard(String emailUsuario, Long idCliente, Long idCidade, Date dataInicio, Date dataFim) throws NegocioException {
 
         try {
+
             DashboardConsumosDTO dto = new DashboardConsumosDTO();
 
-            dto.setCartoesAtivos(consumoCustom.findCartoesAtivos(idCliente));
-            dto.setTotais(consumoCustom.findTotais(idCliente, dataInicio, dataFim));
+            // PESQUISANDO O CLIENTE PELO ID INFORMADO
+            if(idCliente != null) {
+                dto.setCliente(clienteService.findOne(idCliente));
 
-            dto.setTotaisByCategoria(consumoCustom.findTotaisByCategoria(idCliente, idCidade, dataInicio, dataFim));
-            dto.setTotaisByBairro(consumoCustom.findTotaisByBairro(idCliente, idCidade, dataInicio, dataFim));
-            dto.setTotaisByCidade(consumoCustom.findTotaisByCidade(idCliente, dataInicio, dataFim));
+            // ENCONTRANDO O CLIENTE ATRAVÉS DO EMAIL
+            } else if(emailUsuario != null) {
+                dto.setCliente(clienteService.findOneByPessoa(emailUsuario));
+            }
+
+            // SE NÃO INFORMAR A CIDADE
+            if(idCidade == null) {
+
+                // A CIDADE PADRÃO É A DO ENDEREÇO DO CLIENTE
+                if(dto.getCliente() != null) {
+                    idCidade = dto.getCliente().getEndereco().getCidade().getId();
+
+                // SEM O CLIENTE, CIDADE PADRÃO É BRASILIA
+                } else {
+                    idCidade = Cidade.BRASILIA.getId();
+                }
+
+            }
+            dto.setCidade(cidadeService.findOne(idCidade));
+
+            // O PERIODO PADRÃO SÃO OS ÚLTIMOS 30 DIAS
+            if(dataInicio == null || dataFim == null) {
+                GregorianCalendar cal = new GregorianCalendar();
+                dataFim = cal.getTime();
+                cal.add(Calendar.DAY_OF_MONTH, -30);
+                dataInicio = cal.getTime();
+            }
+            dto.setDataInicio(dataInicio);
+            dto.setDataFim(dataFim);
+
+
+            dto.setCartoesTotais(consumoCustom.findCartoesTotais(idCliente));
+            dto.setConsumosTotais(consumoCustom.findConsumosTotais(idCliente, dataInicio, dataFim));
+
+            DecimalFormat df = new DecimalFormat("##.##%");
+            double[] total = new double[] {0D};
+
+            dto.setCartoesAtivos(consumoCustom.findCartoesAtivos(idCliente).stream()
+                .map(item -> {
+                    total[0] = total[0] + item.getTotal();
+                    return item;
+                }).collect(Collectors.toList()).stream()
+                .map(item -> {
+                    double p = item.getTotal() / total[0];
+                    item.setPercentual(df.format(p));
+                    return item;
+                }).collect(Collectors.toList()));
+
+            total[0] = 0D;
+            dto.setConsumosTotaisByCategoria(consumoCustom.findConsumosTotaisByCategoria(idCliente, idCidade, dataInicio, dataFim).stream()
+                .map(item -> {
+                    total[0] = total[0] + item.getTotal();
+                    return item;
+                }).collect(Collectors.toList()).stream()
+                .map(item -> {
+                    double p = item.getTotal() / total[0];
+                    item.setPercentual(df.format(p));
+                    return item;
+                }).collect(Collectors.toList()));
+
+            total[0] = 0D;
+            dto.setConsumosTotaisByCidade(consumoCustom.findTotaisByCidade(idCliente, dataInicio, dataFim).stream()
+                .map(item -> {
+                    total[0] = total[0] + item.getTotal();
+                    return item;
+                }).collect(Collectors.toList()).stream()
+                .map(item -> {
+                    double p = item.getTotal() / total[0];
+                    item.setPercentual(df.format(p));
+                    return item;
+                }).collect(Collectors.toList()));
+
+            total[0] = 0D;
+            dto.setConsumosTotaisByBairro(consumoCustom.findTotaisByBairro(idCliente, idCidade, dataInicio, dataFim).stream()
+                .map(item -> {
+                    total[0] = total[0] + item.getTotal();
+                    return item;
+                }).collect(Collectors.toList()).stream()
+                .map(item -> {
+                    double p = item.getTotal() / total[0];
+                    item.setPercentual(df.format(p));
+                    return item;
+                }).collect(Collectors.toList()));
+
             return dto;
 
         } catch(Exception ex) {

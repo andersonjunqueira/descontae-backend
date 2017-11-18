@@ -17,6 +17,8 @@ public class Cidade extends EntidadeBase<Long> {
 
     public static final int MAX_LENGTH_NOME = 100;
 
+    public static final Cidade BRASILIA = new Cidade(1L);
+
     @Id
     @Column(name="ID_CIDADE")
     private Long id;
@@ -27,6 +29,12 @@ public class Cidade extends EntidadeBase<Long> {
     @ManyToOne
     @JoinColumn(name="ID_UF", nullable=false)
     private Estado estado;
+
+    public Cidade() {}
+
+    public Cidade(Long id) {
+        setId(id);
+    }
 
     @Override
     public Long getId() {

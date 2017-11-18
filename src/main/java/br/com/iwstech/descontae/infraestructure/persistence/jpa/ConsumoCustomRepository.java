@@ -10,16 +10,20 @@ import br.com.iwstech.descontae.interfaces.web.dto.DashboardSituacaoValorDTO;
 public interface ConsumoCustomRepository {
 
     List<ConsumoUsuarioDTO> findByUsuario(Long idPessoa);
-    Long findTotais(Date dataInicio, Date dataFim);
-    Long findTotais(Long idCliente, Date dataInicio, Date dataFim);
+
+    Long findCartoesTotais();
+    Long findCartoesTotais(Long idCliente);
     List<DashboardSituacaoValorDTO> findCartoesAtivos();
     List<DashboardSituacaoValorDTO> findCartoesAtivos(Long idCliente);
+
+    Long findConsumosTotais(Date dataInicio, Date dataFim);
+    Long findConsumosTotais(Long idCliente, Date dataInicio, Date dataFim);
+    List<DashboardChaveValorDTO> findConsumosTotaisByCategoria(Long idCidade, Date dataInicio, Date dataFim);
+    List<DashboardChaveValorDTO> findConsumosTotaisByCategoria(Long idCliente, Long idCidade, Date dataInicio, Date dataFim);
     List<DashboardChaveValorDTO> findTotaisByCidade(Date dataInicio, Date dataFim);
     List<DashboardChaveValorDTO> findTotaisByCidade(Long idCliente, Date dataInicio, Date dataFim);
 
     List<DashboardChaveValorDTO> findTotaisByBairro(Long idCidade, Date dataInicio, Date dataFim);
     List<DashboardChaveValorDTO> findTotaisByBairro(Long idCliente, Long idCidade, Date dataInicio, Date dataFim);
-    List<DashboardChaveValorDTO> findTotaisByCategoria(Long idCidade, Date dataInicio, Date dataFim);
-    List<DashboardChaveValorDTO> findTotaisByCategoria(Long idCliente, Long idCidade, Date dataInicio, Date dataFim);
 
 }

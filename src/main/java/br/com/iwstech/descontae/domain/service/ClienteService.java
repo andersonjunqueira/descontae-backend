@@ -56,9 +56,9 @@ public class ClienteService extends RestFullService<Cliente, Long> {
         return repository.save(e);
     }
 
-    public Cliente findOneByPessoa(Token token) throws NegocioException {
+    public Cliente findOneByPessoa(String email) throws NegocioException {
         try {
-            Pessoa p = pessoaService.findByEmail(token.getUsername());
+            Pessoa p = pessoaService.findByEmail(email);
             return ((ClienteRepository)repository).findOneByPessoa(p.getId());
         } catch(Exception ex) {
             throw new NegocioException(ex.getMessage(), ex);

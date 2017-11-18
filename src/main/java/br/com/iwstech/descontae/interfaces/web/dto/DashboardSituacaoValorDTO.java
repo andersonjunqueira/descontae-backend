@@ -13,11 +13,19 @@ public class DashboardSituacaoValorDTO {
     @JsonDeserialize(using=SituacaoAtivoDeserializer.class)
     private SituacaoAtivo situacao;
     private Long total;
+    private String percentual;
 
     public DashboardSituacaoValorDTO() {}
+
     public DashboardSituacaoValorDTO(SituacaoAtivo situacao, Long total) {
         setSituacao(situacao);
         setTotal(total);
+    }
+
+    public DashboardSituacaoValorDTO(SituacaoAtivo situacao, Long total, String percentual) {
+        setSituacao(situacao);
+        setTotal(total);
+        setPercentual(percentual);
     }
 
     public Long getTotal() {
@@ -32,6 +40,12 @@ public class DashboardSituacaoValorDTO {
     }
     public void setSituacao(SituacaoAtivo situacao) {
         this.situacao = situacao;
+    }
+    public String getPercentual() {
+        return percentual;
+    }
+    public void setPercentual(String percentual) {
+        this.percentual = percentual;
     }
 
 }

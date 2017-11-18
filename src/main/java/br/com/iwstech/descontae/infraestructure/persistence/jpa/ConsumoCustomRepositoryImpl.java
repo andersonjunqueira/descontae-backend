@@ -44,6 +44,33 @@ public class ConsumoCustomRepositoryImpl implements ConsumoCustomRepository {
     }
 
     @Override
+    public Long findCartoesTotais() {
+        return findCartoesTotais(null);
+    }
+
+    @Override
+    public Long findCartoesTotais(Long idCliente) {
+
+        StringBuilder hql = new StringBuilder()
+            .append("SELECT count(*) ")
+            .append("  FROM Cartao c ")
+            .append("       LEFT JOIN c.assinatura a ")
+            .append("       LEFT JOIN a.cliente cl ");
+
+        if(idCliente != null) {
+            hql.append(" WHERE cl.id = :idCliente ");
+        }
+
+        Query q = em.createQuery(hql.toString());
+
+        if(idCliente != null) {
+            q.setParameter("idCliente", idCliente);
+        }
+
+        return (Long)q.getSingleResult();
+    }
+
+    @Override
     public List<DashboardSituacaoValorDTO> findCartoesAtivos() {
         return findCartoesAtivos(null);
     }
@@ -55,8 +82,8 @@ public class ConsumoCustomRepositoryImpl implements ConsumoCustomRepository {
         StringBuilder hql = new StringBuilder()
             .append("SELECT new br.com.iwstech.descontae.interfaces.web.dto.DashboardSituacaoValorDTO(c.ativo, count(*)) ")
             .append("  FROM Cartao c ")
-            .append("       JOIN c.assinatura a ")
-            .append("       JOIN a.cliente cl ");
+            .append("       LEFT JOIN c.assinatura a ")
+            .append("       LEFT JOIN a.cliente cl ");
 
         if(idCliente != null) {
             hql.append(" WHERE cl.id = :idCliente ");
@@ -75,13 +102,44 @@ public class ConsumoCustomRepositoryImpl implements ConsumoCustomRepository {
     }
 
     @Override
-    public List<DashboardChaveValorDTO> findTotaisByCategoria(Long idCidade, Date dataInicio, Date dataFim) {
-        return findTotaisByCategoria(null, idCidade, dataInicio, dataFim);
+    public Long findConsumosTotais(Date dataInicio, Date dataFim) {
+        return findCartoesTotais(null);
+    }
+
+    @Override
+    public Long findConsumosTotais(Long idCliente, Date dataInicio, Date dataFim) {
+
+        StringBuilder hql = new StringBuilder()
+            .append("SELECT count(*) ")
+            .append("  FROM Consumo c ")
+            .append("       LEFT JOIN c.assinatura a ")
+            .append("       LEFT JOIN a.cliente cl ")
+            .append(" WHERE c.data BETWEEN :di AND :df ");
+
+        if(idCliente != null) {
+            hql.append(" AND cl.id = :idCliente ");
+        }
+
+        Query q = em.createQuery(hql.toString());
+
+        q.setParameter("di", dataInicio);
+        q.setParameter("df", dataFim);
+
+        if(idCliente != null) {
+            q.setParameter("idCliente", idCliente);
+        }
+
+        return (Long)q.getSingleResult();
+    }
+
+    @Override
+    public List<DashboardChaveValorDTO> findConsumosTotaisByCategoria(Long idCidade, Date dataInicio, Date dataFim) {
+        return findConsumosTotaisByCategoria(null, idCidade, dataInicio, dataFim);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<DashboardChaveValorDTO> findTotaisByCategoria(Long idCliente, Long idCidade, Date dataInicio, Date dataFim) {
+    public List<DashboardChaveValorDTO> findConsumosTotaisByCategoria(Long idCliente, Long idCidade, Date dataInicio, Date dataFim) {
 
         StringBuilder hql = new StringBuilder()
            .append("SELECT new br.com.iwstech.descontae.interfaces.web.dto.DashboardChaveValorDTO(ct.nome, count(*)) ")
@@ -99,7 +157,7 @@ public class ConsumoCustomRepositoryImpl implements ConsumoCustomRepository {
             hql.append(" AND cl.id = :idCliente ");
         }
 
-        hql.append(" GROUP BY ct.nome ");
+        hql.append(" GROUP BY ct.nome HAVING count(*) > 0");
 
         Query q = em.createQuery(hql.toString());
 
@@ -115,37 +173,6 @@ public class ConsumoCustomRepositoryImpl implements ConsumoCustomRepository {
     }
 
     @Override
-    public Long findTotais(Date dataInicio, Date dataFim) {
-        return findTotais(null, dataInicio, dataFim);
-    }
-
-    @Override
-    public Long findTotais(Long idCliente, Date dataInicio, Date dataFim) {
-
-        StringBuilder hql = new StringBuilder()
-            .append("SELECT count(*) ")
-            .append("  FROM Consumo c ")
-            .append("       JOIN c.assinatura a ")
-            .append("       JOIN a.cliente cl ")
-            .append(" WHERE c.data BETWEEN :di AND :df ");
-
-        if(idCliente != null) {
-            hql.append(" AND cl.id = :idCliente ");
-        }
-
-        Query q = em.createQuery(hql.toString());
-
-        if(idCliente != null) {
-            q.setParameter("idCliente", idCliente);
-        }
-
-        q.setParameter("di", dataInicio);
-        q.setParameter("df", dataFim);
-
-        return (Long)q.getSingleResult();
-    }
-
-    @Override
     public List<DashboardChaveValorDTO> findTotaisByCidade(Date dataInicio, Date dataFim) {
         return findTotaisByCidade(null, dataInicio, dataFim);
     }
@@ -154,19 +181,20 @@ public class ConsumoCustomRepositoryImpl implements ConsumoCustomRepository {
     public List<DashboardChaveValorDTO> findTotaisByCidade(Long idCliente, Date dataInicio, Date dataFim) {
 
         StringBuilder hql = new StringBuilder()
-            .append("SELECT new br.com.iwstech.descontae.interfaces.web.dto.DashboardChaveValorDTO(e.cidade.nome, count(*)) ")
+            .append("SELECT new br.com.iwstech.descontae.interfaces.web.dto.DashboardChaveValorDTO(cid.nome, count(*)) ")
             .append("  FROM Consumo c  ")
-            .append("       JOIN c.assinatura a ")
-            .append("       JOIN a.cliente cl ")
-            .append("       JOIN a.pessoa p ")
-            .append("       JOIN p.endereco e ")
+            .append("       LEFT JOIN c.unidade u ")
+            .append("       LEFT JOIN u.endereco e ")
+            .append("       LEFT JOIN e.cidade cid ")
+            .append("       LEFT JOIN c.assinatura a ")
+            .append("       LEFT JOIN a.cliente cl ")
             .append(" WHERE c.data BETWEEN :di AND :df ");
 
         if(idCliente != null) {
             hql.append(" AND cl.id = :idCliente ");
         }
 
-        hql.append(" GROUP BY e.cidade.nome ");
+        hql.append(" GROUP BY cid.nome ");
 
         Query q = em.createQuery(hql.toString());
 
@@ -191,13 +219,16 @@ public class ConsumoCustomRepositoryImpl implements ConsumoCustomRepository {
         StringBuilder hql = new StringBuilder()
             .append("SELECT new br.com.iwstech.descontae.interfaces.web.dto.DashboardChaveValorDTO(e.bairro, count(*)) ")
             .append("  FROM Consumo c  ")
-            .append("       JOIN c.unidade u ")
-            .append("       JOIN u.endereco e ")
-            .append("       JOIN c.assinatura a ")
-            .append("       JOIN a.cliente cl ")
-            .append("       JOIN a.pessoa p ")
-            .append(" WHERE e.cidade.id = :idCidade ")
-            .append("   AND c.data BETWEEN :di AND :df ");
+            .append("       LEFT JOIN c.unidade u ")
+            .append("       LEFT JOIN u.endereco e ")
+            .append("       LEFT JOIN e.cidade cid ")
+            .append("       LEFT JOIN c.assinatura a ")
+            .append("       LEFT JOIN a.cliente cl ")
+            .append(" WHERE c.data BETWEEN :di AND :df ");
+
+        if(idCidade!= null) {
+            hql.append("   AND cid.id = :idCidade ");
+        }
 
         if(idCliente != null) {
             hql.append(" AND cl.id = :idCliente ");
@@ -211,7 +242,10 @@ public class ConsumoCustomRepositoryImpl implements ConsumoCustomRepository {
             q.setParameter("idCliente", idCliente);
         }
 
-        q.setParameter("idCidade", idCidade);
+        if(idCidade!= null) {
+            q.setParameter("idCidade", idCidade);
+        }
+
         q.setParameter("di", dataInicio);
         q.setParameter("df", dataFim);
 
