@@ -1,30 +1,38 @@
 package br.com.iwstech.descontae.domain.service;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.iwstech.descontae.domain.model.Assinatura;
 import br.com.iwstech.descontae.domain.model.Cidade;
+import br.com.iwstech.descontae.domain.model.Cliente;
 import br.com.iwstech.descontae.domain.model.Consumo;
 import br.com.iwstech.descontae.domain.model.OfertaUnidade;
 import br.com.iwstech.descontae.domain.model.Pessoa;
 import br.com.iwstech.descontae.domain.model.SituacaoAtivo;
 import br.com.iwstech.descontae.domain.model.Unidade;
+import br.com.iwstech.descontae.domain.model.serializer.DataDeserializer;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.ConsumoCustomRepository;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.ConsumoRepository;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.OfertaCustomRepository;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.OfertaUnidadeRepository;
 import br.com.iwstech.descontae.interfaces.web.dto.ConsumoDTO;
+import br.com.iwstech.descontae.interfaces.web.dto.ConsumoListDTO;
 import br.com.iwstech.descontae.interfaces.web.dto.ConsumoUsuarioDTO;
 import br.com.iwstech.descontae.interfaces.web.dto.DashboardConsumosDTO;
 import br.com.iwstech.util.infraestructure.exception.NegocioException;
+import br.com.iwstech.util.infraestructure.log.Log;
 import br.com.iwstech.util.infraestructure.service.RestFullService;
 
 @Service
@@ -209,4 +217,74 @@ public class ConsumoService extends RestFullService<Consumo, Long> {
 
     }
 
+    public Page<ConsumoListDTO> findAllPageable(String email, Map<String, String[]> params) throws NegocioException {
+
+        final String CLIENTE = "cliente";
+        final String CIDADE = "cidade";
+        final String DATA_INICIO = "dataInicio";
+        final String DATA_FIM = "dataFim";
+
+        Cliente c = null;
+        Long idcl = null;
+
+        if(email != null) {
+            // PROCURA UM CLIENTE ASSOCIADO AO EMAIL
+            c = clienteService.findOneByPessoa(email);
+        }
+
+        // ENCONTROU O CLIENTE
+        if(c != null) {
+            idcl = c.getId();
+
+        // NÃO ENCONTROU O CLIENTE
+        } else {
+            // PROCURA PELO PARAMETRO
+            if(params.get(CLIENTE) != null && params.get(CLIENTE).length > 0) {
+                idcl = Long.parseLong(params.get(CLIENTE)[0]);
+                c = clienteService.findOne(idcl);
+            }
+        }
+
+        // SE NÃO INFORMAR A CIDADE
+        Long idcd = null;
+        if(params.get(CIDADE) != null && params.get(CIDADE).length > 0) {
+            idcd = Long.parseLong(params.get(CIDADE)[0]);
+
+        } else {
+
+            // A CIDADE PADRÃO É A DO ENDEREÇO DO CLIENTE
+            if(c != null) {
+                idcd = c.getEndereco().getCidade().getId();
+
+            // SEM O CLIENTE, CIDADE PADRÃO É BRASILIA
+            } else {
+                idcd = Cidade.BRASILIA.getId();
+            }
+
+        }
+
+        Date di = null;
+        Date df = null;
+        if(params.get(DATA_INICIO) != null && params.get(DATA_INICIO).length > 0 &&
+            params.get(DATA_FIM) != null && params.get(DATA_FIM).length > 0) {
+            try {
+                di = DataDeserializer.getParser().parse(params.get(DATA_INICIO)[0]);
+                df = DataDeserializer.getParser().parse(params.get(DATA_FIM)[0]);
+            } catch (ParseException e) {
+                Log.error(getClass(), e);
+            }
+        }
+
+        // O PERIODO PADRÃO SÃO OS ÚLTIMOS 30 DIAS
+        if(di == null || df == null) {
+            GregorianCalendar cal = new GregorianCalendar();
+            df = cal.getTime();
+            cal.add(Calendar.DAY_OF_MONTH, -30);
+            di = cal.getTime();
+        }
+
+        Pageable p = getPageRequest(params);
+        return consumoCustom.findAll(idcl, idcd, di, df, p);
+
+    }
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,6 +22,7 @@ import br.com.iwstech.descontae.domain.model.Consumo;
 import br.com.iwstech.descontae.domain.model.serializer.DataDeserializer;
 import br.com.iwstech.descontae.domain.service.ConsumoService;
 import br.com.iwstech.descontae.interfaces.web.dto.ConsumoDTO;
+import br.com.iwstech.descontae.interfaces.web.dto.ConsumoListDTO;
 import br.com.iwstech.descontae.interfaces.web.dto.DashboardConsumosDTO;
 import br.com.iwstech.util.infraestructure.dto.Token;
 import br.com.iwstech.util.infraestructure.exception.NegocioException;
@@ -38,6 +40,32 @@ public class ConsumosController extends RestFullEndpoint<Consumo, Long> {
     @Autowired
     public ConsumosController(ConsumoService service) {
         super(service);
+    }
+
+    @Override
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> findAllPageable(HttpServletRequest request) {
+        try {
+
+            // RECUPERANDO O USUARIO DO TOKEN
+            String accessToken = request.getHeader("Authorization");
+            Token token = Application.readToken(accessToken);
+
+            Page<ConsumoListDTO> res = ((ConsumoService)service).findAllPageable(token.getUsername(), request.getParameterMap());
+            if(res == null || res.getTotalElements() == 0) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                return new ResponseEntity<>(res, HttpStatus.OK);
+            }
+
+       } catch (NegocioException ex) {
+           Log.error(this.getClass(), ex);
+           return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+
+       } catch (Exception ex) {
+           Log.error(this.getClass(), ex);
+           return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+       }
     }
 
     @RequestMapping(method = RequestMethod.PUT, path="/oferta")

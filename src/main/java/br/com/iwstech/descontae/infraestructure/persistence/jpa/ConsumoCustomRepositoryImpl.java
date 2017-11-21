@@ -7,8 +7,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import br.com.iwstech.descontae.interfaces.web.dto.ConsumoListDTO;
 import br.com.iwstech.descontae.interfaces.web.dto.ConsumoUsuarioDTO;
 import br.com.iwstech.descontae.interfaces.web.dto.DashboardChaveValorDTO;
 import br.com.iwstech.descontae.interfaces.web.dto.DashboardSituacaoValorDTO;
@@ -251,4 +256,93 @@ public class ConsumoCustomRepositoryImpl implements ConsumoCustomRepository {
 
         return q.getResultList();
     }
+
+    @Override
+    public Page<ConsumoListDTO> findAll(Long idCliente, Long idCidade, Date dataInicio, Date dataFim, Pageable pageable) {
+
+        StringBuilder hqlWhere = new StringBuilder();
+
+        StringBuilder hqlCount = new StringBuilder()
+            .append("SELECT COUNT(*) ")
+            .append("  FROM Consumo cn ")
+            .append("       INNER JOIN cn.oferta ot ")
+            .append("       INNER JOIN cn.assinatura an ")
+            .append("       INNER JOIN an.cliente cl, ")
+            .append("       Cartao cr ")
+            .append("       INNER JOIN cr.pessoa pe, ")
+            .append("       Unidade un ")
+            .append("       INNER JOIN un.endereco en ")
+            .append("       INNER JOIN en.cidade cd ")
+            .append("       INNER JOIN cd.estado uf ")
+            .append("       INNER JOIN un.parceiro pa ")
+            .append("       INNER JOIN pa.marca ma ")
+            .append(" WHERE cr.assinatura = an ")
+            .append("   AND cn.unidade.id = un.id ");
+
+        StringBuilder hql = new StringBuilder()
+            .append("SELECT new br.com.iwstech.descontae.interfaces.web.dto.ConsumoListDTO(")
+            .append("       cn.id, cr.codigo, cd.nome, uf.sigla, en.bairro, pe.nome, ma.nome, ot.descricao, cn.data) ")
+            .append("  FROM Consumo cn ")
+            .append("       INNER JOIN cn.oferta ot ")
+            .append("       INNER JOIN cn.assinatura an ")
+            .append("       INNER JOIN an.cliente cl, ")
+            .append("       Cartao cr ")
+            .append("       INNER JOIN cr.pessoa pe, ")
+            .append("       Unidade un ")
+            .append("       INNER JOIN un.endereco en ")
+            .append("       INNER JOIN en.cidade cd ")
+            .append("       INNER JOIN cd.estado uf ")
+            .append("       INNER JOIN un.parceiro pa ")
+            .append("       INNER JOIN pa.marca ma ")
+            .append(" WHERE cr.assinatura = an ")
+            .append("   AND cn.unidade.id = un.id ");
+
+        if(idCliente != null) {
+            hqlWhere.append(" AND cl.id = :idCliente ");
+        }
+
+        if(idCidade != null) {
+            hqlWhere.append(" AND cd.id = :idCidade ");
+        }
+
+        if(dataInicio != null && dataFim != null) {
+            hqlWhere.append(" AND cn.data BETWEEN :dataInicio AND :dataFim ");
+        }
+
+        hql.append(hqlWhere.toString()).append(" ORDER BY cn.data DESC ");
+        hqlCount.append(hqlWhere.toString());
+
+        Query q = em.createQuery(hql.toString());
+        Query qc = em.createQuery(hqlCount.toString());
+
+        if(idCliente != null) {
+            q.setParameter("idCliente", idCliente);
+            qc.setParameter("idCliente", idCliente);
+        }
+
+        if(idCidade != null) {
+            q.setParameter("idCidade", idCidade);
+            qc.setParameter("idCidade", idCidade);
+        }
+
+        if(dataInicio != null && dataFim != null) {
+            q.setParameter("dataInicio", dataInicio);
+            qc.setParameter("dataInicio", dataInicio);
+            q.setParameter("dataFim", dataFim);
+            qc.setParameter("dataFim", dataFim);
+        }
+
+        if (pageable == null) {
+            pageable = new PageRequest(0, Integer.MAX_VALUE);
+        }
+
+        Long total = (Long)qc.getSingleResult();
+        int start = pageable.getPageSize() * pageable.getPageNumber();
+        q.setFirstResult(start);
+        q.setMaxResults(pageable.getPageSize());
+
+        return new PageImpl<ConsumoListDTO>(q.getResultList(), pageable, total);
+
+    }
+
 }

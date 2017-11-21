@@ -20,8 +20,8 @@ public class DashboardConsumosDTO {
     private List<DashboardChaveValorDTO> consumosTotaisByCidade;
     private List<DashboardChaveValorDTO> consumosTotaisByBairro;
 
-    private Cliente cliente;
     private Cidade cidade;
+    private Cliente cliente;
 
     @JsonSerialize(using=DataSerializer.class)
     @JsonDeserialize(using=DataDeserializer.class)
