@@ -14,6 +14,6 @@ public interface CategoriaRepository extends RepositoryBase<Categoria, Long> {
         "  FROM Unidade u " +
         "       INNER JOIN u.parceiro p, " +
         "       OfertaUnidade ou " +
-        " WHERE ou.unidade = u AND p.excluido = 'N' ")
+        " WHERE p.categoria.id = ?1 AND ou.unidade = u AND p.excluido = 'N' ")
     Long findTotalEmUso(Long idCategoria);
 }
