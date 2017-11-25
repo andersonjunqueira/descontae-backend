@@ -30,6 +30,7 @@
         <mapping class="br.com.iwstech.descontae.domain.model.Unidade"/>
         <mapping class="br.com.iwstech.descontae.domain.model.ImagemUnidade"/>
         <mapping class="br.com.iwstech.descontae.domain.model.Telefone"/>
+        <mapping class="br.com.iwstech.descontae.domain.model.Configuracao"/>
 
     </session-factory>
 </hibernate-configuration>

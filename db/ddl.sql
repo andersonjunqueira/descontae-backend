@@ -34,6 +34,7 @@ drop table TB_CIDADE;
 drop table TB_MARCA_FRANQUIA;
 drop table TB_TIPO_PESSOA;
 drop table TB_UF;
+drop table TB_CONFIGURACAO;
 
 create sequence SEQ_ASSINATURA;
 create sequence SEQ_AVALIACAO;
@@ -306,6 +307,16 @@ create table TB_UNIDADE (
    INICIO_EXPEDIENTE    TIME                 null,
    FIM_EXPEDIENTE       TIME                 null,
    constraint PK_TB_UNIDADE primary key (ID_UNIDADE)
+);
+
+/*==============================================================*/
+/* Table: TB_CONFIGURACAO                                       */
+/*==============================================================*/
+create table TB_CONFIGURACAO (
+   ID_CONFIGURACAO      int8                 not null,
+   CHAVE                VARCHAR(30)          not null,
+   VALOR                VARCHAR(200)         not null,
+   constraint PK_TB_CONFIGURACAO primary key (ID_CONFIGURACAO)
 );
 
 alter table TB_ASSINATURA
