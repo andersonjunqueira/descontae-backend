@@ -42,4 +42,4 @@ insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo
 insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) values (2, 'Chiquinho Sorvetes', 'http://descontae.com.br/img/logos/70_thumb.jpg', 'http://descontae.com.br/img/logos/70_thumb.jpg', 'http://descontae.com.br/img/logos/70_thumb.jpg');
 insert into tb_marca_franquia(id_marca_franquia, nome, imagem_logo, imagem_fundo_app, imagem_thumbnail) values (3, 'Burger King', 'http://descontae.com.br/img/logos/68_thumb.jpg', 'http://descontae.com.br/img/logos/68_thumb.jpg', 'http://descontae.com.br/img/logos/68_thumb.jpg');  
 
-insert into tb_configuracao(id_configuracao, chave, valor) values (1, 'exibe_cadastro_completo', 'false');
+insert into tb_configuracao(id_configuracao, chave, valor) values (1, 'esconde_cadastro_completo', 'true');

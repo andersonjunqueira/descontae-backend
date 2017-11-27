@@ -13,7 +13,7 @@ public class Configuracao extends EntidadeBase<Long> {
 
     private static final long serialVersionUID = -2964776867264618232L;
 
-    public static final Configuracao CONF_EXIBE_CADASTRO_COMPLETO = new Configuracao(1L);
+    public static final Configuracao CONF_ESCONDE_CADASTRO_COMPLETO = new Configuracao(1L);
 
     @Id
     @Column(name="ID_CONFIGURACAO")

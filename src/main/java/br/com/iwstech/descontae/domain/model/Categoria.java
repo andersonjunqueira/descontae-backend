@@ -30,11 +30,11 @@ public class Categoria extends EntidadeBase<Long> implements ExclusaoLogica {
 
     @Column(name="NOME", length=MAX_LENGTH_NOME, nullable=false)
     private String nome;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(name="EXCLUIDO", length=MAX_LENGTH_EXCLUIDO, nullable=false)
     protected SimNao excluido;
-    
+
     @Override
     public Long getId() {
         return id;
@@ -53,10 +53,12 @@ public class Categoria extends EntidadeBase<Long> implements ExclusaoLogica {
         this.nome = nome;
     }
 
+    @Override
     public SimNao getExcluido() {
         return excluido;
     }
 
+    @Override
     public void setExcluido(SimNao excluido) {
         this.excluido = excluido;
     }

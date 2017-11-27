@@ -25,7 +25,7 @@ public class ServicoController {
     public ResponseEntity<?> cadastroAtivo() {
         try {
 
-            Configuracao c = service.findOne(Configuracao.CONF_EXIBE_CADASTRO_COMPLETO.getId());
+            Configuracao c = service.findOne(Configuracao.CONF_ESCONDE_CADASTRO_COMPLETO.getId());
             if(c == null || !Boolean.parseBoolean(c.getValor())) {
                 return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
             } else {
