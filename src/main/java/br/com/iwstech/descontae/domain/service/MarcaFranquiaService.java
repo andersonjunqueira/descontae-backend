@@ -8,8 +8,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import br.com.iwstech.descontae.domain.model.MarcaFranquia;
@@ -26,6 +28,7 @@ import br.com.iwstech.descontae.interfaces.web.dto.HomeParceiroDTO;
 import br.com.iwstech.descontae.interfaces.web.dto.HomeUnidadeDTO;
 import br.com.iwstech.util.geo.GeoUtils;
 import br.com.iwstech.util.geo.TimeCount;
+import br.com.iwstech.util.infraestructure.exception.NegocioException;
 import br.com.iwstech.util.infraestructure.service.RestFullService;
 
 @Service
@@ -46,6 +49,11 @@ public class MarcaFranquiaService  extends RestFullService<MarcaFranquia, Long> 
     @Autowired
     public MarcaFranquiaService(MarcaFranquiaRepository repository) {
         super(repository);
+    }
+
+    @Override
+    public Page<MarcaFranquia> findAllPageable(Map<String, String[]> params) throws NegocioException {
+        return franquiasCustomRepo.findAllMarcas(getExample(params), getPageRequest(params));
     }
 
     public List<HomeParceiroDTO> findFranquiasByCidade(Long idCidade, String filtro, Double lat, Double lon, String[] categorias) {

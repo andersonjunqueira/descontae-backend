@@ -37,6 +37,12 @@ public class MarcaFranquia extends EntidadeBase<Long> {
     @Column(name="IMAGEM_THUMBNAIL", length=MAX_LENGTH_IMAGEM, nullable=false)
     private String imagemThumbnail;
 
+    public MarcaFranquia() {}
+    public MarcaFranquia(Long id, String nome) {
+        setId(id);
+        setNome(nome);
+    }
+
     @Override
     public Long getId() {
         return id;
