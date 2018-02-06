@@ -42,4 +42,10 @@ public class ServicoController {
         }
     }
 
+    @Deprecated
+    @RequestMapping(value="/ativo", method = RequestMethod.POST)
+    public ResponseEntity<?> cadastroAtivoPost() {
+        return cadastroAtivo();
+    }
+
 }
