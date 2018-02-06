@@ -3,7 +3,7 @@ package br.com.iwstech.descontae.interfaces.web.dto;
 import java.util.List;
 
 import br.com.iwstech.descontae.domain.model.Pessoa;
-import br.com.iwstech.descontae.domain.model.SituacaoAtivo;
+import br.com.iwstech.util.infraestructure.domain.model.SituacaoAtivo;
 
 public class OfertaDTO {
 

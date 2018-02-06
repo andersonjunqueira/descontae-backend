@@ -12,9 +12,10 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import br.com.iwstech.descontae.domain.model.serializer.DecimalSerializer;
 import br.com.iwstech.util.infraestructure.domain.model.EntidadeBase;
 import br.com.iwstech.util.infraestructure.domain.model.SimNao;
+import br.com.iwstech.util.infraestructure.domain.model.SituacaoAtivo;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.DecimalSerializer;
 
 @Entity
 @Table(name = "TB_PLANO")

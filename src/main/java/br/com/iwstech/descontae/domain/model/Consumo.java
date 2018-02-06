@@ -17,9 +17,9 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import br.com.iwstech.descontae.domain.model.serializer.DataHoraDeserializer;
-import br.com.iwstech.descontae.domain.model.serializer.DataHoraSerializer;
 import br.com.iwstech.util.infraestructure.domain.model.EntidadeBase;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.DataHoraDeserializer;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.DataHoraSerializer;
 
 @Entity
 @Table(name = "TB_CONSUMO")

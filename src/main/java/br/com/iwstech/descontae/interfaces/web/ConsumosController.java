@@ -19,11 +19,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.iwstech.descontae.Application;
 import br.com.iwstech.descontae.domain.model.Consumo;
-import br.com.iwstech.descontae.domain.model.serializer.DataDeserializer;
 import br.com.iwstech.descontae.domain.service.ConsumoService;
 import br.com.iwstech.descontae.interfaces.web.dto.ConsumoDTO;
 import br.com.iwstech.descontae.interfaces.web.dto.ConsumoListDTO;
 import br.com.iwstech.descontae.interfaces.web.dto.DashboardConsumosDTO;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.DataDeserializer;
 import br.com.iwstech.util.infraestructure.dto.Token;
 import br.com.iwstech.util.infraestructure.exception.NegocioException;
 import br.com.iwstech.util.infraestructure.log.Log;

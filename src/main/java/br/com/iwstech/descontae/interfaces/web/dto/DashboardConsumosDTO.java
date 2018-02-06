@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import br.com.iwstech.descontae.domain.model.Cidade;
 import br.com.iwstech.descontae.domain.model.Cliente;
-import br.com.iwstech.descontae.domain.model.serializer.DataDeserializer;
-import br.com.iwstech.descontae.domain.model.serializer.DataSerializer;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.DataDeserializer;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.DataSerializer;
 
 public class DashboardConsumosDTO {
 

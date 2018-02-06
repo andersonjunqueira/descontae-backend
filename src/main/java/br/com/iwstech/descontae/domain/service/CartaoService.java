@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.iwstech.descontae.domain.model.Assinatura;
 import br.com.iwstech.descontae.domain.model.Cartao;
 import br.com.iwstech.descontae.domain.model.Pessoa;
-import br.com.iwstech.descontae.domain.model.SituacaoAtivo;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.CartaoCustomRepository;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.CartaoRepository;
+import br.com.iwstech.util.infraestructure.domain.model.SituacaoAtivo;
 import br.com.iwstech.util.infraestructure.exception.NegocioException;
 import br.com.iwstech.util.infraestructure.service.RestFullService;
 

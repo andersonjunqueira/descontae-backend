@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import br.com.iwstech.descontae.domain.model.MarcaFranquia;
 import br.com.iwstech.descontae.domain.model.Telefone;
 import br.com.iwstech.descontae.domain.model.Unidade;
-import br.com.iwstech.descontae.domain.model.serializer.TimeDeserializer;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.ImagemUnidadeRepository;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.MarcaFranquiaRepository;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.MarcaFranquiasCustomRepository;
@@ -28,6 +27,7 @@ import br.com.iwstech.descontae.interfaces.web.dto.HomeParceiroDTO;
 import br.com.iwstech.descontae.interfaces.web.dto.HomeUnidadeDTO;
 import br.com.iwstech.util.geo.GeoUtils;
 import br.com.iwstech.util.geo.TimeCount;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.TimeDeserializer;
 import br.com.iwstech.util.infraestructure.exception.NegocioException;
 import br.com.iwstech.util.infraestructure.service.RestFullService;
 

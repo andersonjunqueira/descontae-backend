@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import br.com.iwstech.descontae.domain.model.Consumo;
-import br.com.iwstech.descontae.domain.model.SituacaoAtivo;
+import br.com.iwstech.util.infraestructure.domain.model.SituacaoAtivo;
 
 public interface OfertaCustomRepository {
 

@@ -2,7 +2,7 @@ package br.com.iwstech.descontae.interfaces.web.dto;
 
 import java.util.Date;
 
-import br.com.iwstech.descontae.domain.model.serializer.DataHoraDeserializer;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.DataHoraDeserializer;
 
 public class ConsumoUsuarioDTO {
 

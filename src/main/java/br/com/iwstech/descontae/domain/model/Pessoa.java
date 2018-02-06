@@ -23,11 +23,12 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import br.com.iwstech.descontae.domain.model.serializer.DataDeserializer;
-import br.com.iwstech.descontae.domain.model.serializer.DataSerializer;
-import br.com.iwstech.descontae.domain.model.serializer.SexoDeserializer;
-import br.com.iwstech.descontae.domain.model.serializer.SexoSerializer;
 import br.com.iwstech.util.infraestructure.domain.model.EntidadeBase;
+import br.com.iwstech.util.infraestructure.domain.model.Sexo;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.DataDeserializer;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.DataSerializer;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.SexoDeserializer;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.SexoSerializer;
 
 @Entity
 @Table(name = "TB_PESSOA_FISICA")

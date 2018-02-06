@@ -22,11 +22,11 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import br.com.iwstech.descontae.domain.model.serializer.DataDeserializer;
-import br.com.iwstech.descontae.domain.model.serializer.DataSerializer;
 import br.com.iwstech.util.infraestructure.domain.model.EntidadeBase;
 import br.com.iwstech.util.infraestructure.domain.model.ExclusaoLogica;
 import br.com.iwstech.util.infraestructure.domain.model.SimNao;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.DataDeserializer;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.DataSerializer;
 
 @Entity
 @Table(name = "TB_PARCEIRO")
@@ -91,7 +91,7 @@ public class Parceiro extends EntidadeBase<Long> implements ExclusaoLogica {
     @Enumerated(EnumType.STRING)
     @Column(name="EXCLUIDO", length=MAX_LENGTH_EXCLUIDO, nullable=false)
     protected SimNao excluido;
-    
+
     @Override
     public Long getId() {
         return id;
@@ -190,10 +190,12 @@ public class Parceiro extends EntidadeBase<Long> implements ExclusaoLogica {
         this.telefones = telefones;
     }
 
+    @Override
     public SimNao getExcluido() {
         return excluido;
     }
 
+    @Override
     public void setExcluido(SimNao excluido) {
         this.excluido = excluido;
     }

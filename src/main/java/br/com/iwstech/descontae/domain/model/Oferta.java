@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.iwstech.util.infraestructure.domain.model.EntidadeBase;
+import br.com.iwstech.util.infraestructure.domain.model.SituacaoAtivo;
 
 @Entity
 @Table(name = "TB_OFERTA")

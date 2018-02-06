@@ -5,8 +5,8 @@ import java.util.Date;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import br.com.iwstech.descontae.domain.model.serializer.DataDeserializer;
-import br.com.iwstech.descontae.domain.model.serializer.DataSerializer;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.DataDeserializer;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.DataSerializer;
 
 public class ConsumoListDTO {
 

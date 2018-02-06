@@ -11,13 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.iwstech.descontae.domain.model.Oferta;
 import br.com.iwstech.descontae.domain.model.OfertaUnidade;
-import br.com.iwstech.descontae.domain.model.SituacaoAtivo;
 import br.com.iwstech.descontae.domain.model.Unidade;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.OfertaCustomRepository;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.OfertaRepository;
 import br.com.iwstech.descontae.infraestructure.persistence.jpa.OfertaUnidadeRepository;
 import br.com.iwstech.descontae.interfaces.web.dto.OfertaDTO;
 import br.com.iwstech.descontae.interfaces.web.dto.OfertaUnidadeDTO;
+import br.com.iwstech.util.infraestructure.domain.model.SituacaoAtivo;
 import br.com.iwstech.util.infraestructure.dto.Token;
 import br.com.iwstech.util.infraestructure.exception.NegocioException;
 import br.com.iwstech.util.infraestructure.service.RestFullService;

@@ -21,9 +21,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import br.com.iwstech.descontae.domain.model.serializer.TimeDeserializer;
-import br.com.iwstech.descontae.domain.model.serializer.TimeSerializer;
 import br.com.iwstech.util.infraestructure.domain.model.EntidadeBase;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.TimeDeserializer;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.TimeSerializer;
 
 @Entity
 @Table(name = "TB_UNIDADE")

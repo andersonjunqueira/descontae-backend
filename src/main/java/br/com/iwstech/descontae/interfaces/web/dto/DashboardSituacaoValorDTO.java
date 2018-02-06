@@ -3,9 +3,9 @@ package br.com.iwstech.descontae.interfaces.web.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import br.com.iwstech.descontae.domain.model.SituacaoAtivo;
-import br.com.iwstech.descontae.domain.model.serializer.SituacaoAtivoDeserializer;
-import br.com.iwstech.descontae.domain.model.serializer.SituacaoAtivoSerializer;
+import br.com.iwstech.util.infraestructure.domain.model.SituacaoAtivo;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.SituacaoAtivoDeserializer;
+import br.com.iwstech.util.infraestructure.domain.model.serializer.SituacaoAtivoSerializer;
 
 public class DashboardSituacaoValorDTO {
 

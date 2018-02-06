@@ -13,7 +13,7 @@ import org.springframework.data.repository.cdi.Eager;
 import org.springframework.stereotype.Repository;
 
 import br.com.iwstech.descontae.domain.model.Consumo;
-import br.com.iwstech.descontae.domain.model.SituacaoAtivo;
+import br.com.iwstech.util.infraestructure.domain.model.SituacaoAtivo;
 
 @Eager
 @Repository
